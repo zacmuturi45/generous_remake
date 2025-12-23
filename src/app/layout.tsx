@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main ref={contentRef} className="main_content">
-          <Navbar />
+          {/* <Navbar /> */}
           {children}
         </main>
       </body>
