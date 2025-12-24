@@ -49,17 +49,17 @@ export const Carousel: React.FC<CarouselProps> = ({
     if (isTransitioning.current) return;
 
     stopProgress();
-    isTransitioning.current = true;
     setPrevIndex(currentIndex);
 
     setTimeout(() => {
+      isTransitioning.current = true;
       setCurrentIndex((prev) => (prev + 1) % items.length);
-    }, 50);
+    }, 500);
 
     setTimeout(() => {
       isTransitioning.current = false;
       setPrevIndex(null);
-    }, 1400);
+    }, 1900);
   };
 
   const goToSlide = (index: number) => {
@@ -121,23 +121,60 @@ export const Carousel: React.FC<CarouselProps> = ({
         </div>
       </div>
 
-      <div className="carousel__progress">
-        {items.map((_, index) => (
-          <div
-            key={index}
-            className={`carousel__progress-dot ${
-              index === currentIndex ? "carousel__progress-dot--active" : ""
-            }`}
-            onClick={() => goToSlide(index)}
-          >
+      <div className="carousel__progress_container">
+        <div className="carousel__text">
+          {items.map((item, index) => {
+            const isActive = index === currentIndex;
+            const isPrev = index === prevIndex;
+
+            return (
+              <div
+                key={index}
+                className={`carousel__text_container ${
+                  isActive ? "carousel__text_container--active" : ""
+                } ${isPrev ? "carousel__text_container--prev" : ""} ${
+                  isTransitioning ? "carousel__text_container--transitioning" : ""
+                }`}
+              >
+                <div className="carousel__header">
+                  <h1
+                    className={`${isActive ? "header--active" : ""} ${isPrev ? "header--prev" : ""}`}
+                  >
+                    {item.alt}
+                  </h1>
+                </div>
+                <div className="carousel__description">
+                  <p
+                    className={`${isActive ? "description--active" : ""} ${isPrev ? "description--prev" : ""}`}
+                  >
+                    {item.text}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Carousel Progress */}
+
+        <div className="carousel__progress">
+          {items.map((_, index) => (
             <div
-              className="carousel__progress-fill"
-              style={{
-                width: index === currentIndex ? `${progress}%` : "0%",
-              }}
-            />
-          </div>
-        ))}
+              key={index}
+              className={`carousel__progress-dot ${
+                index === currentIndex ? "carousel__progress-dot--active" : ""
+              }`}
+              onClick={() => goToSlide(index)}
+            >
+              <div
+                className="carousel__progress-fill"
+                style={{
+                  width: index === currentIndex ? `${progress}%` : "0%",
+                }}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

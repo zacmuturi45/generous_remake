@@ -1,5 +1,8 @@
 @import url("https://fonts.cdnfonts.com/css/pp-neue-montreal");
 @import url("https://fonts.cdnfonts.com/css/overused-grotesk");
+@import url("https://fonts.cdnfonts.com/css/amoera");
+@import url("https://fonts.cdnfonts.com/css/encode-sans-sc");
+@import url("https://fonts.cdnfonts.com/css/rogan");
 @import url("https://fonts.cdnfonts.com/css/roboto-condensed-3");
 @font-face {
   font-family: "nhg";
@@ -16,6 +19,9 @@
   --tone-600: #ff0000;
   --main-font: "PP Neue Montreal", sans-serif;
   --secondary-font: "Overused Grotesk", sans-serif;
+  --amoera-font: "amoera", sans-serif;
+  --encode-font: "Encode Sans SC", sans-serif;
+  --rogan-font: "Rogan", sans-serif;
   --auxilliary-font: "Roboto Condensed", sans-serif;
 }
 
@@ -137,6 +143,40 @@ body {
     transform: translateX(100%);
   }
 }
+@keyframes textHeadingIn {
+  0% {
+    transform: translateY(120px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes textHeadingOut {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(120px);
+  }
+}
+@keyframes textDescriptionIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes textDescriptionOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 .carousel {
   position: relative;
   width: 100%;
@@ -194,10 +234,72 @@ body {
 .carousel__slide--transitioning {
   transition: transform 0.8s cubic-bezier(0.785, 0.135, 0.15, 0.86), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.carousel__progress {
+.carousel__progress_container {
   position: absolute;
   bottom: 100px;
-  left: 3rem;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  gap: 1.5rem;
+}
+.carousel__text {
+  position: relative;
+  width: 1200px;
+  height: 300px;
+}
+.carousel__text_container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+}
+.carousel__text_container--active {
+  opacity: 1;
+  z-index: 2;
+}
+.carousel__header {
+  padding: 0;
+  overflow: hidden;
+}
+.carousel__header h1 {
+  line-height: 1;
+  font-family: var(--amoera-font);
+  color: var(--tone-0);
+  font-weight: 500;
+  font-size: 120px;
+  text-transform: capitalize;
+  margin: 0;
+  transform: translateY(120px);
+}
+.carousel__header .header--active {
+  animation: textHeadingIn 1s cubic-bezier(0.785, 0.135, 0.15, 0.86) forwards;
+  animation-delay: 0.75s;
+}
+.carousel__header .header--prev {
+  animation: textHeadingOut 0.35s linear;
+}
+.carousel__description {
+  max-width: 680px;
+}
+.carousel__description p {
+  font-family: var(--secondary-font);
+  color: var(--tone-0);
+  font-weight: 300;
+  font-size: 1.5rem;
+  line-height: 150%;
+  letter-spacing: 1px;
+  margin: 0;
+  opacity: 0;
+}
+.carousel__description .description--active {
+  animation: textDescriptionIn 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+  animation-delay: 1.3s;
+}
+.carousel__description .description--prev {
+  animation: textDescriptionOut 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+}
+.carousel__progress {
   display: flex;
   gap: 1.2rem;
   z-index: 10;
