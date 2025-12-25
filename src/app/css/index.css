@@ -234,6 +234,12 @@ body {
 .carousel__slide--transitioning {
   transition: transform 0.8s cubic-bezier(0.785, 0.135, 0.15, 0.86), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.carousel .circular__text_container {
+  position: absolute;
+  bottom: 100px;
+  right: 24px;
+  z-index: 2;
+}
 .carousel__progress_container {
   position: absolute;
   bottom: 100px;
@@ -356,6 +362,36 @@ body {
   }
   .carousel__progress-dot--active {
     width: 10rem;
+  }
+}
+.trial_animations {
+  width: 100%;
+  height: 100vh;
+  border: 2px solid red;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  cursor: pointer;
+}
+svg #curve {
+  fill: none;
+}
+svg .spin_text {
+  fill: white;
+  font-family: var(--rogan-font);
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+@keyframes rotate {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
   }
 }
 /*# sourceMappingURL=index.css.map */

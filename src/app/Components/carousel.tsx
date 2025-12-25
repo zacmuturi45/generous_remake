@@ -4,6 +4,7 @@ import { CarouselProps } from "./Types/gsap";
 import Image from "next/image";
 import { SplitText } from "../GSAP/gsap_plugins";
 import gsap from "gsap";
+import CircularText from "./spinning_text";
 
 export const Carousel: React.FC<CarouselProps> = ({
   items,
@@ -119,6 +120,10 @@ export const Carousel: React.FC<CarouselProps> = ({
             );
           })}
         </div>
+      </div>
+
+      <div className="circular__text_container">
+        <CircularText />
       </div>
 
       <div className="carousel__progress_container">

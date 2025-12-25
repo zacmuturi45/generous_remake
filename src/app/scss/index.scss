@@ -270,7 +270,16 @@ body {
     }
   }
 
+  .circular__text_container {
+    position: absolute;
+    bottom: 100px;
+    right: 24px;
+    // border: 2px solid red;
+    z-index: 2;
+  }
+
   &__progress_container {
+    // border: 2px solid blue;
     position: absolute;
     bottom: 100px;
     left: 24px;
@@ -417,6 +426,41 @@ body {
       &--active {
         width: 10rem;
       }
+    }
+  }
+}
+
+// TRIAL ANIMATIONS
+.trial_animations {
+  width: 100%;
+  height: 100vh;
+  border: 2px solid red;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  cursor: pointer;
+  #curve {
+    fill: none;
+    // stroke: rgb(255, 0, 0);
+    // stroke-width: 4;
+  }
+  .spin_text {
+    fill: white;
+    font-family: var(--rogan-font);
+    font-weight: 800;
+    font-size: 1.3rem;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotateZ(0deg);
+    }
+    to {
+      transform: rotateZ(360deg);
     }
   }
 }
