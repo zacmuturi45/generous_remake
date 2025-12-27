@@ -132,7 +132,7 @@ const CircularText: React.FC = () => {
     setIsHovering(true);
     if (animationRef.current) {
       gsap.to(animationRef.current, {
-        timeScale: 3,
+        timeScale: 10,
         duration: 0.5,
         ease: "circ.out",
       });

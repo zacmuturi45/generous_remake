@@ -20,4 +20,5 @@ interface CarouselProps {
   items: CarouselItem[];
   autoplayDuration?: number;
   transitionDuration?: number;
+  lenis: any;
 }

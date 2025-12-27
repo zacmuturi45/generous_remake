@@ -1,8 +1,8 @@
 @import url("https://fonts.cdnfonts.com/css/pp-neue-montreal");
 @import url("https://fonts.cdnfonts.com/css/overused-grotesk");
 @import url("https://fonts.cdnfonts.com/css/amoera");
-@import url("https://fonts.cdnfonts.com/css/encode-sans-sc");
-@import url("https://fonts.cdnfonts.com/css/rogan");
+@import url("https://fonts.cdnfonts.com/css/br-segma");
+@import url("https://fonts.cdnfonts.com/css/manifesto");
 @import url("https://fonts.cdnfonts.com/css/roboto-condensed-3");
 @font-face {
   font-family: "nhg";
@@ -20,8 +20,8 @@
   --main-font: "PP Neue Montreal", sans-serif;
   --secondary-font: "Overused Grotesk", sans-serif;
   --amoera-font: "amoera", sans-serif;
-  --encode-font: "Encode Sans SC", sans-serif;
-  --rogan-font: "Rogan", sans-serif;
+  --encode-font: "BR Segma", sans-serif;
+  --rogan-font: "MANIFESTO", sans-serif;
   --auxilliary-font: "Roboto Condensed", sans-serif;
 }
 
@@ -30,22 +30,149 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0;
-  background: #0e100f;
+  background: #ffffff;
   padding: 0;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 .main_container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.main_container > * {
+.main_container section {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.main_container .hero_section {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.main_container .hero_section .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 3;
+  pointer-events: none;
+}
+.main_container .hero_section .hero_carousel_container {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.main_container .about {
+  display: flex;
+  flex-direction: column;
+  padding: 136px 48px 0 48px;
+}
+.main_container .about svg {
+  width: 36px;
+  height: 36px;
+}
+.main_container .about .line {
+  overflow: hidden;
+}
+.main_container .about .line .split_up {
+  transform: translateY(100%);
+}
+.main_container .about .line span {
+  font-family: var(--rogan-font);
+  font-weight: 800;
+  font-size: 170px;
+  letter-spacing: -1.2rem;
+  line-height: 1;
+  display: inline-block;
+}
+.main_container .about .la__marque {
+  display: flex;
+  flex-direction: column;
+}
+.main_container .about .la__marque .au__coeur {
+  display: flex;
+}
+.main_container .about .la__marque .au__coeur .la__marque_svg {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+.main_container .about .wipe__inText {
+  overflow: hidden;
+  padding-top: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.main_container .about .wipe__inText #dot {
+  width: 48px;
+  height: 48px;
+  transform: scale(0.5);
+}
+.main_container .about .wipe__inText #orangeArrow {
+  z-index: 3;
+}
+.main_container .about .wipe__inText #heart {
+  width: 48px;
+  height: 48px;
+  transform: scale(0.5);
+}
+.main_container .about .wipe__inText .textbox_one {
+  margin-bottom: 72px;
+}
+.main_container .about .wipe__inText .text_box {
+  width: fit-content;
+}
+.main_container .about .wipe__inText .text_box #orangeArrow {
+  width: 48px;
+  height: 48px;
+  transform: scale(1.5);
+  margin-right: 1rem;
+}
+.main_container .about .wipe__inText .text_box p {
+  font-size: 66px;
+  font-family: var(--encode-font);
+  text-transform: uppercase;
+  font-weight: 400;
+  margin: 0 0 12px 0;
+  letter-spacing: -2px;
+}
+.main_container .about .wipe__inText .text_box p span {
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+.g__text-line-wrapper {
+  position: relative;
+  width: max-content;
+  display: block;
+}
+
+.g-text {
+  position: relative;
+  display: block;
+}
+
+.gText_revealer {
+  background-color: red;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 130%;
+  height: 100%;
+  pointer-events: none;
+  will-change: transform;
+  z-index: 1;
 }
 
 .navbar {
@@ -131,15 +258,12 @@ body {
 }
 @keyframes fadeOutThenSlide {
   0% {
-    opacity: 1;
     transform: translateX(0);
   }
   40% {
-    opacity: 0.5;
     transform: translateX(0);
   }
   100% {
-    opacity: 0;
     transform: translateX(100%);
   }
 }
@@ -175,6 +299,14 @@ body {
   }
   100% {
     opacity: 0;
+  }
+}
+@keyframes clipPathAnimation {
+  0% {
+    clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 20% 100%);
+  }
+  100% {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   }
 }
 .carousel {
@@ -224,7 +356,7 @@ body {
   transform: translateX(0);
   opacity: 1;
   z-index: 1;
-  animation: fadeOutThenSlide 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeOutThenSlide 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 .carousel__slide--prev img,
 .carousel__slide--prev video {
@@ -385,13 +517,5 @@ svg .spin_text {
   font-family: var(--rogan-font);
   font-weight: 800;
   font-size: 1.3rem;
-}
-@keyframes rotate {
-  from {
-    transform: rotateZ(0deg);
-  }
-  to {
-    transform: rotateZ(360deg);
-  }
 }
 /*# sourceMappingURL=index.css.map */
