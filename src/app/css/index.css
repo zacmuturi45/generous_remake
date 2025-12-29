@@ -38,6 +38,29 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+.custom-cursor {
+  position: fixed;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 999;
+  transition: scale 0.3s ease;
+  color: white;
+}
+.custom-cursor :nth-child(1) {
+  width: 60px;
+  height: 60px;
+}
+
+.custom-cursor .visible {
+  opacity: 1;
+}
+
 .main_container {
   width: 100%;
   min-height: 100vh;
@@ -130,6 +153,43 @@ body::-webkit-scrollbar {
 .main_container .about .wipe__inText .textbox_one {
   margin-bottom: 72px;
 }
+.main_container .about .wipe__inText .textbox_two .wipe__button {
+  margin-top: 60px;
+}
+.main_container .about .wipe__inText .textbox_two .wipe__button .button {
+  box-sizing: border-box;
+  width: 224px;
+  height: 48px;
+  border: 1px solid #464646;
+  padding: 0;
+  border-radius: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+.main_container .about .wipe__inText .textbox_two .wipe__button .button span {
+  display: inline-block;
+  font-family: var(--encode-font);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: #464646;
+  text-transform: uppercase;
+  margin: 0;
+}
+.main_container .about .wipe__inText .textbox_two .wipe__button .button :nth-child(1) {
+  position: absolute;
+  top: 50%;
+  left: -36px;
+  transform: translateY(-50%) rotate(90deg);
+}
+.main_container .about .wipe__inText .textbox_two .wipe__button .button :nth-child(3) {
+  transform: rotate(45deg);
+  margin-left: -5px;
+}
 .main_container .about .wipe__inText .text_box {
   width: fit-content;
 }
@@ -150,6 +210,74 @@ body::-webkit-scrollbar {
 .main_container .about .wipe__inText .text_box p span {
   display: inline-block;
   margin-left: 0.5rem;
+}
+.main_container .marquee {
+  margin-top: 240px;
+  width: 100%;
+  overflow: hidden;
+}
+.main_container .marquee .marquee__text {
+  display: flex;
+}
+.main_container .marquee .marquee__text p {
+  font-size: 448px;
+  margin: 0;
+  line-height: 1;
+  font-family: var(--main-font);
+  font-weight: 400;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.main_container .marquee .marquee__text p span {
+  margin: 0 6.5rem;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: black;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.main_container .mitwit {
+  margin-top: 160px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px;
+  cursor: none;
+}
+.main_container .mitwit .box3_box1 {
+  display: flex;
+  justify-content: space-around;
+}
+.main_container .mitwit .box3_box1 .text_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.main_container .mitwit .box3_box1 .text_box h4 {
+  font-size: 3rem;
+  font-weight: 500;
+  font-family: var(--main-font);
+  color: rgb(0, 0, 0);
+  margin-bottom: 2rem;
+}
+.main_container .mitwit .box3_box1 .text_box p {
+  color: rgb(103, 103, 103);
+  font-weight: 400;
+  font-family: var(--encode-font);
+  font-size: 1.3rem;
+  line-height: 160%;
+  max-width: 480px;
+}
+.main_container .mitwit .box3_box1 .img_box {
+  overflow: hidden;
+  width: 60%;
+  height: 90vh;
+}
+.main_container .mitwit .box3_box1 .img_box .editorial1 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .g__text-line-wrapper {

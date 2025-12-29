@@ -2,15 +2,16 @@
 
 import gsap from "gsap";
 import "./css/index.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
-import { vogue, vogue2, vogue3, vogue4 } from "../../public/assets";
+import { arrow, editorial1, vogue, vogue2, vogue3, vogue4, whitearrow } from "../../public/assets";
 import { CarouselItem } from "./Components/Types/gsap";
 import { Carousel } from "./Components/carousel";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import GTextWrapper from "./Components/GTextWrapper/gtextwrapper";
 import { GSDevTools } from "gsap/GSDevTools";
+import Button from "./Components/button";
 
 gsap.registerPlugin(ScrollTrigger, GSDevTools);
 
@@ -22,13 +23,116 @@ export default function Home() {
   const bottomShaft = useRef<SVGPathElement>(null);
   const heartRef = useRef<SVGSVGElement>(null);
   const dotRef = useRef<SVGSVGElement>(null);
+  const firstText = useRef<HTMLParagraphElement>(null);
+  const secondText = useRef<HTMLParagraphElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const thirdText = useRef<HTMLParagraphElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const cursor = cursorRef.current;
+    const targetDiv = targetRef.current;
+    if (!cursor || !targetDiv) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      cursor.style.left = `${e.clientX}px`;
+      cursor.style.top = `${e.clientY}px`;
+    };
+
+    const handleMouseEnter = () => {
+      setIsVisible(true);
+    };
+
+    const handleMouseLeave = () => {
+      setIsVisible(false);
+    };
+
+    targetDiv.addEventListener("mouseenter", handleMouseEnter);
+    targetDiv.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("mousemove", handleMouseMove);
+
+    // Cleanup
+    return () => {
+      targetDiv.removeEventListener("mouseenter", handleMouseEnter);
+      targetDiv.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
 
   const lenisRef = useRef<any>(null);
+  let xPercent = 0;
+  let direction = 1;
+
+  useGSAP(() => {
+    gsap.set([firstText.current, secondText.current, thirdText.current], {
+      yPercent: 100,
+    });
+
+    gsap.to([firstText.current, secondText.current, thirdText.current], {
+      yPercent: 0,
+      ease: "power3.inOut",
+      duration: 1.3,
+      stagger: 0.1,
+      scrollTrigger: {
+        trigger: ".marquee",
+        start: "top 90%",
+        once: true,
+      },
+    });
+  });
+
+  useGSAP(() => {
+    // Create a ScrollTrigger that controls the marquee direction
+    ScrollTrigger.create({
+      trigger: document.documentElement,
+      start: 0,
+      end: "max",
+      onUpdate: (self) => {
+        // Set direction based on scroll direction
+        direction = self.direction;
+      },
+    });
+  }, []);
+
+  useEffect(() => {
+    requestAnimationFrame(animation);
+  }, []);
+
+  const animation = () => {
+    if (xPercent <= -100) {
+      xPercent = 0;
+    } else if (xPercent > 0) {
+      xPercent = -100;
+    }
+    gsap.set(firstText.current, { xPercent: xPercent });
+    gsap.set(secondText.current, { xPercent: xPercent });
+    gsap.set(thirdText.current, { xPercent: xPercent });
+    xPercent += 0.15 * direction;
+    requestAnimationFrame(animation);
+  };
 
   useGSAP(() => {
     const tl = gsap.timeline({ paused: true, delay: 1.5 });
     const mainLength = mainShaft.current?.getTotalLength();
     const topLength = topShaft.current?.getTotalLength();
+    const textboxes = gsap.utils.toArray(".fades");
+    textboxes.forEach((box) => {
+      const textbox = box as HTMLElement;
+      gsap.to(textbox, {
+        opacity: 0.05,
+        transformOrigin: "top center",
+        ease: "none",
+        duration: 2,
+        scrollTrigger: {
+          trigger: textbox,
+          start: "top 35%",
+          end: "top 25%",
+          scrub: true,
+        },
+      });
+    });
 
     tl.fromTo(
       mainShaft.current,
@@ -183,28 +287,66 @@ export default function Home() {
     { scope: container }
   );
 
-  useGSAP(
-    () => {
-      const splitUp = gsap.utils.toArray(".split_up");
-      if (!splitUp) return;
+  useGSAP(() => {
+    const splitUp = gsap.utils.toArray(".split_up");
+    if (!splitUp) return;
 
-      gsap.to([splitUp], {
-        y: 0,
-        ease: "circ.inOut",
-        duration: 1.3,
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: ".la__marque",
-          start: "top 90%",
-          once: true,
-        },
-      });
-    },
-    { scope: laMarque }
-  );
+    gsap.to([splitUp], {
+      y: 0,
+      ease: "circ.inOut",
+      duration: 1.3,
+      stagger: 0.1,
+      scrollTrigger: {
+        trigger: ".la__marque",
+        start: "top 90%",
+        once: true,
+      },
+    });
+
+    // BOX PARALLAX EFFECT
+    // gsap.to(".text_box", {
+    //   y: -10,
+    //   ease: "none",
+    //   scrollTrigger: {
+    //     trigger: ".mitwit",
+    //     start: "top bottom",
+    //     end: "bottom top",
+    //     scrub: 1.5,
+    //   },
+    // });
+
+    gsap.to(".img_box", {
+      y: 150,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".mitwit",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+      },
+    });
+
+    gsap.to(".editorial1", {
+      scale: 1.1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".mitwit",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 2,
+      },
+    });
+  });
 
   return (
     <div className="main_container" ref={container}>
+      <div
+        ref={cursorRef}
+        className={`custom-cursor ${isVisible ? "visible" : ""}`}
+        style={isVisible ? { scale: 1 } : { scale: 0 }}
+      >
+        <Image src={whitearrow} width={36} height={36} alt="svg_arrow" />
+      </div>
       <section className="hero_section">
         <div className="overlay" />
         <div className="hero_carousel_container">
@@ -250,12 +392,12 @@ export default function Home() {
 
         <div className="wipe__inText">
           <div className="textbox_one text_box">
-            <p>La marque au cœur de la</p>
+            <p className="fades">La marque au cœur de la</p>
 
-            <p>stratégie, de l&apos;identité,</p>
+            <p className="fades">stratégie, de l&apos;identité,</p>
 
             <GTextWrapper svgRef={dotRef}>
-              <p>
+              <p className="fades">
                 du design
                 <span style={{ display: "inline-block", verticalAlign: "middle" }}>
                   <svg ref={dotRef} id="dot" viewBox="0 0 16 16" fill="none">
@@ -271,19 +413,19 @@ export default function Home() {
             </GTextWrapper>
 
             <GTextWrapper>
-              <p>Generous c&apos;est la</p>
+              <p className="fades">Generous c&apos;est la</p>
             </GTextWrapper>
 
             <GTextWrapper>
-              <p>conjugaison de tous les</p>
+              <p className="fades">conjugaison de tous les</p>
             </GTextWrapper>
 
             <GTextWrapper>
-              <p>marqueurs qui fait</p>
+              <p className="fades">marqueurs qui fait</p>
             </GTextWrapper>
 
             <GTextWrapper svgRef={heartRef}>
-              <p>
+              <p className="fades">
                 battre le coeur{" "}
                 <span style={{ display: "inline-block", verticalAlign: "middle" }}>
                   <svg ref={heartRef} id="heart" viewBox="0 0 16 16" fill="none">
@@ -356,9 +498,49 @@ export default function Home() {
             <GTextWrapper>
               <p>d&apos;émotion</p>
             </GTextWrapper>
+            <div className="wipe__button">
+              <Button />
+            </div>
           </div>
         </div>
       </section>
+      <div className="marquee">
+        <div ref={textRef} className="marquee__text">
+          <p ref={firstText}>
+            WORK <span></span>
+          </p>
+          <p ref={secondText}>
+            WORK <span></span>
+          </p>
+          <p ref={thirdText}>
+            WORK <span></span>
+          </p>
+        </div>
+      </div>
+      <section className="mitwit" ref={targetRef}>
+        <div className="box3_box1">
+          <div className="text_box">
+            <h4>Tardy Decor</h4>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti, ullam
+              deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere distinctio
+              nisi expedita veritatis? Veritatis quia quam iste ipsa non!
+            </p>
+          </div>
+          <div className="img_box">
+            <Image
+              src={editorial1}
+              width={80}
+              height={80}
+              alt="image"
+              unoptimized
+              className="editorial1"
+            />
+          </div>
+        </div>
+        <div></div>
+      </section>
+      <section></section>
     </div>
   );
 }

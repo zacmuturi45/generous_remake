@@ -71,7 +71,7 @@ export default function GTextWrapper({
         });
       });
 
-      gsap.set(blocks.current, { x: "-18%", transformOrigin: "right center" });
+      gsap.set(blocks.current, { x: "-15%", transformOrigin: "right center" });
 
       const masterTimeline = gsap.timeline({ paused: true });
 
@@ -82,9 +82,9 @@ export default function GTextWrapper({
           .to(
             block,
             {
-              scaleX: 0.7,
-              duration: 0.9,
-              ease: "power2.in",
+              scaleX: 0,
+              duration: 1.85,
+              ease: "circ.inOut",
               onUpdate: function () {
                 if (svgRef?.current) {
                   const lineRect = line.getBoundingClientRect();
@@ -112,19 +112,19 @@ export default function GTextWrapper({
             },
             0.05 + index * stagger
           )
-          .to(
-            block,
-            {
-              scaleX: 0,
-              duration: 1.2,
-              ease: "power2.out",
-            },
-            ">"
-          )
+          // .to(
+          //   block,
+          //   {
+          //     scaleX: 0,
+          //     duration: 1.2,
+          //     ease: "power2.out",
+          //   },
+          //   ">"
+          // )
           .from(
             line,
             {
-              x: "-18%",
+              x: "-15%",
               ease: "circ.inOut",
               duration: 0.6,
             },
