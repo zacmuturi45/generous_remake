@@ -1,4 +1,5 @@
 import { StaticImageData } from "next/image";
+import { ReactNode, RefObject } from "react";
 
 interface CommandMap {
   play: () => void;
@@ -21,4 +22,33 @@ interface CarouselProps {
   autoplayDuration?: number;
   transitionDuration?: number;
   lenis: any;
+}
+
+interface UseHoverAnimationOptions {
+  cursorSize?: number;
+  imageCycleInterval?: number;
+  imageCount?: number;
+  textSelector?: string;
+  imageSelector?: string;
+  textAnimationConfig?: gsap.TweenVars;
+  imageAnimationConfig?: gsap.TweenVars;
+  arrowAnimationConfig?: {
+    out: gsap.TweenVars;
+    in: gsap.TweenVars;
+  };
+  containerRef?: RefObject<HTMLDivElement | null>;
+  cursorRef?: RefObject<HTMLDivElement | null>;
+  setIsVisible?: Dispatch<SetStateAction<boolean>>;
+}
+
+interface HoverAnimationProps {
+  children: (currentZ: number) => ReactNode;
+  imageCount: number;
+  textSelector?: string;
+  imageSelector?: string;
+  imageCycleInterval?: number;
+  onVisibilityChange?: (visible: boolean) => void;
+  textAnimationConfig?: gsap.TweenVars;
+  imageAnimationConfig?: gsap.TweenVars;
+  className?: string;
 }

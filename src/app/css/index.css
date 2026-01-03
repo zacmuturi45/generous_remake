@@ -51,10 +51,18 @@ body::-webkit-scrollbar {
   z-index: 999;
   transition: scale 0.3s ease;
   color: white;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: left 0.1s ease-out, top 0.1s ease-out;
 }
-.custom-cursor :nth-child(1) {
+.custom-cursor .c1,
+.custom-cursor .c2 {
   width: 60px;
   height: 60px;
+  position: absolute;
+}
+.custom-cursor .c1 {
+  transform: translateX(-125%);
 }
 
 .custom-cursor .visible {
@@ -239,15 +247,17 @@ body::-webkit-scrollbar {
   flex-shrink: 0;
 }
 .main_container .mitwit {
+  width: 100%;
   margin-top: 160px;
   display: flex;
   flex-direction: column;
-  padding: 0 24px;
+  padding: 0 48px;
   cursor: none;
+  box-sizing: border-box;
 }
 .main_container .mitwit .box3_box1 {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .main_container .mitwit .box3_box1 .text_box {
   display: flex;
@@ -259,10 +269,10 @@ body::-webkit-scrollbar {
   font-weight: 500;
   font-family: var(--main-font);
   color: rgb(0, 0, 0);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 .main_container .mitwit .box3_box1 .text_box p {
-  color: rgb(103, 103, 103);
+  color: rgb(134, 134, 134);
   font-weight: 400;
   font-family: var(--encode-font);
   font-size: 1.3rem;
@@ -271,13 +281,112 @@ body::-webkit-scrollbar {
 }
 .main_container .mitwit .box3_box1 .img_box {
   overflow: hidden;
-  width: 60%;
-  height: 90vh;
+  width: 65%;
+  height: 95vh;
+  position: relative;
 }
-.main_container .mitwit .box3_box1 .img_box .editorial1 {
+.main_container .mitwit .box3_box1 .img_box .editorial {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  position: absolute;
+}
+.main_container .zao__section {
+  margin-top: 60px;
+  padding: 0 48px;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: space-between;
+  cursor: none;
+}
+.main_container .zao__section .zaoTwo {
+  width: 750px;
+}
+.main_container .zao__section .zaoTwo .zao .img_box {
+  height: 60vh;
+}
+.main_container .zao__section .zaoOne {
+  width: 900px;
+}
+.main_container .zao__section .zaoOne .img_box {
+  height: 70vh;
+}
+.main_container .zao__section .zaoMain {
+  display: flex;
+  flex-direction: column;
+}
+.main_container .zao__section .zaoMain .img_box {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+.main_container .zao__section .zaoMain .img_box .zaoImage,
+.main_container .zao__section .zaoMain .img_box .newtonImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+}
+.main_container .zao__section .zaoMain .zao_textboxOne h4 {
+  font-size: 2rem;
+  font-weight: 400;
+  font-family: var(--secondary-font);
+  color: rgb(0, 0, 0);
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+.main_container .zao__section .zaoMain .zao_textboxOne p {
+  color: rgb(112, 112, 112);
+  font-weight: 400;
+  font-family: var(--encode-font);
+  font-size: 1.2rem;
+  line-height: 160%;
+  max-width: 480px;
+}
+.main_container .three_images {
+  margin-top: 60px;
+  height: fit-content;
+  box-sizing: border-box;
+}
+.main_container .three_images .three_images_container {
+  display: flex;
+  padding: 0 48px;
+  gap: 2rem;
+  justify-content: space-between;
+}
+.main_container .three_images .three_images_container .three {
+  display: flex;
+  flex-direction: column;
+}
+.main_container .three_images .three_images_container .three .threeImgBox {
+  overflow: hidden;
+  position: relative;
+  width: 580px;
+  height: 440px;
+  cursor: none;
+}
+.main_container .three_images .three_images_container .three .threeImgBox .threeImg {
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  object-fit: cover;
+}
+.main_container .three_images .three_images_container .three .threeTextBox h4 {
+  margin-top: 1rem;
+  font-size: 2rem;
+  font-weight: 400;
+  font-family: var(--secondary-font);
+  color: rgb(0, 0, 0);
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+.main_container .three_images .three_images_container .three .threeTextBox p {
+  color: rgb(112, 112, 112);
+  font-weight: 400;
+  font-family: var(--encode-font);
+  font-size: 1.2rem;
+  line-height: 160%;
+  max-width: 480px;
 }
 
 .g__text-line-wrapper {

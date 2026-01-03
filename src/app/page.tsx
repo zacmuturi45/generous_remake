@@ -4,16 +4,51 @@ import gsap from "gsap";
 import "./css/index.css";
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
-import Image from "next/image";
-import { arrow, editorial1, vogue, vogue2, vogue3, vogue4, whitearrow } from "../../public/assets";
+import Image, { StaticImageData } from "next/image";
+import {
+  editorial1,
+  editorial2,
+  editorial3,
+  editorial4,
+  graph1,
+  graph2,
+  graph3,
+  newton1,
+  newton3,
+  newtwon2,
+  nyc1,
+  nyc2,
+  nyc3,
+  vogue,
+  vogue2,
+  vogue3,
+  vogue4,
+  whitearrow,
+  wood1,
+  wood3,
+  zao1,
+  zao2,
+  zao3,
+} from "../../public/assets";
 import { CarouselItem } from "./Components/Types/gsap";
 import { Carousel } from "./Components/carousel";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import GTextWrapper from "./Components/GTextWrapper/gtextwrapper";
 import { GSDevTools } from "gsap/GSDevTools";
 import Button from "./Components/button";
+import { HoverAnimation } from "./Components/hoverAnimation";
+import { useRouter } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger, GSDevTools);
+
+const imgArray = [editorial1, editorial2, editorial3, editorial4];
+const imgArray2 = [newton1, newtwon2, newton3];
+const imgArray3 = [zao1, zao2, zao3];
+const threeImages = [
+  { img1: nyc1, img2: nyc2, img3: nyc3, title: "Comet Meetings" },
+  { img1: wood1, img2: nyc2, img3: wood3, title: "CEB" },
+  { img1: graph1, img2: graph2, img3: graph3, title: "Centrakor" },
+];
 
 export default function Home() {
   const container = useRef<HTMLDivElement>(null);
@@ -28,42 +63,31 @@ export default function Home() {
   const textRef = useRef<HTMLDivElement>(null);
   const thirdText = useRef<HTMLParagraphElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-  const targetRef = useRef<HTMLDivElement>(null);
+  const [cursorVisible, setCursorVisible] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     const cursor = cursorRef.current;
-    const targetDiv = targetRef.current;
-    if (!cursor || !targetDiv) return;
+    if (!cursor) return;
 
+    const size = 96;
     const handleMouseMove = (e: MouseEvent) => {
-      cursor.style.left = `${e.clientX}px`;
-      cursor.style.top = `${e.clientY}px`;
+      cursor.style.left = `${e.clientX - size / 2}px`;
+      cursor.style.top = `${e.clientY - size / 2}px`;
     };
 
-    const handleMouseEnter = () => {
-      setIsVisible(true);
-    };
-
-    const handleMouseLeave = () => {
-      setIsVisible(false);
-    };
-
-    targetDiv.addEventListener("mouseenter", handleMouseEnter);
-    targetDiv.addEventListener("mouseleave", handleMouseLeave);
     window.addEventListener("mousemove", handleMouseMove);
 
-    // Cleanup
     return () => {
-      targetDiv.removeEventListener("mouseenter", handleMouseEnter);
-      targetDiv.removeEventListener("mouseleave", handleMouseLeave);
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
   const lenisRef = useRef<any>(null);
+
+  // Text Animation
   let xPercent = 0;
-  let direction = 1;
+  let direction = -1;
 
   useGSAP(() => {
     gsap.set([firstText.current, secondText.current, thirdText.current], {
@@ -97,22 +121,32 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    requestAnimationFrame(animation);
+    let animationFrameId: number;
+
+    const animate = () => {
+      if (xPercent <= -100) {
+        xPercent = 0;
+      } else if (xPercent > 0) {
+        xPercent = -100;
+      }
+      gsap.set(firstText.current, { xPercent: xPercent });
+      gsap.set(secondText.current, { xPercent: xPercent });
+      gsap.set(thirdText.current, { xPercent: xPercent });
+      xPercent += 0.15 * direction;
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    // Add cleanup
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, []);
 
-  const animation = () => {
-    if (xPercent <= -100) {
-      xPercent = 0;
-    } else if (xPercent > 0) {
-      xPercent = -100;
-    }
-    gsap.set(firstText.current, { xPercent: xPercent });
-    gsap.set(secondText.current, { xPercent: xPercent });
-    gsap.set(thirdText.current, { xPercent: xPercent });
-    xPercent += 0.15 * direction;
-    requestAnimationFrame(animation);
-  };
-
+  // Arrow SVG Animation
   useGSAP(() => {
     const tl = gsap.timeline({ paused: true, delay: 1.5 });
     const mainLength = mainShaft.current?.getTotalLength();
@@ -174,6 +208,7 @@ export default function Home() {
     // GSDevTools.create({ animation: tl });
   });
 
+  // LENIS
   useEffect(() => {
     const initLenis = async () => {
       const Lenis = (await import("lenis")).default;
@@ -209,6 +244,8 @@ export default function Home() {
       }
     };
   }, []);
+
+  // CAROUSEL ARRAY ITEMS
   const carouselItems: CarouselItem[] = [
     {
       type: "image",
@@ -260,6 +297,7 @@ export default function Home() {
     },
   ];
 
+  // HERO PARALLAX & DARK OVERLAY
   useGSAP(
     () => {
       gsap.to(".hero_carousel_container", {
@@ -287,8 +325,11 @@ export default function Home() {
     { scope: container }
   );
 
+  // LA MARQUE SPLIT UP & BOX PARALLAX
   useGSAP(() => {
     const splitUp = gsap.utils.toArray(".split_up");
+    const px = gsap.utils.toArray(".px");
+
     if (!splitUp) return;
 
     gsap.to([splitUp], {
@@ -304,37 +345,18 @@ export default function Home() {
     });
 
     // BOX PARALLAX EFFECT
-    // gsap.to(".text_box", {
-    //   y: -10,
-    //   ease: "none",
-    //   scrollTrigger: {
-    //     trigger: ".mitwit",
-    //     start: "top bottom",
-    //     end: "bottom top",
-    //     scrub: 1.5,
-    //   },
-    // });
-
-    gsap.to(".img_box", {
-      y: 150,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".mitwit",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
-      },
-    });
-
-    gsap.to(".editorial1", {
-      scale: 1.1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".mitwit",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 2,
-      },
+    px.forEach((img) => {
+      const image = img as HTMLImageElement;
+      gsap.to(image, {
+        y: 50,
+        ease: "none",
+        scrollTrigger: {
+          trigger: image,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
     });
   });
 
@@ -342,10 +364,13 @@ export default function Home() {
     <div className="main_container" ref={container}>
       <div
         ref={cursorRef}
-        className={`custom-cursor ${isVisible ? "visible" : ""}`}
-        style={isVisible ? { scale: 1 } : { scale: 0 }}
+        className={`custom-cursor`}
+        style={{
+          scale: cursorVisible ? 1 : 0,
+        }}
       >
-        <Image src={whitearrow} width={36} height={36} alt="svg_arrow" />
+        <Image src={whitearrow} width={36} height={36} alt="svg_arrow" className="c1" />
+        <Image src={whitearrow} width={36} height={36} alt="svg_arrow" className="c2" />
       </div>
       <section className="hero_section">
         <div className="overlay" />
@@ -517,30 +542,171 @@ export default function Home() {
           </p>
         </div>
       </div>
-      <section className="mitwit" ref={targetRef}>
-        <div className="box3_box1">
-          <div className="text_box">
-            <h4>Tardy Decor</h4>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti, ullam
-              deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere distinctio
-              nisi expedita veritatis? Veritatis quia quam iste ipsa non!
-            </p>
-          </div>
-          <div className="img_box">
-            <Image
-              src={editorial1}
-              width={80}
-              height={80}
-              alt="image"
-              unoptimized
-              className="editorial1"
-            />
-          </div>
-        </div>
-        <div></div>
+      <HoverAnimation
+        imageCount={imgArray.length}
+        imageSelector=".editorial"
+        onVisibilityChange={setCursorVisible}
+        className="mitwit"
+      >
+        {(currentZ) => (
+          <>
+            <div className="box3_box1">
+              <div className="text_box">
+                <h4>Tardy Decor</h4>
+                <p className="tardy">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
+                  ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
+                  distinctio nisi expedita veritatis? Veritatis quia quam iste ipsa non!
+                </p>
+              </div>
+              <div className="img_box">
+                {imgArray.map((img, i) => (
+                  <Image
+                    key={`editorial${i}`}
+                    src={img}
+                    width={80}
+                    height={80}
+                    className="px editorial"
+                    alt={`editorial${i + 1}`}
+                    unoptimized
+                    style={currentZ === i ? { zIndex: 2 } : { zIndex: 1 }}
+                  />
+                ))}
+              </div>
+            </div>
+            <div></div>
+          </>
+        )}
+      </HoverAnimation>
+
+      <section className="zao__section">
+        <HoverAnimation
+          imageCount={imgArray2.length}
+          imageSelector=".newtonImage"
+          onVisibilityChange={setCursorVisible}
+          className="zaoMain zaoOne"
+        >
+          {(currentZ) => (
+            <>
+              <div className="img_box">
+                {imgArray2.map((img, i) => (
+                  <Image
+                    key={`newton${i}`}
+                    src={img}
+                    width={80}
+                    height={80}
+                    className="px newtonImage"
+                    alt={`newton${i + 1}`}
+                    unoptimized
+                    style={currentZ === i ? { zIndex: 2 } : { zIndex: 1 }}
+                  />
+                ))}
+              </div>
+              <div className="zao_textboxOne">
+                <h4>Newton Offices</h4>
+                <p className="zao_p">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
+                  ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
+                  distinctio nisi expedita veritatis? Veritatis quia quam iste ipsa non!
+                </p>
+              </div>
+            </>
+          )}
+        </HoverAnimation>
+
+        <HoverAnimation
+          imageCount={imgArray3.length}
+          imageSelector=".zaoImage"
+          onVisibilityChange={setCursorVisible}
+          className="zaoMain zaoTwo"
+        >
+          {(currentZ) => (
+            <>
+              <div className="zao">
+                <div className="img_box">
+                  {imgArray3.map((img, i) => (
+                    <Image
+                      key={`zao${i}`}
+                      src={img}
+                      width={80}
+                      height={80}
+                      className="px zaoImage"
+                      alt={`zao${i + 1}`}
+                      unoptimized
+                      style={currentZ === i ? { zIndex: 2 } : { zIndex: 1 }}
+                    />
+                  ))}
+                </div>
+                <div className="zao_textboxOne">
+                  <h4>Newton Offices</h4>
+                  <p className="zao_pTwo">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
+                    ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
+                    distinctio nisi expedita veritatis? Veritatis quia quam iste ipsa non!
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+        </HoverAnimation>
       </section>
-      <section></section>
+      <section className="three_images">
+        <div className="three_images_container">
+          {threeImages.map((imgObj, i) => (
+            <HoverAnimation
+              imageCount={3}
+              imageSelector={`.threeImg${imgObj.title.slice(0, 2)}`}
+              key={i}
+              onVisibilityChange={setCursorVisible}
+              className="three"
+            >
+              {(currentZ) => (
+                <>
+                  <div className="threeImgBox" onClick={() => router.push("./trial")}>
+                    <Image
+                      src={imgObj.img1}
+                      width={80}
+                      height={80}
+                      alt="image"
+                      className={`px threeImg threeImg${imgObj.title.slice(0, 2)}`}
+                      unoptimized
+                      style={currentZ === 0 ? { zIndex: 2 } : { zIndex: 1 }}
+                    />
+                    <Image
+                      src={imgObj.img2}
+                      width={80}
+                      height={80}
+                      alt="image"
+                      className={`px threeImg threeImg${imgObj.title.slice(0, 2)}`}
+                      unoptimized
+                      style={currentZ === 1 ? { zIndex: 2 } : { zIndex: 1 }}
+                    />
+                    <Image
+                      src={imgObj.img3}
+                      width={80}
+                      height={80}
+                      alt="image"
+                      className={`px threeImg threeImg${imgObj.title.slice(0, 2)}`}
+                      unoptimized
+                      style={currentZ === 2 ? { zIndex: 2 } : { zIndex: 1 }}
+                    />
+                  </div>
+
+                  <div className="threeTextBox">
+                    <h4>{imgObj.title}</h4>
+                    <p className="three">
+                      {" "}
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
+                      ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
+                      distinctio nisi expedita veritatis? Veritatis quia quam iste ipsa non!
+                    </p>
+                  </div>
+                </>
+              )}
+            </HoverAnimation>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
