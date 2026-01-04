@@ -13,12 +13,18 @@ import {
   graph1,
   graph2,
   graph3,
+  marble1,
+  marble2,
+  marble3,
   newton1,
   newton3,
   newtwon2,
   nyc1,
   nyc2,
   nyc3,
+  vine1,
+  vine2,
+  vine3,
   vogue,
   vogue2,
   vogue3,
@@ -44,6 +50,8 @@ gsap.registerPlugin(ScrollTrigger, GSDevTools);
 const imgArray = [editorial1, editorial2, editorial3, editorial4];
 const imgArray2 = [newton1, newtwon2, newton3];
 const imgArray3 = [zao1, zao2, zao3];
+const imgArray4 = [vine1, vine2, vine3];
+const imgArray5 = [marble1, marble2, marble3];
 const threeImages = [
   { img1: nyc1, img2: nyc2, img3: nyc3, title: "Comet Meetings" },
   { img1: wood1, img2: nyc2, img3: wood3, title: "CEB" },
@@ -650,7 +658,7 @@ export default function Home() {
           )}
         </HoverAnimation>
       </section>
-      <section className="three_images">
+      <div className="three_images">
         <div className="three_images_container">
           {threeImages.map((imgObj, i) => (
             <HoverAnimation
@@ -706,6 +714,112 @@ export default function Home() {
             </HoverAnimation>
           ))}
         </div>
+      </div>
+      <section className="zao__section">
+        <HoverAnimation
+          imageCount={imgArray4.length}
+          imageSelector=".zaoImage"
+          onVisibilityChange={setCursorVisible}
+          className="zaoMain zaoTwo"
+        >
+          {(currentZ) => (
+            <>
+              <div className="zao">
+                <div className="img_box">
+                  {imgArray4.map((img, i) => (
+                    <Image
+                      key={`zao${i}`}
+                      src={img}
+                      width={80}
+                      height={80}
+                      className="px zaoImage"
+                      alt={`zao${i + 1}`}
+                      unoptimized
+                      style={currentZ === i ? { zIndex: 2 } : { zIndex: 1 }}
+                    />
+                  ))}
+                </div>
+                <div className="zao_textboxOne">
+                  <h4>Ad Vini</h4>
+                  <p className="zao_pTwo">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
+                    ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
+                    distinctio nisi expedita veritatis? Veritatis quia quam iste ipsa non!
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+        </HoverAnimation>
+
+        <HoverAnimation
+          imageCount={imgArray5.length}
+          imageSelector=".newtonImage"
+          onVisibilityChange={setCursorVisible}
+          className="zaoMain zaoOne"
+        >
+          {(currentZ) => (
+            <>
+              <div className="img_box">
+                {imgArray5.map((img, i) => (
+                  <Image
+                    key={`newton${i}`}
+                    src={img}
+                    width={80}
+                    height={80}
+                    className="px newtonImage"
+                    alt={`newton${i + 1}`}
+                    unoptimized
+                    style={currentZ === i ? { zIndex: 2 } : { zIndex: 1 }}
+                  />
+                ))}
+              </div>
+              <div className="zao_textboxOne">
+                <h4>Club Francais du Vin</h4>
+                <p className="zao_p">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
+                  ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
+                  distinctio nisi expedita veritatis? Veritatis quia quam iste ipsa non!
+                </p>
+              </div>
+            </>
+          )}
+        </HoverAnimation>
+      </section>
+
+      <section className="lastLast">
+        <HoverAnimation
+          imageCount={3}
+          imageSelector=".lastImage"
+          onVisibilityChange={setCursorVisible}
+          className="lastSection"
+        >
+          {(currentZ) => (
+            <>
+              <div className="lastImgBox">
+                {imgArray.map((img, i) => (
+                  <Image
+                    src={img}
+                    width={80}
+                    height={80}
+                    alt={`img_${i}`}
+                    unoptimized
+                    key={i}
+                    className="px lastImage"
+                    style={currentZ === i ? { zIndex: 2 } : { zIndex: 1 }}
+                  />
+                ))}
+              </div>
+              <div className="lastTextBox">
+                <h4>Ad Nauseam</h4>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, asperiores rerum.
+                  Facilis sint, velit suscipit laboriosam similique consectetur tempore commodi.
+                </p>
+              </div>
+            </>
+          )}
+        </HoverAnimation>
       </section>
     </div>
   );

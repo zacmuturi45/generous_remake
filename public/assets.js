@@ -11,6 +11,7 @@ export { default as editorial2 } from "./editorial6.jpg";
 export { default as editorial3 } from "./editorial7.jpg";
 export { default as editorial4 } from "./editorial8.png";
 export { default as whitearrow } from "./whitearrow.svg";
+export { default as plus } from "./plusgray.svg";
 
 export { default as newton1 } from "./newton1.jpg";
 export { default as newtwon2 } from "./newton2.jpg";
@@ -28,3 +29,10 @@ export { default as wood3 } from "./wood3.jpeg";
 export { default as graph1 } from "./graph1.webp";
 export { default as graph2 } from "./graph2.jpg";
 export { default as graph3 } from "./graph3.webp";
+
+export { default as vine1 } from "./vine1.jpg";
+export { default as vine2 } from "./vine2.jpg";
+export { default as vine3 } from "./vine3.jpg";
+export { default as marble1 } from "./marble.jpeg";
+export { default as marble2 } from "./marble2.jpg";
+export { default as marble3 } from "./marble3.webp";

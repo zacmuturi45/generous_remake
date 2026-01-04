@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useRef } from "react";
 import Navbar from "./Components/navbar";
+import Footer from "./Components/footer";
 
 const AnimationContext = createContext<AnimationContextType>({
   isReady: false,
@@ -24,6 +25,7 @@ export default function RootLayout({
         <main ref={contentRef} className="main_content">
           {/* <Navbar /> */}
           {children}
+          <Footer />
         </main>
       </body>
     </html>

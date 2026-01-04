@@ -18,7 +18,7 @@ export function HoverAnimation({
   },
   imageAnimationConfig = {
     scale: 1.05,
-    duration: 1,
+    duration: 1.2,
     ease: "power3.inOut",
   },
   className = "",

@@ -389,13 +389,13 @@ body::-webkit-scrollbar {
           overflow: hidden;
           position: relative;
           width: 580px;
-          // border: 2px solid red;
           height: 440px;
           cursor: none;
           .threeImg {
             width: 100%;
             position: absolute;
-            height: 100%;
+            height: 110%;
+            margin-top: -50px;
             object-fit: cover;
           }
         }
@@ -417,6 +417,47 @@ body::-webkit-scrollbar {
             line-height: 160%;
             max-width: 480px;
           }
+        }
+      }
+    }
+  }
+  .lastLast {
+    width: 100%;
+    height: fit-content;
+    padding: 48px;
+    margin-bottom: 164px;
+    box-sizing: border-box;
+    .lastSection {
+      width: fit-content;
+      .lastImgBox {
+        width: 750px;
+        height: 640px;
+        position: relative;
+        overflow: hidden;
+        .lastImage {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .lastTextBox {
+        h4 {
+          margin-top: 1rem;
+          font-size: 2rem;
+          font-weight: 400;
+          font-family: var(--secondary-font);
+          color: rgb(0, 0, 0);
+          margin-bottom: 1rem;
+          letter-spacing: 1px;
+        }
+        p {
+          color: rgb(112, 112, 112);
+          font-weight: 400;
+          font-family: var(--encode-font);
+          font-size: 1.2rem;
+          line-height: 160%;
+          max-width: 480px;
         }
       }
     }
@@ -842,7 +883,6 @@ body::-webkit-scrollbar {
 .trial_animations {
   width: 100%;
   height: 100vh;
-  border: 2px solid red;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -861,5 +901,223 @@ svg {
     font-family: var(--rogan-font);
     font-weight: 800;
     font-size: 1.3rem;
+  }
+}
+
+// ANIMATED LINK
+.animated-link {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    svg {
+      transform: translateX(4px);
+      fill: rgb(255, 128, 0);
+    }
+  }
+  svg {
+    margin-top: 0.3rem;
+  }
+  .fortyFive {
+    transform: rotate(-45deg);
+  }
+}
+
+.animated-link__icon {
+  display: block;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  fill: rgb(125, 125, 125);
+}
+
+.animated-link__text {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+// FOOTER
+.footer_main {
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  background-color: black;
+  overflow: hidden;
+  padding-bottom: 32px;
+  > * {
+    color: white;
+    font-family: var(--secondary-font);
+  }
+  .footerMarquee {
+    padding-top: 48px;
+    display: flex;
+    flex-direction: column;
+    .mq {
+      display: flex;
+      .mqItem {
+        display: flex;
+        align-items: center;
+        height: fit-content;
+        gap: 2rem;
+        padding-left: 1rem;
+        .plus {
+          width: 56px;
+          height: 56px;
+        }
+        p {
+          line-height: 1.3;
+          width: max-content;
+          margin: 0;
+          color: white;
+          font-family: var(--secondary-font);
+          font-size: 144px;
+          font-weight: 300;
+        }
+      }
+    }
+  }
+  .footerSectionTwo {
+    .footerSectionTwoContainer {
+      margin-top: 140px;
+      padding-left: 200px;
+      display: flex;
+      .sectOne {
+        display: flex;
+        flex-direction: column;
+        .sectOneMenu {
+          display: flex;
+          // border: 2px solid red;
+          gap: 240px;
+          .menu__one {
+            display: flex;
+            // border: 2px solid blue;
+            gap: 100px;
+            span {
+              font-size: 24px;
+              color: gray;
+              font-weight: 500;
+            }
+            .menu_items {
+              // border: 2px solid green;
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 1.5rem;
+            }
+          }
+          .menu__two {
+            // border: 2px solid blue;
+            display: flex;
+            gap: 2rem;
+            span {
+              font-size: 24px;
+              color: gray;
+              font-weight: 500;
+              margin-right: 48px;
+            }
+          }
+        }
+        .sectOneBonjour {
+          // border: 2px solid blue;
+          padding-top: 100px;
+          cursor: pointer;
+          div {
+            width: fit-content;
+            overflow: hidden;
+          }
+          p {
+            font-size: 140px;
+            margin: 0;
+            line-height: 1;
+            letter-spacing: 3px;
+          }
+          .line {
+            height: 3px;
+            background: linear-gradient(
+              to bottom,
+              #d6d6d6 0%,
+              #f2f2f2 25%,
+              #ffffff 50%,
+              #f2f2f2 75%,
+              #d6d6d6 100%
+            );
+            width: 0%;
+            margin-top: 0.3rem;
+          }
+        }
+        .sectOneAddress {
+          display: flex;
+          align-items: center;
+          margin-top: 32px;
+          justify-content: space-between;
+          span {
+            font-size: 24px;
+            color: gray;
+            font-weight: 500;
+          }
+          p {
+            font-size: 24px;
+            color: rgb(255, 255, 255);
+            font-weight: 500;
+            margin-right: 48px;
+            margin: 0;
+            line-height: 1;
+          }
+        }
+        .sectOneCredits {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 100px 0 12px 0;
+          p {
+            margin: 0;
+            font-size: 24px;
+            color: rgb(255, 255, 255);
+            font-weight: 500;
+          }
+          .credits {
+            position: relative;
+            .flipContainer {
+              position: absolute;
+              top: -135%;
+              left: 0.5rem;
+              span {
+                width: max-content;
+                font-size: 22px;
+                color: gray;
+                font-weight: 500;
+                margin-right: 1rem;
+              }
+              .flipCredits {
+                width: max-content;
+                margin: 0;
+                line-height: 1.2;
+                opacity: 0;
+                font-size: 18px;
+                color: rgb(255, 255, 255);
+                font-weight: 500;
+                cursor: pointer;
+                .to {
+                  color: white;
+                  &:hover {
+                    transform: scale(0.9);
+                    color: rgb(201, 144, 0);
+                    transition: all 0.3s ease-in-out;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .sectTwo {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
 }
