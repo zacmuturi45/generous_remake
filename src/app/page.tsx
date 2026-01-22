@@ -44,6 +44,7 @@ import { GSDevTools } from "gsap/GSDevTools";
 import Button from "./Components/button";
 import { HoverAnimation } from "./Components/hoverAnimation";
 import { useRouter } from "next/navigation";
+import CircularText from "./Components/spinning_text";
 
 gsap.registerPlugin(ScrollTrigger, GSDevTools);
 
@@ -73,6 +74,7 @@ export default function Home() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [cursorVisible, setCursorVisible] = useState<boolean>(false);
   const router = useRouter();
+  const [lenis, setLenis] = useState<any>(null);
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -90,8 +92,6 @@ export default function Home() {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
-
-  const lenisRef = useRef<any>(null);
 
   // // Text Animation
   let xPercent = 0;
@@ -221,10 +221,10 @@ export default function Home() {
     const initLenis = async () => {
       const Lenis = (await import("lenis")).default;
 
-      const lenis = new Lenis({
-        duration: 1.2, // scroll duration
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easing function
-        orientation: "vertical", // vertical or horizontal
+      const lenisInstance = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
         gestureOrientation: "vertical",
         smoothWheel: true,
         wheelMultiplier: 1,
@@ -232,13 +232,12 @@ export default function Home() {
         infinite: false,
       });
 
-      lenisRef.current = lenis;
+      setLenis(lenisInstance); // Store in state instead of ref
 
-      // Sync Lenis with GSAP ScrollTrigger
-      lenis.on("scroll", ScrollTrigger.update);
+      lenisInstance.on("scroll", ScrollTrigger.update);
 
       gsap.ticker.add((time) => {
-        lenis.raf(time * 1000); // convert to milliseconds
+        lenisInstance.raf(time * 1000);
       });
 
       gsap.ticker.lagSmoothing(0);
@@ -247,8 +246,8 @@ export default function Home() {
     initLenis();
 
     return () => {
-      if (lenisRef.current) {
-        lenisRef.current.destroy();
+      if (lenis) {
+        lenis.destroy();
       }
     };
   }, []);
@@ -383,7 +382,10 @@ export default function Home() {
       <section className="hero_section">
         <div className="overlay" />
         <div className="hero_carousel_container">
-          <Carousel lenis={lenisRef.current} items={carouselItems} />
+          <Carousel lenis={lenis} items={carouselItems} />
+          <div className="circular__text_container">
+            <CircularText lenis={lenis} />
+          </div>
         </div>
       </section>
 

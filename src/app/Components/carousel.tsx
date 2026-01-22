@@ -163,10 +163,6 @@ export const Carousel: React.FC<CarouselProps> = ({ items, autoplayDuration = 50
         </div>
       </div>
 
-      <div className="circular__text_container">
-        <CircularText />
-      </div>
-
       <div className="carousel__progress_container">
         <div className="carousel__text">
           {items.map((item, index) => {

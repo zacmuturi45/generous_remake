@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import "../css/index.css";
 
-const CircularText: React.FC = () => {
+const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
   const textRef = useRef<SVGTextElement>(null);
   const animationRef = useRef<gsap.core.Tween | null>(null);
   const arrowTimelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -44,66 +44,50 @@ const CircularText: React.FC = () => {
           }
         },
       });
-
-      timeline.set(".arrow-2", {
-        y: -100,
+      // Start arrow at center
+      timeline.set(".arrow", {
+        y: 0,
+        opacity: 1,
       });
 
-      // Arrow 1 moves down and fades out
+      // Pause at center
+      timeline.to({}, { duration: 0.3 }, 0);
+
+      // Move down and fade out
       timeline.to(
-        ".arrow-1",
+        ".arrow",
         {
           y: 100,
           opacity: 0,
-          duration: 0.8,
+          duration: 0.7,
           ease: "circ.in",
         },
-        0
+        0.3
       );
 
-      // Arrow 2 fades in from top
-      timeline.to(
-        ".arrow-2",
-        {
-          y: 0,
-          opacity: 0.8,
-          duration: 1,
-          ease: "circ.out",
-        },
-        0.5
-      );
+      // Pause before reset
+      timeline.to({}, { duration: 0.2 }, 1);
 
+      // Reset to top (instant)
       timeline.set(
-        ".arrow-1",
+        ".arrow",
         {
           y: -100,
           opacity: 0,
         },
-        1
+        1.2
       );
 
-      // Arrow 2 moves down and fades out
+      // Fade in and move down to center
       timeline.to(
-        ".arrow-2",
-        {
-          y: 100,
-          opacity: 0,
-          duration: 0.8,
-          ease: "circ.in",
-        },
-        1.5
-      );
-
-      // Arrow 1 fades in from top (loop back)
-      timeline.to(
-        ".arrow-1",
+        ".arrow",
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.4,
           ease: "circ.out",
         },
-        2
+        1.2
       );
 
       arrowTimelineRef.current = timeline;
@@ -111,8 +95,7 @@ const CircularText: React.FC = () => {
       // Stop the arrow animation and center it
       if (arrowTimelineRef.current) {
         arrowTimelineRef.current.pause();
-
-        gsap.to([".arrow-1", ".arrow-2"], {
+        gsap.to(".arrow", {
           y: 0,
           opacity: 1,
           duration: 0.5,
@@ -120,21 +103,87 @@ const CircularText: React.FC = () => {
         });
       }
     }
-
     return () => {
       if (arrowTimelineRef.current) {
         arrowTimelineRef.current.kill();
       }
     };
   }, [isHovering]);
-
   const handleMouseEnter = () => {
     setIsHovering(true);
     if (animationRef.current) {
       gsap.to(animationRef.current, {
-        timeScale: 10,
+        timeScale: 5,
         duration: 0.5,
         ease: "circ.out",
+      });
+    }
+  };
+
+  const handleClick = () => {
+    // Check if lenis exists and is ready
+    if (lenis && typeof lenis.scrollTo === "function") {
+      lenis.scrollTo(window.innerHeight, {
+        duration: 1.2,
+        // GSAP's circ.inOut easing
+        easing: (t: number) => {
+          return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
+        },
+
+        // Other easings
+
+        // Current: circ.inOut
+        // easing: (t: number) => {
+        //   return t < 0.5
+        //     ? (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2
+        //     : (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
+        // }
+
+        // // expo.inOut (very dramatic, slow start/end)
+        // easing: (t: number) => {
+        //   return t === 0 ? 0 : t === 1 ? 1 : t < 0.5
+        //     ? Math.pow(2, 20 * t - 10) / 2
+        //     : (2 - Math.pow(2, -20 * t + 10)) / 2;
+        // }
+
+        // // power3.inOut (smooth, balanced)
+        // easing: (t: number) => {
+        //   return t < 0.5
+        //     ? 4 * t * t * t
+        //     : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        // }
+
+        // // power4.inOut (more aggressive than power3)
+        // easing: (t: number) => {
+        //   return t < 0.5
+        //     ? 8 * t * t * t * t
+        //     : 1 - Math.pow(-2 * t + 2, 4) / 2;
+        // }
+
+        // // back.inOut (slight overshoot at start/end)
+        // easing: (t: number) => {
+        //   const c1 = 1.70158;
+        //   const c2 = c1 * 1.525;
+        //   return t < 0.5
+        //     ? (Math.pow(2 * t, 2) * ((c2 + 1) * 2 * t - c2)) / 2
+        //     : (Math.pow(2 * t - 2, 2) * ((c2 + 1) * (t * 2 - 2) + c2) + 2) / 2;
+        // }
+
+        // // sine.inOut (gentle, natural feeling)
+        // easing: (t: number) => {
+        //   return -(Math.cos(Math.PI * t) - 1) / 2;
+        // }
+
+        // // Custom: smooth start, quick end
+        // easing: (t: number) => {
+        //   return t * t * (3 - 2 * t);
+        // }
+      });
+    } else {
+      // Fallback to native smooth scroll
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: "smooth",
       });
     }
   };
@@ -157,20 +206,20 @@ const CircularText: React.FC = () => {
         height={150}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        style={{ position: "relative" }}
+        style={{ position: "relative", cursor: "pointer" }}
+        onClick={handleClick}
       >
         <defs>
           <clipPath id="arrow-clip">
-            <rect x="0" y="0" width="150" height="150" />
+            <circle cx="75" cy="75" r="55" />
           </clipPath>
           <path id="curve" d="M 20 75 A 55 55 0 1 1 20 77" />
         </defs>
 
-        {/* Arrow group FIRST - renders behind */}
+        {/* Arrow group - renders behind */}
         <g clipPath="url(#arrow-clip)">
-          {/* Arrow 1 */}
-          <g className="arrow-1" style={{ transformOrigin: "75px 75px" }}>
-            {/* Right arm - more extended */}
+          <g className="arrow" style={{ transformOrigin: "75px 75px" }}>
+            {/* Right arm */}
             <path
               style={{
                 fill: "none",
@@ -180,31 +229,7 @@ const CircularText: React.FC = () => {
               }}
               d="M 75 55 L 75 95 C 75.15 84.5 84 74 88 78"
             />
-            {/* Left arm - more extended */}
-            <path
-              style={{
-                fill: "none",
-                stroke: "rgb(255, 255, 255)",
-                strokeWidth: "3px",
-                strokeLinejoin: "round",
-              }}
-              d="M 75 55 L 75 95 C 74.85 84.5 66 74 62 78"
-            />
-          </g>
-
-          {/* Arrow 2 (initially hidden) */}
-          <g className="arrow-2" style={{ transformOrigin: "75px 75px", opacity: 0 }}>
-            {/* Right arm - more extended */}
-            <path
-              style={{
-                fill: "none",
-                stroke: "rgb(255, 255, 255)",
-                strokeWidth: "3px",
-                strokeLinejoin: "round",
-              }}
-              d="M 75 55 L 75 95 C 75.15 84.5 84 74 88 78"
-            />
-            {/* Left arm - more extended */}
+            {/* Left arm */}
             <path
               style={{
                 fill: "none",
@@ -217,8 +242,16 @@ const CircularText: React.FC = () => {
           </g>
         </g>
 
-        {/* Text LAST - renders on top */}
-        <text className="spin_text" ref={textRef}>
+        {/* Text - renders on top */}
+        <text
+          className="spin_text"
+          ref={textRef}
+          style={{
+            fill: "white",
+            fontWeight: "bold",
+            letterSpacing: "2px",
+          }}
+        >
           <textPath href="#curve" textLength={340} lengthAdjust={"spacing"}>
             * SCROLL * SCROLL * SCROLL * SCROLL
           </textPath>
