@@ -2,39 +2,77 @@ import React, { useState, useEffect, useRef } from "react";
 import "../css/index.css";
 import { CarouselProps } from "./Types/gsap";
 import Image from "next/image";
-import { SplitText } from "../GSAP/gsap_plugins";
 import gsap from "gsap";
 import CircularText from "./spinning_text";
 
-export const Carousel: React.FC<CarouselProps> = ({
-  items,
-  autoplayDuration = 5000,
-  transitionDuration = 1000,
-}) => {
+export const Carousel: React.FC<CarouselProps> = ({ items, autoplayDuration = 5000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
-  const [progress, setProgress] = useState(0);
   const isTransitioning = useRef(false);
   const progressInterval = useRef<NodeJS.Timeout | null>(null);
   const autoplayTimeout = useRef<NodeJS.Timeout | null>(null);
+  const overlay = useRef<HTMLDivElement>(null);
+  const progressTween = useRef<gsap.core.Tween | null>(null);
+
+  // document.addEventListener("visibilitychange", () => {
+  //   if (!document.hidden) {
+  //     const carousel = document.querySelector(".carousel");
+  //     const cs = carousel as HTMLDivElement;
+  //     if (cs) {
+  //       cs.style.display = "none";
+  //       cs.offsetHeight;
+  //       cs.style.display = "";
+  //     }
+  //   }
+  // });
+
+  useEffect(() => {
+    const dots = document.querySelectorAll(".carousel__progress-dot");
+    const darkOverlay = overlay.current;
+    if (!dots) return;
+
+    const tl = gsap.timeline();
+
+    tl.to(
+      darkOverlay,
+      {
+        backgroundColor: "rgba(0, 0, 0, 0)",
+        duration: 1,
+        ease: "power1.in",
+      },
+      0
+    ).fromTo(
+      dots,
+      {
+        y: 15,
+        opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        stagger: 0.15,
+        ease: "power3.inOut",
+      }
+    );
+  }, []);
 
   const startProgress = () => {
-    setProgress(0);
-    const startTime = Date.now();
+    const fillElement = document.querySelector(
+      `.carousel__progress-dot--active .carousel__progress-fill`
+    ) as HTMLElement;
 
-    progressInterval.current = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const newProgress = Math.min((elapsed / autoplayDuration) * 100, 100);
-      setProgress(newProgress);
+    if (!fillElement) return;
 
-      if (newProgress >= 100) {
-        if (progressInterval.current) {
-          clearInterval(progressInterval.current);
-        }
-      }
-    }, 16);
+    // ✅ Reset to 0% first
+    gsap.set(fillElement, { width: "0%" });
+
+    progressTween.current = gsap.to(fillElement, {
+      width: "100%",
+      duration: autoplayDuration / 1000,
+      ease: "none",
+    });
   };
-
   const stopProgress = () => {
     if (progressInterval.current) {
       clearInterval(progressInterval.current);
@@ -96,6 +134,7 @@ export const Carousel: React.FC<CarouselProps> = ({
     <div className="carousel">
       <div className="carousel__container">
         <div className="carousel__slides">
+          <div className="darkOverlay" ref={overlay} />
           {items.map((item, index) => {
             const isActive = index === currentIndex;
             const isPrev = index === prevIndex;
@@ -114,7 +153,9 @@ export const Carousel: React.FC<CarouselProps> = ({
                   alt={item.alt || `Slide ${index + 1}`}
                   fill
                   style={{ objectFit: "cover" }}
-                  priority={index === 0}
+                  priority
+                  sizes="100vw"
+                  quality={85}
                 />
               </div>
             );
@@ -171,12 +212,7 @@ export const Carousel: React.FC<CarouselProps> = ({
               }`}
               onClick={() => goToSlide(index)}
             >
-              <div
-                className="carousel__progress-fill"
-                style={{
-                  width: index === currentIndex ? `${progress}%` : "0%",
-                }}
-              />
+              <div className="carousel__progress-fill" />
             </div>
           ))}
         </div>

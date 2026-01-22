@@ -93,7 +93,7 @@ export default function Home() {
 
   const lenisRef = useRef<any>(null);
 
-  // Text Animation
+  // // Text Animation
   let xPercent = 0;
   let direction = -1;
 
@@ -154,7 +154,7 @@ export default function Home() {
     };
   }, []);
 
-  // Arrow SVG Animation
+  // // Arrow SVG Animation
   useGSAP(() => {
     const tl = gsap.timeline({ paused: true, delay: 1.5 });
     const mainLength = mainShaft.current?.getTotalLength();
@@ -276,7 +276,7 @@ export default function Home() {
     {
       type: "image",
       src: vogue4,
-      alt: "Mountain peaks",
+      alt: "PapaOut peaks",
       text: "Sigrum Sipurum evokes mystery ancient symbols forgotten rituals and stories carried across generations",
     },
     {

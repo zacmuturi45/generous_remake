@@ -593,7 +593,7 @@ body::-webkit-scrollbar {
 
 @keyframes textHeadingIn {
   0% {
-    transform: translateY(120px);
+    transform: translateY(calc(100% + 20px));
     opacity: 0;
   }
   100% {
@@ -606,8 +606,12 @@ body::-webkit-scrollbar {
   0% {
     transform: translateY(0);
   }
+  50% {
+    opacity: 0;
+  }
   100% {
-    transform: translateY(120px);
+    opacity: 0;
+    transform: translateY(calc(100% + 20px));
   }
 }
 
@@ -624,6 +628,9 @@ body::-webkit-scrollbar {
 @keyframes textDescriptionOut {
   0% {
     opacity: 1;
+  }
+  10% {
+    opacity: 0;
   }
   100% {
     opacity: 0;
@@ -664,6 +671,16 @@ body::-webkit-scrollbar {
     position: relative;
     width: 100%;
     height: 100%;
+    .darkOverlay {
+      z-index: 3;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 1);
+      pointer-events: none;
+    }
   }
 
   &__slide {
@@ -680,11 +697,13 @@ body::-webkit-scrollbar {
       scale 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     img,
     video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      position: absolute;
+      inset: 0;
       display: block;
       transform: scale(1);
+      object-fit: cover;
+      min-width: 100%;
+      min-height: 100%;
     }
 
     &--active {
@@ -720,6 +739,7 @@ body::-webkit-scrollbar {
   }
 
   .circular__text_container {
+    display: block;
     position: absolute;
     bottom: 100px;
     right: 24px;
@@ -728,7 +748,6 @@ body::-webkit-scrollbar {
   }
 
   &__progress_container {
-    // border: 2px solid blue;
     position: absolute;
     bottom: 100px;
     left: 24px;
@@ -736,6 +755,10 @@ body::-webkit-scrollbar {
     flex-direction: column;
     z-index: 2;
     gap: 1.5rem;
+
+    @media (max-width: 768px) {
+      bottom: 2.5rem;
+    }
   }
 
   &__text {
@@ -761,6 +784,7 @@ body::-webkit-scrollbar {
     // border: 2px solid purple;
     padding: 0;
     overflow: hidden;
+    width: 100%;
     h1 {
       line-height: 1;
       font-family: var(--amoera-font);
@@ -769,7 +793,7 @@ body::-webkit-scrollbar {
       font-size: 120px;
       text-transform: capitalize;
       margin: 0;
-      transform: translateY(120px);
+      transform: translateY(calc(100% + 20px));
     }
     .header--active {
       animation: textHeadingIn 1s cubic-bezier(0.785, 0.135, 0.15, 0.86) forwards;
@@ -777,6 +801,30 @@ body::-webkit-scrollbar {
     }
     .header--prev {
       animation: textHeadingOut 0.35s linear;
+    }
+
+    @media (max-width: 980px) {
+      width: 600px;
+      h1 {
+        font-size: 88px;
+        transform: translateY(calc(100% + 20px));
+      }
+    }
+
+    @media (max-width: 768px) {
+      width: 450px;
+    }
+
+    @media (max-width: 580px) {
+      h1 {
+        font-size: 52px;
+        line-height: 1.05;
+        transform: translateY(calc(100% + 15px));
+      }
+    }
+
+    @media (max-width: 420px) {
+      width: 300px;
     }
   }
 
@@ -799,6 +847,29 @@ body::-webkit-scrollbar {
     }
     .description--prev {
       animation: textDescriptionOut 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+    }
+
+    @media (max-width: 980px) {
+      p {
+        font-size: 1.25rem;
+        letter-spacing: 0.8px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      width: 350px;
+    }
+
+    @media (max-width: 580px) {
+      p {
+        font-size: 1.05rem;
+        line-height: 145%;
+        letter-spacing: 0.6px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      width: 250px;
     }
   }
 
@@ -831,7 +902,6 @@ body::-webkit-scrollbar {
       background: rgba(216, 216, 216, 0.5);
     }
   }
-
   &__progress-fill {
     position: absolute;
     top: 0;
@@ -839,45 +909,202 @@ body::-webkit-scrollbar {
     border-radius: 64px;
     height: 100%;
     background: rgba(255, 255, 255, 0.6);
-    transition: width 0.016s linear;
+    width: 0%; // Default width
   }
 }
 
-// Responsive styles
-@media (max-width: 768px) {
-  .carousel {
-    &__progress {
-      bottom: 2rem;
-      left: 2rem;
-      gap: 0.5rem;
-    }
+// .carousel {
+//   position: relative;
+//   width: 100%;
+//   height: 100%;
+//   // overflow: hidden;
+//   box-sizing: border-box;
 
-    &__progress-dot {
-      width: 2rem;
-      height: 0.2rem;
+//   &__container {
+//     width: 100%;
+//     height: 100%;
+//   }
 
-      &--active {
-        width: 8rem; // Smaller on mobile
-      }
-    }
-  }
-}
+//   &__slides {
+//     position: relative;
+//     width: 100%;
+//     height: 100%;
+//     .darkOverlay {
+//       z-index: 3;
+//       position: absolute;
+//       top: 0;
+//       left: 0;
+//       width: 100%;
+//       height: 100%;
+//       background-color: rgba(0, 0, 0, 1);
+//       pointer-events: none;
+//     }
+//   }
 
-// Tablet styles
-@media (min-width: 769px) and (max-width: 1024px) {
-  .carousel {
-    &__progress {
-      bottom: 2.5rem;
-      left: 2.5rem;
-    }
+//   &__slide {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     opacity: 1;
+//     transform: translateX(105%);
+//     img,
+//     video {
+//       width: 100%;
+//       height: 100%;
+//       object-fit: cover;
+//       display: block;
+//     }
+//   }
 
-    &__progress-dot {
-      &--active {
-        width: 10rem;
-      }
-    }
-  }
-}
+//   .circular__text_container {
+//     position: absolute;
+//     bottom: 100px;
+//     right: 24px;
+//     // border: 2px solid red;
+//     z-index: 2;
+//   }
+
+//   &__progress_container {
+//     // border: 2px solid blue;
+//     position: absolute;
+//     bottom: 120px;
+//     left: 56px;
+//     display: flex;
+//     flex-direction: column;
+//     z-index: 2;
+//     gap: 1.5rem;
+//   }
+
+//   &__text {
+//     // border: 2px solid red;
+//     position: relative;
+//     width: 1200px;
+//     height: 300px;
+//   }
+
+//   &__text_container {
+//     // border: 2px solid blue;
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     opacity: 1;
+//   }
+
+//   &__header {
+//     // border: 2px solid purple;
+//     padding: 0;
+//     overflow: hidden;
+//     h1 {
+//       line-height: 1;
+//       font-family: var(--amoera-font);
+//       color: var(--tone-0);
+//       font-weight: 500;
+//       font-size: 120px;
+//       text-transform: capitalize;
+//       margin: 0;
+//       opacity: 0;
+//     }
+//   }
+
+//   &__description {
+//     max-width: 680px;
+//     // border: 2px solid rgb(0, 255, 55);
+//     p {
+//       font-family: var(--secondary-font);
+//       color: var(--tone-0);
+//       font-weight: 300;
+//       font-size: 1.5rem;
+//       line-height: 150%;
+//       letter-spacing: 1px;
+//       margin: 0;
+//       opacity: 0;
+//     }
+//   }
+
+//   &__progress {
+//     display: flex;
+//     gap: 1rem;
+//     z-index: 10;
+//     // border: 2px solid red;
+//   }
+
+//   &__progress-dot {
+//     position: relative;
+//     width: 10px;
+//     height: 10px;
+//     border-radius: 64px;
+//     background: rgba(255, 255, 255, 1);
+//     cursor: pointer;
+//     overflow: hidden;
+//     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+//     &:hover {
+//       background: rgba(255, 255, 255, 0.5);
+//       width: 1rem;
+//     }
+
+//     &--active {
+//       transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+//       border-radius: 64px;
+//       width: 64px;
+//       pointer-events: none;
+//       background: rgba(216, 216, 216, 0.5);
+//     }
+
+//     &:hover {
+//       background: rgba(255, 255, 255, 0.5);
+//       width: 1rem;
+//     }
+//   }
+
+//   &__progress-fill {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     border-radius: 64px;
+//     height: 100%;
+//     background: rgba(255, 255, 255, 0.6);
+//     transition: width 0.016s linear;
+//   }
+// }
+
+// // Responsive styles
+// @media (max-width: 768px) {
+//   .carousel {
+//     &__progress {
+//       bottom: 2rem;
+//       left: 2rem;
+//       gap: 0.5rem;
+//     }
+
+//     &__progress-dot {
+//       width: 2rem;
+//       height: 0.2rem;
+
+//       &--active {
+//         width: 8rem; // Smaller on mobile
+//       }
+//     }
+//   }
+// }
+
+// // Tablet styles
+// @media (min-width: 769px) and (max-width: 1024px) {
+//   .carousel {
+//     &__progress {
+//       bottom: 2.5rem;
+//       left: 2.5rem;
+//     }
+
+//     &__progress-dot {
+//       &--active {
+//         width: 10rem;
+//       }
+//     }
+//   }
+// }
 
 // TRIAL ANIMATIONS
 .trial_animations {
@@ -1119,5 +1346,17 @@ svg {
         align-items: center;
       }
     }
+  }
+}
+
+// sandbox
+.sandbox {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  border: 2px solid red;
+  img {
+    position: absolute;
+    inset: 0;
   }
 }

@@ -52,3 +52,16 @@ interface HoverAnimationProps {
   imageAnimationConfig?: gsap.TweenVars;
   className?: string;
 }
+
+interface TrialCarouselItem {
+  src: StaticImageData;
+  alt: string;
+  text: string;
+  id: string;
+}
+
+interface TrialCarouselProps {
+  items: TrialCarouselItem[];
+  autoplayDuration?: number;
+  transitionDuration?: number;
+}

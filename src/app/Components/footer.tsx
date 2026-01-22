@@ -51,6 +51,7 @@ export default function Footer() {
     () => {
       const lines = bonjourRef.current?.querySelectorAll(".line");
       const container = bonjourRef.current;
+      const bin = container?.querySelectorAll(".bin");
       if (!lines || !container) return;
 
       gsap.set(lines, { transformOrigin: "right center" });
@@ -81,14 +82,16 @@ export default function Footer() {
         }).set(lines, { width: 0, xPercent: 0 });
       };
 
-      container.addEventListener("mouseenter", handleMouseEnter);
-      container.addEventListener("mouseleave", handleMouseLeave);
+      bin?.forEach((bn) => {
+        bn.addEventListener("mouseenter", handleMouseEnter);
+        bn.addEventListener("mouseleave", handleMouseLeave);
 
-      return () => {
-        container.removeEventListener("mouseenter", handleMouseEnter);
-        container.removeEventListener("mouseleave", handleMouseLeave);
-        gsap.killTweensOf(lines);
-      };
+        return () => {
+          bn.removeEventListener("mouseenter", handleMouseEnter);
+          bn.removeEventListener("mouseleave", handleMouseLeave);
+          gsap.killTweensOf(lines);
+        };
+      });
     },
     { scope: bonjourRef }
   );
@@ -245,11 +248,11 @@ export default function Footer() {
 
             <div className="sectOneBonjour" ref={bonjourRef}>
               <div>
-                <p>Niaje@</p>
+                <p className="bin">Niaje@</p>
                 <div className="line"></div>
               </div>
               <div>
-                <p>madeinnairobi.com</p>
+                <p className="bin">builtinnairobi.com</p>
                 <div className="line"></div>
               </div>
             </div>
@@ -284,7 +287,7 @@ export default function Footer() {
                   </p>
                 </div>
               </div>
-              <p style={{ color: "rgb(91, 91, 91)" }}>©MadeInNairobi</p>
+              <p style={{ color: "rgb(91, 91, 91)" }}>©BuiltInNairobi</p>
             </div>
           </div>
 
