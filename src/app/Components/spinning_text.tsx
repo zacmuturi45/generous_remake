@@ -9,116 +9,171 @@ const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
   const animationRef = useRef<gsap.core.Tween | null>(null);
   const arrowTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const [isHovering, setIsHovering] = useState(false);
+  const mm = gsap.matchMedia(); // Create matchMedia instance
 
   useEffect(() => {
-    if (textRef.current) {
-      // Create the rotation animation with GSAP
-      animationRef.current = gsap.to(textRef.current, {
-        rotation: 360,
-        duration: 30,
-        ease: "none",
-        repeat: -1,
-        transformOrigin: "50% 50%",
-      });
-    }
+    // Set up matchMedia breakpoints
+    mm.add("(max-width: 768px)", () => {
+      // Mobile: No animations, just setup for click
+      console.log("Mobile mode: animations disabled");
 
-    return () => {
-      // Cleanup animation on unmount
+      // Kill any existing animations
       if (animationRef.current) {
         animationRef.current.kill();
       }
       if (arrowTimelineRef.current) {
         arrowTimelineRef.current.kill();
       }
-    };
-  }, []);
 
-  useEffect(() => {
-    if (isHovering) {
-      // Create arrow animation timeline
-      const timeline = gsap.timeline({
-        repeat: -1,
-        onRepeat: () => {
-          if (!isHovering) {
-            timeline.pause();
-          }
-        },
-      });
-      // Start arrow at center
-      timeline.set(".arrow", {
+      // Ensure arrow is visible and centered
+      gsap.set(".arrow", {
         y: 0,
         opacity: 1,
       });
 
-      // Pause at center
-      timeline.to({}, { duration: 0.3 }, 0);
+      return () => {
+        // Cleanup when this breakpoint no longer matches
+        console.log("Exiting mobile mode");
+      };
+    });
 
-      // Move down and fade out
-      timeline.to(
-        ".arrow",
-        {
-          y: 100,
-          opacity: 0,
-          duration: 0.7,
-          ease: "circ.in",
-        },
-        0.3
-      );
+    mm.add("(min-width: 581px)", () => {
+      // Desktop: Setup animations
+      console.log("Desktop mode: animations enabled");
 
-      // Pause before reset
-      timeline.to({}, { duration: 0.2 }, 1);
-
-      // Reset to top (instant)
-      timeline.set(
-        ".arrow",
-        {
-          y: -100,
-          opacity: 0,
-        },
-        1.2
-      );
-
-      // Fade in and move down to center
-      timeline.to(
-        ".arrow",
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.4,
-          ease: "circ.out",
-        },
-        1.2
-      );
-
-      arrowTimelineRef.current = timeline;
-    } else {
-      // Stop the arrow animation and center it
-      if (arrowTimelineRef.current) {
-        arrowTimelineRef.current.pause();
-        gsap.to(".arrow", {
-          y: 0,
-          opacity: 1,
-          duration: 0.5,
-          ease: "circ.out",
+      if (textRef.current) {
+        // Create the rotation animation with GSAP
+        animationRef.current = gsap.to(textRef.current, {
+          rotation: 360,
+          duration: 30,
+          ease: "none",
+          repeat: -1,
+          transformOrigin: "50% 50%",
+          paused: false, // Ensure it's playing
         });
       }
+
+      // Setup hover effects for desktop
+      const handleMouseEnter = () => {
+        setIsHovering(true);
+        if (animationRef.current) {
+          gsap.to(animationRef.current, {
+            timeScale: 5,
+            duration: 0.5,
+            ease: "circ.out",
+          });
+        }
+      };
+
+      const handleMouseLeave = () => {
+        setIsHovering(false);
+        if (animationRef.current) {
+          gsap.to(animationRef.current, {
+            timeScale: 1,
+            duration: 0.5,
+            ease: "circ.out",
+          });
+        }
+      };
+
+      // Add event listeners for desktop
+      const svg = document.querySelector("svg");
+      if (svg) {
+        svg.addEventListener("mouseenter", handleMouseEnter);
+        svg.addEventListener("mouseleave", handleMouseLeave);
+      }
+
+      return () => {
+        // Cleanup event listeners
+        if (svg) {
+          svg.removeEventListener("mouseenter", handleMouseEnter);
+          svg.removeEventListener("mouseleave", handleMouseLeave);
+        }
+      };
+    });
+
+    return () => {
+      // Cleanup all matchMedia listeners
+      mm.revert();
+    };
+  }, []); // Empty dependency array - runs once on mount
+
+  // Separate effect for arrow animation (desktop only)
+  useEffect(() => {
+    // Only run arrow animations on desktop
+    if (window.innerWidth > 768) {
+      if (isHovering) {
+        // Create arrow animation timeline
+        const timeline = gsap.timeline({
+          repeat: -1,
+          onRepeat: () => {
+            if (!isHovering) {
+              timeline.pause();
+            }
+          },
+        });
+
+        timeline.set(".arrow", {
+          y: 0,
+          opacity: 1,
+        });
+
+        timeline.to({}, { duration: 0.3 }, 0);
+
+        timeline.to(
+          ".arrow",
+          {
+            y: 100,
+            opacity: 0,
+            duration: 0.7,
+            ease: "circ.in",
+          },
+          0.3
+        );
+
+        timeline.to({}, { duration: 0.2 }, 1);
+
+        timeline.set(
+          ".arrow",
+          {
+            y: -100,
+            opacity: 0,
+          },
+          1.2
+        );
+
+        timeline.to(
+          ".arrow",
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.4,
+            ease: "circ.out",
+          },
+          1.2
+        );
+
+        arrowTimelineRef.current = timeline;
+      } else {
+        // Stop the arrow animation and center it
+        if (arrowTimelineRef.current) {
+          arrowTimelineRef.current.pause();
+          gsap.to(".arrow", {
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            ease: "circ.out",
+          });
+        }
+      }
     }
+
     return () => {
       if (arrowTimelineRef.current) {
         arrowTimelineRef.current.kill();
       }
     };
   }, [isHovering]);
-  const handleMouseEnter = () => {
-    setIsHovering(true);
-    if (animationRef.current) {
-      gsap.to(animationRef.current, {
-        timeScale: 5,
-        duration: 0.5,
-        ease: "circ.out",
-      });
-    }
-  };
 
   const handleClick = () => {
     // Check if lenis exists and is ready
@@ -129,55 +184,6 @@ const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
         easing: (t: number) => {
           return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
         },
-
-        // Other easings
-
-        // Current: circ.inOut
-        // easing: (t: number) => {
-        //   return t < 0.5
-        //     ? (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2
-        //     : (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
-        // }
-
-        // // expo.inOut (very dramatic, slow start/end)
-        // easing: (t: number) => {
-        //   return t === 0 ? 0 : t === 1 ? 1 : t < 0.5
-        //     ? Math.pow(2, 20 * t - 10) / 2
-        //     : (2 - Math.pow(2, -20 * t + 10)) / 2;
-        // }
-
-        // // power3.inOut (smooth, balanced)
-        // easing: (t: number) => {
-        //   return t < 0.5
-        //     ? 4 * t * t * t
-        //     : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        // }
-
-        // // power4.inOut (more aggressive than power3)
-        // easing: (t: number) => {
-        //   return t < 0.5
-        //     ? 8 * t * t * t * t
-        //     : 1 - Math.pow(-2 * t + 2, 4) / 2;
-        // }
-
-        // // back.inOut (slight overshoot at start/end)
-        // easing: (t: number) => {
-        //   const c1 = 1.70158;
-        //   const c2 = c1 * 1.525;
-        //   return t < 0.5
-        //     ? (Math.pow(2 * t, 2) * ((c2 + 1) * 2 * t - c2)) / 2
-        //     : (Math.pow(2 * t - 2, 2) * ((c2 + 1) * (t * 2 - 2) + c2) + 2) / 2;
-        // }
-
-        // // sine.inOut (gentle, natural feeling)
-        // easing: (t: number) => {
-        //   return -(Math.cos(Math.PI * t) - 1) / 2;
-        // }
-
-        // // Custom: smooth start, quick end
-        // easing: (t: number) => {
-        //   return t * t * (3 - 2 * t);
-        // }
       });
     } else {
       // Fallback to native smooth scroll
@@ -188,14 +194,16 @@ const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
     }
   };
 
+  // Simplified mouse handlers for desktop only
+  const handleMouseEnter = () => {
+    if (window.innerWidth > 768) {
+      setIsHovering(true);
+    }
+  };
+
   const handleMouseLeave = () => {
-    setIsHovering(false);
-    if (animationRef.current) {
-      gsap.to(animationRef.current, {
-        timeScale: 1,
-        duration: 0.5,
-        ease: "circ.out",
-      });
+    if (window.innerWidth > 768) {
+      setIsHovering(false);
     }
   };
 

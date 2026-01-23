@@ -31,118 +31,147 @@ export default function GTextWrapper({
     () => {
       if (!containerRef.current) return;
 
-      splitRefs.current = [];
-      lines.current = [];
-      blocks.current = [];
-
-      let elements = [];
-
-      if (containerRef.current.hasAttribute("data-g_text-wrapper")) {
-        elements = Array.from(containerRef.current.children);
-      } else {
-        elements = [containerRef.current];
-      }
-
-      elements.forEach((element) => {
-        const el = element as HTMLElement;
-        const split = SplitText.create(el, {
-          type: "lines",
-          linesClass: "g-text++",
+      const initializeAnimation = () => {
+        // Clear previous splits and wrappers
+        splitRefs.current?.forEach((split: any) => split?.revert());
+        const wrappers = containerRef.current?.querySelectorAll(".g__text-line-wrapper");
+        wrappers?.forEach((wrapper) => {
+          if (wrapper.parentNode && wrapper.firstChild) {
+            wrapper.parentNode.insertBefore(wrapper.firstChild, wrapper);
+            wrapper.remove();
+          }
         });
 
-        splitRefs.current?.push(split);
+        splitRefs.current = [];
+        lines.current = [];
+        blocks.current = [];
 
-        split.lines.forEach((el) => {
-          // Wrap the split lines in new div to be animated
-          const line = el as HTMLDivElement;
-          const wrapper = document.createElement("div");
-          wrapper.className = "g__text-line-wrapper";
-          line.parentNode?.insertBefore(wrapper, line);
-          wrapper.appendChild(line);
+        let elements = [];
 
-          // Block to reveal text
-          const block = document.createElement("div");
-          block.className = "gText_revealer";
-          block.style.backgroundColor = blockColor;
-          wrapper.appendChild(block);
+        if (!containerRef.current) return;
 
-          lines.current.push(line);
-          blocks.current.push(block);
+        if (containerRef.current.hasAttribute("data-g_text-wrapper")) {
+          elements = Array.from(containerRef.current.children);
+        } else {
+          elements = [containerRef.current];
+        }
+
+        elements.forEach((element) => {
+          const el = element as HTMLElement;
+          const split = SplitText.create(el, {
+            type: "lines",
+            linesClass: "g-text",
+          });
+
+          splitRefs.current?.push(split);
+
+          split.lines.forEach((el) => {
+            // Wrap the split lines in new div to be animated
+            const line = el as HTMLDivElement;
+            const wrapper = document.createElement("div");
+            wrapper.className = "g__text-line-wrapper";
+            line.parentNode?.insertBefore(wrapper, line);
+            wrapper.appendChild(line);
+
+            // Block to reveal text
+            const block = document.createElement("div");
+            block.className = "gText_revealer";
+            block.style.backgroundColor = blockColor;
+            wrapper.appendChild(block);
+
+            lines.current.push(line);
+            blocks.current.push(block);
+          });
         });
-      });
 
-      gsap.set(blocks.current, { x: "-15%", transformOrigin: "right center" });
+        gsap.set(blocks.current, { x: "-15%", transformOrigin: "right center" });
 
-      const masterTimeline = gsap.timeline({ paused: true });
+        const masterTimeline = gsap.timeline({ paused: true });
 
-      blocks.current.forEach((block, index) => {
-        const line = lines.current[index];
+        blocks.current.forEach((block, index) => {
+          const line = lines.current[index];
 
-        masterTimeline
-          .to(
-            block,
-            {
-              scaleX: 0,
-              duration: 1.85,
-              ease: "circ.inOut",
-              onUpdate: function () {
-                if (svgRef?.current) {
-                  const lineRect = line.getBoundingClientRect();
-                  const svgRect = svgRef.current.getBoundingClientRect();
-                  const currentScaleX = gsap.getProperty(block, "scaleX") as number;
-                  const blockVisibleWidth = lineRect.width * 1.3 * currentScaleX;
-                  const blockRightEdge = lineRect.left + blockVisibleWidth;
+          masterTimeline
+            .to(
+              block,
+              {
+                scaleX: 0,
+                duration: 1.85,
+                ease: "circ.inOut",
+                onUpdate: function () {
+                  if (svgRef?.current) {
+                    const lineRect = line.getBoundingClientRect();
+                    const svgRect = svgRef.current.getBoundingClientRect();
+                    const currentScaleX = gsap.getProperty(block, "scaleX") as number;
+                    const blockVisibleWidth = lineRect.width * 1.3 * currentScaleX;
+                    const blockRightEdge = lineRect.left + blockVisibleWidth;
 
-                  if (blockRightEdge >= svgRect.left) {
-                    gsap.fromTo(
-                      svgRef.current,
-                      {
-                        scale: 0.5,
-                      },
-                      {
-                        scale: 1,
-                        duration: 0.5,
-                        ease: "back.out(1.7)",
-                        delay: 0.3,
-                      }
-                    );
+                    if (blockRightEdge >= svgRect.left) {
+                      gsap.fromTo(
+                        svgRef.current,
+                        {
+                          scale: 0.5,
+                        },
+                        {
+                          scale: 1,
+                          duration: 0.5,
+                          ease: "back.out(1.7)",
+                          delay: 0.3,
+                        }
+                      );
+                    }
                   }
-                }
+                },
               },
-            },
-            0.05 + index * stagger
-          )
-          // .to(
-          //   block,
-          //   {
-          //     scaleX: 0,
-          //     duration: 1.2,
-          //     ease: "power2.out",
-          //   },
-          //   ">"
-          // )
-          .from(
-            line,
-            {
-              x: "-15%",
-              ease: "circ.inOut",
-              duration: 0.6,
-            },
-            0.4 + index * stagger
-          );
-      });
+              0.05 + index * stagger
+            )
+            .from(
+              line,
+              {
+                x: "-15%",
+                ease: "circ.inOut",
+                duration: 0.6,
+              },
+              0.4 + index * stagger
+            );
+        });
 
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top 88%",
-        end: "top 88%",
-        animation: masterTimeline,
-        onEnter: () => masterTimeline.play(),
-        onEnterBack: () => masterTimeline.reverse(),
-      });
+        ScrollTrigger.create({
+          trigger: containerRef.current,
+          start: "top 88%",
+          end: "top 88%",
+          animation: masterTimeline,
+          onEnter: () => masterTimeline.play(),
+          onEnterBack: () => masterTimeline.reverse(),
+        });
+      };
+
+      // Initial setup
+      initializeAnimation();
+
+      // Debounced resize handler
+      let resizeTimer: NodeJS.Timeout;
+      const handleResize = () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          // Kill all ScrollTriggers associated with this container
+          ScrollTrigger.getAll().forEach((trigger) => {
+            if (trigger.trigger === containerRef.current) {
+              trigger.kill();
+            }
+          });
+          // Re-initialize
+          initializeAnimation();
+        }, 250);
+      };
+
+      window.addEventListener("resize", handleResize);
 
       return () => {
-        splitRefs.current.forEach((split: any) => split?.revert());
+        window.removeEventListener("resize", handleResize);
+        clearTimeout(resizeTimer);
+
+        splitRefs.current?.forEach((split: any) => split?.revert());
 
         const wrappers = containerRef.current?.querySelectorAll(".g__text-line-wrapper");
         wrappers?.forEach((wrapper) => {
@@ -151,11 +180,17 @@ export default function GTextWrapper({
             wrapper.remove();
           }
         });
+
+        // Clean up ScrollTriggers
+        ScrollTrigger.getAll().forEach((trigger) => {
+          if (trigger.trigger === containerRef.current) {
+            trigger.kill();
+          }
+        });
       };
     },
     { scope: containerRef, dependencies: [delay, blockColor, stagger, duration] }
   );
-
   return (
     <div ref={containerRef} data-g_text-wrapper>
       {children}

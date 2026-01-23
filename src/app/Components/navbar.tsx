@@ -13,9 +13,11 @@ export default function Navbar() {
   const [isUp, setIsUp] = useState(false);
   const lastScrollY = useRef<number>(0);
   const [isPanelActive, setIsPanelActive] = useState(false);
+  const [isPanelVisible, setIsPanelVisible] = useState(false); // Add this state to control visibility
   const preRef = useRef<HTMLDivElement>(null);
   const afterRef = useRef<HTMLDivElement>(null);
   const menuTextRef = useRef<HTMLHeadingElement>(null); // Add ref for Menu text
+  const afterCont = useRef<HTMLDivElement>(null);
 
   useScrollLock(isPanelActive);
 
@@ -26,88 +28,161 @@ export default function Navbar() {
     { link: "Contact", id: "ln42", href: "/" },
   ];
 
+  const handlePanelClose = () => {
+    setIsPanelActive(false);
+    // We don't immediately hide the panel - let the animation play first
+  };
+
   useEffect(() => {
     if (isPanelActive) {
-      // Opening animation
-      const tl = gsap.timeline();
+      // Show the panel first
+      setIsPanelVisible(true);
 
-      tl.set(menuTextRef.current, { x: 80 })
-        .fromTo(
-          preRef.current,
-          {
-            x: "100%",
-            clipPath: "polygon(0 0, 100% 0%, 100% 100%, 33% 100%)", // Fully clipped
+      // Use a small timeout to ensure DOM is ready
+      const timer = setTimeout(() => {
+        const motionNavs = document.querySelectorAll(".motionNav");
+        // Opening animation
+        const tl = gsap.timeline({
+          onComplete: () => {
+            // Panel is fully open
           },
-          {
-            x: "0%",
-            clipPath: "polygon(0 0, 100% 0%, 100% 100%, 0% 100%)", // Partially revealed
-            duration: 1.8,
-            ease: "expo.inOut",
-          }
-        )
-        // Add Menu text animation with inertia effect
-        .fromTo(
-          menuTextRef.current,
-          {
-            x: 80, // Start from the right
-            opacity: 0.5,
-          },
-          {
-            x: 0,
-            opacity: 1,
-            duration: 1.5,
-            ease: "back.out(1.2)", // This creates the overshoot/inertia effect
-          },
-          "-=0.6" // Start slightly after the panel begins moving
-        )
-        .fromTo(
-          afterRef.current,
-          {
-            x: "100%",
-            clipPath: "polygon(0 0, 100% 0%, 100% 100%, 21% 100%)", // Same as preRef's end state
-          },
-          {
-            x: "0%",
-            clipPath: "polygon(0 0, 100% 0%, 100% 100%, 0% 100%)", // Fully revealed
-            duration: 1.8,
-            ease: "expo.inOut",
-          },
-          "-=1.5"
-        );
-    } else {
+        });
+
+        tl.set(menuTextRef.current, { x: 80 })
+          .set([motionNavs], { x: 200, opacity: 0 }) // Set BOTH x and opacity
+          .fromTo(
+            preRef.current,
+            {
+              x: "100%",
+              clipPath: "polygon(0 0, 100% 0%, 100% 100%, 33% 100%)", // Fully clipped
+            },
+            {
+              x: "0%",
+              clipPath: "polygon(0 0, 100% 0%, 100% 100%, 0% 100%)", // Partially revealed
+              duration: 1.5,
+              ease: "power4.inOut",
+            }
+          )
+          // Add Menu text animation with inertia effect
+          .fromTo(
+            menuTextRef.current,
+            {
+              x: 100, // Start from the right
+              opacity: 0.5,
+            },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 1.6,
+              ease: "power2.out", // This creates the overshoot/inertia effect
+            },
+            "-=0.6" // Start slightly after the panel begins moving
+          )
+          .fromTo(
+            afterRef.current,
+            {
+              x: "100%",
+              clipPath: "polygon(0 0, 100% 0%, 100% 100%, 21% 100%)", // Same as preRef's end state
+            },
+            {
+              x: "0%",
+              clipPath: "polygon(0 0, 100% 0%, 100% 100%, 0% 100%)", // Fully revealed
+              duration: 1.8,
+              ease: "power4.inOut",
+            },
+            "-=1.8"
+          )
+          // Animate x position first (without opacity)
+          .to(
+            [motionNavs],
+            {
+              x: 0,
+              duration: 3,
+              ease: "power2.out",
+              stagger: 0.07,
+            },
+            "-=1.7"
+          )
+          // Then animate opacity separately with different stagger
+          .to(
+            [motionNavs],
+            {
+              opacity: 0.8,
+              duration: 1,
+              ease: "power2.out",
+              stagger: {
+                each: 0.08, // Larger stagger for opacity (top to bottom)
+                from: "start", // First element starts first
+              },
+            },
+            "-=2.3" // Start slightly after x animation begins
+          );
+      }, 10);
+
+      return () => clearTimeout(timer);
+    } else if (isPanelVisible) {
+      // Panel is visible but active state is false - play closing animation
+      const motionNavs = document.querySelectorAll(".motionNav");
+
       // Closing animation - add text fade out with momentum
-      const tl = gsap.timeline();
+      const tl = gsap.timeline({
+        onComplete: () => {
+          // After animation completes, hide the panel from DOM
+          setIsPanelVisible(false);
+        },
+      });
 
-      // Animate menu text out first with inertia
-      tl.to(menuTextRef.current, {
-        x: -60,
-        opacity: 0,
-        skewX: -10,
-        duration: 0.8,
-        ease: "power3.in",
+      // Step 1: Prepare preRef to cover afterRef
+      // Reset preRef to its starting position (fully clipped from LEFT)
+      tl.set(preRef.current, {
+        x: "0%", // Make sure it's at position 0
+        clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)", // Fully clipped from LEFT edge
+        zIndex: 2, // Bring to front to cover afterRef
       })
+
+        // Step 2: Animate preRef's clipPath to expand from LEFT to RIGHT and cover everything
+        .to(preRef.current, {
+          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", // Expand from left to cover entire screen
+          duration: 1,
+          ease: "power4.inOut",
+        })
+
+        // Step 3: Fade out content as it gets covered (starts during clipPath animation)
+        .to(
+          [menuTextRef.current, ...motionNavs],
+          {
+            opacity: 0,
+            x: 30, // Move slightly right as it fades (mirror of opening)
+            duration: 0.6,
+            ease: "power2.in",
+            stagger: 0.08,
+          },
+          "-=0.5" // Start during the clipPath expansion
+        )
+
+        // Step 4: Move afterRef to the right (behind the now-covering preRef)
         .to(
           afterRef.current,
           {
             x: "100%",
-            clipPath: "polygon(0 0, 100% 0%, 100% 100%, 21% 100%)", // Back to angled
-            duration: 1.75,
-            ease: "power4.in",
+            duration: 0.9,
+            ease: "circ.inOut",
           },
-          "-=0.2"
+          "-=1.3" // Start slightly after clipPath begins expanding
         )
+
+        // Step 5: Finally, slide preRef out to the right
         .to(
           preRef.current,
           {
             x: "100%",
-            clipPath: "polygon(0 0, 100% 0%, 100% 100%, 100% 100%)", // Fully clipped
-            duration: 1.75,
-            ease: "power4.in",
+            duration: 0.8,
+            ease: "circ.inOut",
           },
-          "-=0.4"
+          "-=1" // Start slightly before afterRef completely exits
         );
     }
-  }, [isPanelActive]);
+  }, [isPanelActive, isPanelVisible]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -158,19 +233,22 @@ export default function Navbar() {
     <div className={`navbar ${isUp || isPanelActive ? "navbarUp" : ""}`} ref={containerRef}>
       <div className="whitediv" />
 
-      {isPanelActive && (
+      {isPanelVisible && (
         <div className="mobileNavMenu">
           <div className="mobileNavMenu__pre pre" ref={preRef}>
-            <h4 ref={menuTextRef}>Menu</h4> {/* Add ref here */}
+            <h3 id="preheader" ref={menuTextRef}>
+              Menu
+            </h3>
+            {/* Add ref here */}
           </div>
           <div className="mobileNavMenu__after pre" ref={afterRef}>
-            <div className="afterContainer">
-              <div className="afterContainer__one">
+            <div className="afterContainer" ref={afterCont}>
+              <div className="afterContainer__one motionNav">
                 <h4>Menu</h4>
               </div>
               <div className="afterContainer__two">
                 {linkArray.map((link, i) => (
-                  <div key={link.id} className="afterContainer__links">
+                  <div key={link.id} className="afterContainer__links motionNav">
                     <div className="linkLink">
                       <Link
                         href={link.href}
@@ -214,7 +292,7 @@ export default function Navbar() {
           </div>
 
           <div className="mobilenav">
-            <h4 onClick={() => setIsPanelActive(!isPanelActive)}>
+            <h4 onClick={() => (isPanelActive ? handlePanelClose() : setIsPanelActive(true))}>
               {isPanelActive ? "Close" : "Menu"}{" "}
               <span className={`mobilenavline ${isPanelActive ? "mobilenavlineblack" : ""}`}></span>
             </h4>

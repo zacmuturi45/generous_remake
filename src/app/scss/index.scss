@@ -116,9 +116,9 @@ body {
         right: 24px;
         // border: 2px solid red;
         z-index: 2;
-        @media (max-width: 580px) {
-          bottom: -2rem;
-          right: -3rem;
+        @media (max-width: 768px) {
+          bottom: 0;
+          right: -2rem;
         }
       }
     }
@@ -129,6 +129,9 @@ body {
     flex-direction: column;
     // border: 2px solid red;
     padding: 136px 48px 0 48px;
+    @media (max-width: 580px) {
+      padding: 64px 16px 0 16px;
+    }
     svg {
       width: 36px;
       height: 36px;
@@ -142,29 +145,40 @@ body {
       span {
         font-family: var(--rogan-font);
         font-weight: 800;
-        font-size: 170px;
+        /* Fluid font-size with clamp(min, preferred, max) */
+        font-size: clamp(32px, 10vw + 1.5rem, 170px);
         letter-spacing: -1.2rem;
         line-height: 1;
         display: inline-block;
+        @media (max-width: 980px) {
+          letter-spacing: -0.8rem;
+        }
+        @media (max-width: 580px) {
+          letter-spacing: -0.5rem;
+        }
       }
     }
     .la__marque {
       display: flex;
       flex-direction: column;
-      // border: 2px solid blue;
       .au__coeur {
         display: flex;
         .la__marque_svg {
           display: flex;
           flex-direction: column;
-          margin-left: 1rem;
+          margin-left: 0.5rem;
+          @media (max-width: 580px) {
+            svg {
+              width: 12px;
+              height: 12px;
+            }
+          }
         }
       }
     }
 
     .wipe__inText {
-      // border: 2px solid blue;
-      overflow: hidden;
+      // overflow: hidden;
       padding-top: 90px;
       display: flex;
       flex-direction: column;
@@ -174,6 +188,10 @@ body {
         width: 48px;
         height: 48px;
         transform: scale(0.5);
+        @media (max-width: 580px) {
+          width: 32px;
+          height: 32px;
+        }
       }
 
       #orangeArrow {
@@ -184,14 +202,27 @@ body {
         width: 48px;
         height: 48px;
         transform: scale(0.5);
+        @media (max-width: 580px) {
+          width: 32px;
+          height: 32px;
+        }
       }
       .textbox_one {
         margin-bottom: 72px;
-        // border: 1px solid red;
+        .fd {
+          @media (max-width: 580px) {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100%;
+          }
+        }
       }
       .textbox_two {
         .wipe__button {
           margin-top: 60px;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
           .button {
             box-sizing: border-box;
             width: 224px;
@@ -225,6 +256,31 @@ body {
               transform: rotate(45deg);
               margin-left: -5px;
             }
+            @media (max-width: 768px) {
+              width: 180px;
+              height: 32px;
+              margin: 0 auto;
+
+              span {
+                font-size: 1rem;
+                letter-spacing: 0.5px;
+              }
+
+              :nth-child(1) {
+                left: -28px;
+                width: 28px;
+                height: 28px;
+              }
+
+              :nth-child(3) {
+                width: 28px;
+                height: 28px;
+                margin: 0 0 4px 0;
+              }
+            }
+          }
+          @media (max-width: 768px) {
+            width: max-content;
           }
         }
       }
@@ -237,15 +293,33 @@ body {
           margin-right: 1rem;
         }
         p {
-          font-size: 66px;
+          /* Fluid font-size: 28px (mobile) to 66px (desktop) */
+          font-size: clamp(2.5rem, 4vw, 4.125rem);
+
           font-family: var(--encode-font);
           text-transform: uppercase;
           font-weight: 400;
-          margin: 0 0 12px 0;
-          letter-spacing: -2px;
+          margin: 0 0 0.75rem 0; /* Using rem for responsive margins */
+
+          /* Fluid letter-spacing: -0.5px (mobile) to -2px (desktop) */
+          letter-spacing: clamp(-0.05rem, -0.1vw - 0.01rem, -0.125rem);
+
           span {
             display: inline-block;
-            margin-left: 0.5rem;
+            /* Fluid margin-left based on font-size */
+            margin-left: 0.5em; /* Use em for relative spacing */
+          }
+        }
+        @media (max-width: 980px) {
+          p {
+            margin: 0 0 0.3rem 0;
+            word-wrap: break-word;
+          }
+        }
+        @media (max-width: 580px) {
+          width: 100%;
+          p {
+            width: max-content;
           }
         }
       }
@@ -488,6 +562,14 @@ body {
 .g-text {
   position: relative;
   display: block;
+  word-wrap: break-word;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+[data-g_text-wrapper] p {
+  max-width: 100%;
+  word-wrap: break-word;
 }
 
 .gText_revealer {
@@ -504,7 +586,6 @@ body {
 
 // NAVBAR
 .navbar {
-  // border: 2px solid red;
   position: fixed;
   width: 100%;
   z-index: 999;
@@ -513,6 +594,7 @@ body {
   box-sizing: border-box;
   color: #fff;
   display: flex;
+
   .mobileNavMenu {
     position: fixed;
     top: 0;
@@ -522,6 +604,10 @@ body {
     background: transparent;
     z-index: 999;
     box-sizing: border-box;
+    display: block;
+    @media (min-width: 980px) {
+      display: none;
+    }
     &__after {
       .afterContainer {
         height: 100%;
@@ -530,6 +616,7 @@ body {
         justify-content: center;
         position: relative;
         &__one {
+          width: fit-content;
           h4 {
             font-size: 1.2rem;
             font-weight: 300;
@@ -542,6 +629,7 @@ body {
           gap: 0;
           .afterContainer__links {
             display: flex;
+            width: fit-content;
             gap: 0.5rem;
             .linkLink {
               overflow: hidden;
@@ -592,9 +680,10 @@ body {
       justify-content: center;
       align-items: center;
       background-color: rgb(62, 62, 62);
-      h4 {
+      h3 {
         font-size: 4.5rem;
         font-weight: 400;
+        color: white !important;
       }
     }
     &__after {
@@ -743,6 +832,15 @@ body {
           display: none;
         }
       }
+    }
+  }
+  @media (max-width: 580px) {
+    height: 88px;
+    .whitediv {
+      height: 56px;
+    }
+    .navContainer {
+      height: 56px;
     }
   }
 }
@@ -928,17 +1026,18 @@ body {
     @media (max-width: 768px) {
       bottom: 2.5rem;
     }
+    @media (max-width: 580px) {
+      left: 16px;
+    }
   }
 
   &__text {
-    // border: 2px solid red;
     position: relative;
     width: 1200px;
     height: 300px;
   }
 
   &__text_container {
-    // border: 2px solid blue;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -1026,6 +1125,7 @@ body {
     }
 
     @media (max-width: 980px) {
+      width: 580px;
       p {
         font-size: 1.25rem;
         letter-spacing: 0.8px;
@@ -1297,7 +1397,6 @@ body {
 
 svg {
   cursor: pointer;
-  // border: 2px solid blue;
   #curve {
     fill: none;
     // stroke: rgb(255, 0, 0);
@@ -1311,7 +1410,6 @@ svg {
   }
 
   @media (max-width: 980px) {
-    pointer-events: none;
     .spin_text {
       display: none;
     }

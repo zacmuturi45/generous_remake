@@ -76,83 +76,83 @@ export default function Home() {
   const router = useRouter();
   const [lenis, setLenis] = useState<any>(null);
 
-  useEffect(() => {
-    const cursor = cursorRef.current;
-    if (!cursor) return;
+  // useEffect(() => {
+  //   const cursor = cursorRef.current;
+  //   if (!cursor) return;
 
-    const size = 96;
-    const handleMouseMove = (e: MouseEvent) => {
-      cursor.style.left = `${e.clientX - size / 2}px`;
-      cursor.style.top = `${e.clientY - size / 2}px`;
-    };
+  //   const size = 96;
+  //   const handleMouseMove = (e: MouseEvent) => {
+  //     cursor.style.left = `${e.clientX - size / 2}px`;
+  //     cursor.style.top = `${e.clientY - size / 2}px`;
+  //   };
 
-    window.addEventListener("mousemove", handleMouseMove);
+  //   window.addEventListener("mousemove", handleMouseMove);
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("mousemove", handleMouseMove);
+  //   };
+  // }, []);
 
   // // Text Animation
   let xPercent = 0;
   let direction = -1;
 
-  useGSAP(() => {
-    gsap.set([firstText.current, secondText.current, thirdText.current], {
-      yPercent: 100,
-    });
+  // useGSAP(() => {
+  //   gsap.set([firstText.current, secondText.current, thirdText.current], {
+  //     yPercent: 100,
+  //   });
 
-    gsap.to([firstText.current, secondText.current, thirdText.current], {
-      yPercent: 0,
-      ease: "power3.inOut",
-      duration: 1.3,
-      stagger: 0.1,
-      scrollTrigger: {
-        trigger: ".marquee",
-        start: "top 90%",
-        once: true,
-      },
-    });
-  });
+  //   gsap.to([firstText.current, secondText.current, thirdText.current], {
+  //     yPercent: 0,
+  //     ease: "power3.inOut",
+  //     duration: 1.3,
+  //     stagger: 0.1,
+  //     scrollTrigger: {
+  //       trigger: ".marquee",
+  //       start: "top 90%",
+  //       once: true,
+  //     },
+  //   });
+  // });
 
-  useGSAP(() => {
-    // Create a ScrollTrigger that controls the marquee direction
-    ScrollTrigger.create({
-      trigger: document.documentElement,
-      start: 0,
-      end: "max",
-      onUpdate: (self) => {
-        // Set direction based on scroll direction
-        direction = self.direction;
-      },
-    });
-  }, []);
+  // useGSAP(() => {
+  //   // Create a ScrollTrigger that controls the marquee direction
+  //   ScrollTrigger.create({
+  //     trigger: document.documentElement,
+  //     start: 0,
+  //     end: "max",
+  //     onUpdate: (self) => {
+  //       // Set direction based on scroll direction
+  //       direction = self.direction;
+  //     },
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    let animationFrameId: number;
+  // useEffect(() => {
+  //   let animationFrameId: number;
 
-    const animate = () => {
-      if (xPercent <= -100) {
-        xPercent = 0;
-      } else if (xPercent > 0) {
-        xPercent = -100;
-      }
-      gsap.set(firstText.current, { xPercent: xPercent });
-      gsap.set(secondText.current, { xPercent: xPercent });
-      gsap.set(thirdText.current, { xPercent: xPercent });
-      xPercent += 0.15 * direction;
-      animationFrameId = requestAnimationFrame(animate);
-    };
+  //   const animate = () => {
+  //     if (xPercent <= -100) {
+  //       xPercent = 0;
+  //     } else if (xPercent > 0) {
+  //       xPercent = -100;
+  //     }
+  //     gsap.set(firstText.current, { xPercent: xPercent });
+  //     gsap.set(secondText.current, { xPercent: xPercent });
+  //     gsap.set(thirdText.current, { xPercent: xPercent });
+  //     xPercent += 0.15 * direction;
+  //     animationFrameId = requestAnimationFrame(animate);
+  //   };
 
-    animationFrameId = requestAnimationFrame(animate);
+  //   animationFrameId = requestAnimationFrame(animate);
 
-    // Add cleanup
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, []);
+  //   // Add cleanup
+  //   return () => {
+  //     if (animationFrameId) {
+  //       cancelAnimationFrame(animationFrameId);
+  //     }
+  //   };
+  // }, []);
 
   // // Arrow SVG Animation
   useGSAP(() => {
@@ -427,9 +427,9 @@ export default function Home() {
 
         <div className="wipe__inText">
           <div className="textbox_one text_box">
-            <p className="fades">La marque au cœur de la</p>
+            <p className="fades fd">La marque au cœur de la</p>
 
-            <p className="fades">stratégie, de l&apos;identité,</p>
+            <p className="fades fd">stratégie, de l&apos;identité,</p>
 
             <GTextWrapper svgRef={dotRef}>
               <p className="fades">
@@ -539,7 +539,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <div className="marquee">
+      {/* <div className="marquee">
         <div ref={textRef} className="marquee__text">
           <p ref={firstText}>
             WORK <span></span>
@@ -822,7 +822,7 @@ export default function Home() {
             </>
           )}
         </HoverAnimation>
-      </section>
+      </section> */}
     </div>
   );
 }
