@@ -14,6 +14,8 @@ export default function GTextWrapper({
   stagger = 0.15,
   duration = 0.75,
   svgRef,
+  containsSvg = false,
+  containsArrow = false,
 }: {
   children: React.ReactNode;
   delay?: number;
@@ -21,11 +23,14 @@ export default function GTextWrapper({
   stagger?: number;
   duration?: number;
   svgRef?: RefObject<SVGSVGElement | null>;
+  containsSvg?: boolean;
+  containsArrow?: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const splitRefs = useRef<any>(null);
   const lines = useRef<HTMLDivElement[]>([]);
   const blocks = useRef<HTMLDivElement[]>([]);
+  const svgAnimationRef = useRef<gsap.core.Tween | null>(null);
 
   useGSAP(
     () => {
@@ -70,6 +75,7 @@ export default function GTextWrapper({
             const line = el as HTMLDivElement;
             const wrapper = document.createElement("div");
             wrapper.className = "g__text-line-wrapper";
+            const hasSvg = containsSvg && line.querySelector("svg");
             line.parentNode?.insertBefore(wrapper, line);
             wrapper.appendChild(line);
 
@@ -77,6 +83,9 @@ export default function GTextWrapper({
             const block = document.createElement("div");
             block.className = "gText_revealer";
             block.style.backgroundColor = blockColor;
+            if (containsArrow) {
+              block.setAttribute("data-has-svg", "true");
+            }
             wrapper.appendChild(block);
 
             lines.current.push(line);
@@ -86,54 +95,119 @@ export default function GTextWrapper({
 
         gsap.set(blocks.current, { x: "-15%", transformOrigin: "right center" });
 
-        const masterTimeline = gsap.timeline({ paused: true });
+        const masterTimeline = gsap.timeline({
+          paused: true,
+          onReverseComplete: () => {
+            // Reset SVG animation state when timeline fully reverses
+            if (svgRef?.current) {
+              svgRef.current.removeAttribute("data-svg-animated");
+              // Reset SVG scale to hidden state
+              gsap.set(svgRef.current, { scale: 0.5 });
+            }
+          },
+          onStart: () => {
+            // Reset animation state when timeline starts playing forward
+            if (svgRef?.current) {
+              svgRef.current.removeAttribute("data-svg-animated");
+            }
+          },
+        });
 
         blocks.current.forEach((block, index) => {
           const line = lines.current[index];
+          const hasSvg = containsSvg && line.querySelector("svg");
 
-          masterTimeline
-            .to(
-              block,
-              {
-                scaleX: 0,
-                duration: 1.85,
-                ease: "circ.inOut",
-                onUpdate: function () {
-                  if (svgRef?.current) {
-                    const lineRect = line.getBoundingClientRect();
-                    const svgRect = svgRef.current.getBoundingClientRect();
-                    const currentScaleX = gsap.getProperty(block, "scaleX") as number;
-                    const blockVisibleWidth = lineRect.width * 1.3 * currentScaleX;
-                    const blockRightEdge = lineRect.left + blockVisibleWidth;
+          // Add SVG animation callbacks if this line contains SVG
+          if (hasSvg && svgRef?.current) {
+            // Calculate when block will reach SVG position
+            // Adjust the 0.7 value based on your animation timing
+            // This represents when the block is about 70% through its reveal
+            const svgTriggerTime = 0.05 + index * stagger + 0.7;
 
-                    if (blockRightEdge >= svgRect.left) {
-                      gsap.fromTo(
-                        svgRef.current,
-                        {
-                          scale: 0.5,
-                        },
-                        {
-                          scale: 1,
-                          duration: 0.5,
-                          ease: "back.out(1.7)",
-                          delay: 0.3,
-                        }
-                      );
-                    }
+            // Forward animation: SVG scales up
+            masterTimeline.add(() => {
+              if (!svgRef.current!.getAttribute("data-svg-animated")) {
+                svgRef.current!.setAttribute("data-svg-animated", "true");
+
+                // Kill any existing SVG animation
+                if (svgAnimationRef.current) {
+                  svgAnimationRef.current.kill();
+                }
+
+                // Create new SVG animation
+                svgAnimationRef.current = gsap.fromTo(
+                  svgRef.current,
+                  {
+                    scale: 0.5,
+                    opacity: 0.7,
+                  },
+                  {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 0.5,
+                    ease: "back.out(1.7)",
+                    delay: 0.3,
+                    onComplete: () => {
+                      svgAnimationRef.current = null;
+                    },
                   }
-                },
-              },
-              0.05 + index * stagger
-            )
-            .from(
-              line,
-              {
-                x: "-15%",
-                ease: "circ.inOut",
-                duration: 0.6,
-              },
-              0.4 + index * stagger
-            );
+                );
+              }
+            }, svgTriggerTime);
+
+            // Reverse animation: SVG scales down
+            // Place this slightly earlier than the forward trigger for smooth reversal
+            const reverseTriggerTime = svgTriggerTime - 0.05;
+            masterTimeline.add(() => {
+              // Only trigger reverse if we're going backward and SVG was animated
+              const isReversing =
+                masterTimeline.timeScale() < 0 ||
+                masterTimeline.reversed() ||
+                masterTimeline.progress() < svgTriggerTime;
+
+              if (isReversing && svgRef.current!.getAttribute("data-svg-animated")) {
+                svgRef.current!.setAttribute("data-svg-animated", "false");
+
+                // Kill any existing SVG animation
+                if (svgAnimationRef.current) {
+                  svgAnimationRef.current.kill();
+                }
+
+                // Create reverse animation
+                svgAnimationRef.current = gsap.to(svgRef.current, {
+                  scale: 0.5,
+                  opacity: 0.7,
+                  duration: 0.4,
+                  ease: "power2.in",
+                  onComplete: () => {
+                    svgAnimationRef.current = null;
+                  },
+                });
+              }
+            }, reverseTriggerTime);
+          }
+
+          // Block reveal animation
+          masterTimeline.to(
+            block,
+            {
+              scaleX: 0,
+              duration: 1.85,
+              ease: "circ.inOut",
+            },
+            0.05 + index * stagger
+          );
+
+          // Text slide-in animation
+          masterTimeline.from(
+            line,
+            {
+              x: "-15%",
+              ease: "circ.inOut",
+              duration: 0.6,
+            },
+            0.4 + index * stagger
+          );
         });
 
         ScrollTrigger.create({
@@ -143,6 +217,8 @@ export default function GTextWrapper({
           animation: masterTimeline,
           onEnter: () => masterTimeline.play(),
           onEnterBack: () => masterTimeline.reverse(),
+          // Optional: Add markers for debugging
+          // markers: true,
         });
       };
 
@@ -171,6 +247,11 @@ export default function GTextWrapper({
         window.removeEventListener("resize", handleResize);
         clearTimeout(resizeTimer);
 
+        // Clean up SVG animation
+        if (svgAnimationRef.current) {
+          svgAnimationRef.current.kill();
+        }
+
         splitRefs.current?.forEach((split: any) => split?.revert());
 
         const wrappers = containerRef.current?.querySelectorAll(".g__text-line-wrapper");
@@ -189,8 +270,9 @@ export default function GTextWrapper({
         });
       };
     },
-    { scope: containerRef, dependencies: [delay, blockColor, stagger, duration] }
+    { scope: containerRef, dependencies: [delay, blockColor, stagger, duration, containsSvg] }
   );
+
   return (
     <div ref={containerRef} data-g_text-wrapper>
       {children}

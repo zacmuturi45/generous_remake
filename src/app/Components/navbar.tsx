@@ -18,6 +18,12 @@ export default function Navbar() {
   const afterRef = useRef<HTMLDivElement>(null);
   const menuTextRef = useRef<HTMLHeadingElement>(null); // Add ref for Menu text
   const afterCont = useRef<HTMLDivElement>(null);
+  const [playNavAnimation, setPlayNavAnimation] = useState<boolean>(false);
+
+  // Hamburger refs
+  const hamburgerRef = useRef<HTMLDivElement>(null);
+  const topBarRef = useRef<HTMLDivElement>(null);
+  const bottomBarRef = useRef<HTMLDivElement>(null);
 
   useScrollLock(isPanelActive);
 
@@ -37,17 +43,32 @@ export default function Navbar() {
     if (isPanelActive) {
       // Show the panel first
       setIsPanelVisible(true);
+      const mobNav = document.querySelector(".mobileNavMenu");
+      const gl = gsap.timeline();
+      // Step 1: Scale out hamburger bars (top first, then bottom)
+      gl.to(topBarRef.current, {
+        scaleX: 0,
+        transformOrigin: "right center",
+        duration: 0.3,
+        ease: "power2.inOut",
+      }).to(
+        bottomBarRef.current,
+        {
+          scaleX: 0,
+          transformOrigin: "right center",
+          duration: 0.3,
+          ease: "power2.inOut",
+        },
+        "-=0.15"
+      ); // Stagger by starting 0.15s before previous ends
 
       // Use a small timeout to ensure DOM is ready
       const timer = setTimeout(() => {
         const motionNavs = document.querySelectorAll(".motionNav");
-        // Opening animation
-        const tl = gsap.timeline({
-          onComplete: () => {
-            // Panel is fully open
-          },
-        });
+        const tl = gsap.timeline();
+        gsap.set(mobNav, { opacity: 1 });
 
+        // Step 2: Menu slides in
         tl.set(menuTextRef.current, { x: 80 })
           .set([motionNavs], { x: 200, opacity: 0 }) // Set BOTH x and opacity
           .fromTo(
@@ -116,8 +137,45 @@ export default function Navbar() {
               },
             },
             "-=2.3" // Start slightly after x animation begins
+          )
+          // Step 3: After menu is fully in, animate X bars
+          // Transform hamburger bars into X
+          .set(
+            [topBarRef.current, bottomBarRef.current],
+            {
+              backgroundColor: "rgb(0, 0, 0)",
+              top: "50%",
+              transformOrigin: "top center",
+            },
+            "-=2"
+          )
+          .fromTo(
+            topBarRef.current,
+            {
+              scaleX: 0,
+              rotation: 45,
+            },
+            {
+              scaleX: 1,
+              duration: 0.4,
+              ease: "power2.out",
+            },
+            "-=1.8"
+          )
+          .fromTo(
+            bottomBarRef.current,
+            {
+              scaleX: 0,
+              rotation: -45,
+            },
+            {
+              scaleX: 1,
+              duration: 0.4,
+              ease: "power2.out",
+            },
+            "-=2" // Stagger the second bar
           );
-      }, 10);
+      }, 450);
 
       return () => clearTimeout(timer);
     } else if (isPanelVisible) {
@@ -129,17 +187,37 @@ export default function Navbar() {
         onComplete: () => {
           // After animation completes, hide the panel from DOM
           setIsPanelVisible(false);
+          gsap.set([topBarRef.current, bottomBarRef.current], {
+            rotation: 0,
+            backgroundColor: "#fff",
+            transformOrigin: "left center",
+          });
+          // Reset hamburger bars to original state
+          gsap.to([topBarRef.current, bottomBarRef.current], {
+            scaleX: 1,
+            backgroundColor: "#fff",
+            stagger: 0.2,
+          });
+          gsap.set(topBarRef.current, { top: "20px" });
         },
       });
 
       // Step 1: Prepare preRef to cover afterRef
       // Reset preRef to its starting position (fully clipped from LEFT)
-      tl.set(preRef.current, {
-        x: "0%", // Make sure it's at position 0
-        clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)", // Fully clipped from LEFT edge
-        zIndex: 2, // Bring to front to cover afterRef
+      // Animate X bars out
+      tl.to([topBarRef.current, bottomBarRef.current], {
+        scaleX: 0,
+        duration: 0.3,
+        ease: "power2.in",
+        stagger: 0.1,
       })
 
+        // Close menu panel
+        .set(preRef.current, {
+          x: "0%",
+          clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)",
+          zIndex: 2,
+        })
         // Step 2: Animate preRef's clipPath to expand from LEFT to RIGHT and cover everything
         .to(preRef.current, {
           clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", // Expand from left to cover entire screen
@@ -187,15 +265,24 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const heroHeight = window.innerHeight;
 
-      // Check if scrolling up or down
-      if (currentScrollY > lastScrollY.current) {
-        console.log(`last: ${lastScrollY.current}, current: ${currentScrollY}`);
-        // Scrolling down
-        setIsUp(true);
+      // Check if page has scrolled past idealHeight
+      const heroInView = currentScrollY < heroHeight;
+      setPlayNavAnimation(heroInView);
+
+      // Only run the up/down animation when hero is in view
+      if (heroInView) {
+        if (currentScrollY > lastScrollY.current) {
+          // Scrolling down
+          setIsUp(true);
+        } else {
+          // Scrolling up in hero section
+          setIsUp(false);
+        }
       } else {
-        // Scrolling up
-        setIsUp(false);
+        // When past hero section, ensure navbar is visible (not moved up)
+        setIsUp(true);
       }
 
       lastScrollY.current = currentScrollY;
@@ -230,7 +317,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className={`navbar ${isUp || isPanelActive ? "navbarUp" : ""}`} ref={containerRef}>
+    <div className={`navbar ${isUp ? "navbarUp" : ""}`} ref={containerRef}>
       <div className="whitediv" />
 
       {isPanelVisible && (
@@ -271,7 +358,7 @@ export default function Navbar() {
       )}
       <div className="navContainer">
         <div className="logo">
-          <h4>Carousel</h4>
+          <h4 style={isPanelActive ? { color: "black" } : {}}>Carousel</h4>
         </div>
 
         <div className="nav_links_container">
@@ -291,11 +378,13 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="mobilenav">
-            <h4 onClick={() => (isPanelActive ? handlePanelClose() : setIsPanelActive(true))}>
-              {isPanelActive ? "Close" : "Menu"}{" "}
-              <span className={`mobilenavline ${isPanelActive ? "mobilenavlineblack" : ""}`}></span>
-            </h4>
+          <div
+            className="mobilenav"
+            ref={hamburgerRef}
+            onClick={() => (isPanelActive ? handlePanelClose() : setIsPanelActive(true))}
+          >
+            <div className="hamburger-bar hamburger-bar-top" ref={topBarRef}></div>
+            <div className="hamburger-bar hamburger-bar-bottom" ref={bottomBarRef}></div>
           </div>
         </div>
       </div>

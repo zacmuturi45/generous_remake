@@ -156,7 +156,7 @@ export default function Home() {
 
   // // Arrow SVG Animation
   useGSAP(() => {
-    const tl = gsap.timeline({ paused: true, delay: 1.5 });
+    const tl = gsap.timeline({ paused: true });
     const mainLength = mainShaft.current?.getTotalLength();
     const topLength = topShaft.current?.getTotalLength();
     const textboxes = gsap.utils.toArray(".fades");
@@ -180,34 +180,35 @@ export default function Home() {
       mainShaft.current,
       {
         strokeDasharray: mainLength,
-        strokeDashoffset: -mainLength!,
+        strokeDashoffset: mainLength!,
       },
       {
         strokeDashoffset: 0,
-        duration: 0.6,
+        duration: 0.7,
         ease: "circ.inOut",
-      }
+      },
+      0
     );
 
     tl.fromTo(
       [topShaft.current, bottomShaft.current],
       {
         strokeDasharray: topLength,
-        strokeDashoffset: -topLength!,
+        strokeDashoffset: topLength!,
       },
       {
         strokeDashoffset: 0,
-        duration: 0.5,
-        ease: "circ.inOut",
+        duration: 0.4,
+        ease: "none",
       },
-      "-=0.3"
+      0.5
     );
 
     // Trigger arrow animation when it comes into view
     ScrollTrigger.create({
       trigger: "#orangeArrow",
-      start: "top 90%",
-      end: "top 90%",
+      start: "top 88%",
+      end: "top 88%",
       animation: tl,
       onEnter: () => tl.play(),
       onEnterBack: () => tl.reverse(),
@@ -308,7 +309,7 @@ export default function Home() {
   useGSAP(
     () => {
       gsap.to(".hero_carousel_container", {
-        y: 100,
+        y: 200,
         ease: "none",
         scrollTrigger: {
           trigger: ".hero_section",
@@ -324,7 +325,7 @@ export default function Home() {
         scrollTrigger: {
           trigger: ".hero_section",
           start: "top top",
-          end: "bottom 10%",
+          end: "bottom 20%",
           scrub: 1,
         },
       });
@@ -431,7 +432,7 @@ export default function Home() {
 
             <p className="fades fd">stratégie, de l&apos;identité,</p>
 
-            <GTextWrapper svgRef={dotRef}>
+            <GTextWrapper svgRef={dotRef} containsSvg={true}>
               <p className="fades">
                 du design
                 <span style={{ display: "inline-block", verticalAlign: "middle" }}>
@@ -459,7 +460,7 @@ export default function Home() {
               <p className="fades">marqueurs qui fait</p>
             </GTextWrapper>
 
-            <GTextWrapper svgRef={heartRef}>
+            <GTextWrapper svgRef={heartRef} containsSvg={true}>
               <p className="fades">
                 battre le coeur{" "}
                 <span style={{ display: "inline-block", verticalAlign: "middle" }}>
@@ -484,11 +485,10 @@ export default function Home() {
           </div>
 
           <div className="textbox_two text_box">
-            <GTextWrapper>
-              <p>
+            <GTextWrapper containsArrow={true}>
+              <p id="arrow__p">
                 <span style={{ display: "inline-block", verticalAlign: "middle" }}>
                   <svg
-                    style={{ zIndex: 999 }}
                     id="orangeArrow"
                     width={24}
                     height={24}
@@ -500,25 +500,27 @@ export default function Home() {
                       fill="none"
                       stroke="#ea5b0c"
                       strokeWidth="3"
-                      d="M33.5 14.9H0"
+                      d="M0 14.9H41"
                     />
+
                     <path
                       ref={topShaft}
                       fill="none"
                       stroke="#ea5b0c"
                       strokeWidth="3"
-                      d="M22.4 0c0 5.2 7.8 14.9 18.6 14.9"
+                      d="M41 14.9c-10.8 0-18.6-9.7-18.6-14.9"
                     />
+
                     <path
                       ref={bottomShaft}
                       fill="none"
                       stroke="#ea5b0c"
                       strokeWidth="3"
-                      d="M22.4 28.5c0-4.7 8.7-13.7 18.7-13.7"
+                      d="M41 14.8c-10 0-18.7 9-18.7 13.7"
                     />
                   </svg>
                 </span>
-                Faire de l&apos;expérience
+                Faire de l&apos;experience
               </p>
             </GTextWrapper>
 
@@ -527,11 +529,11 @@ export default function Home() {
             </GTextWrapper>
 
             <GTextWrapper>
-              <p>et générer beaucoup</p>
+              <p>et generer beaucoup</p>
             </GTextWrapper>
 
             <GTextWrapper>
-              <p>d&apos;émotion</p>
+              <p>d&apos;emotion</p>
             </GTextWrapper>
             <div className="wipe__button">
               <Button />
