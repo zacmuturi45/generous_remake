@@ -1,3 +1,9 @@
+import React from "react";
+
+export default function Anima() {
+  return <div>Anima</div>;
+}
+
 // import { useEffect, useRef, useState } from "react";
 // import gsap from "gsap";
 // import { UseHoverAnimationOptions } from "./Types/gsap";
