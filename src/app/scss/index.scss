@@ -614,7 +614,7 @@ body::-webkit-scrollbar {
   }
 
   @media (max-width: 580px) {
-    left: 84px;
+    left: 54px;
   }
 }
 
@@ -703,6 +703,14 @@ body::-webkit-scrollbar {
                 }
               }
             }
+            @media (max-width: 768px) {
+              .linkLink {
+                .afterLinks {
+                  font-size: 4rem;
+                  line-height: 120%;
+                }
+              }
+            }
           }
         }
         .copyright {
@@ -758,7 +766,6 @@ body::-webkit-scrollbar {
     }
   }
   .whitediv {
-    display: none;
     position: absolute;
     top: -100%;
     left: 0;
@@ -791,8 +798,8 @@ body::-webkit-scrollbar {
         height: 2rem;
       }
       h4 {
-        font-size: 1.2rem;
-        font-family: var(--main-font);
+        font-size: 2rem;
+        font-family: var(--amoera-font);
         color: rgb(198, 198, 198);
         font-weight: 800;
         transition: color 0.3s ease;
@@ -855,7 +862,7 @@ body::-webkit-scrollbar {
         height: 60px;
         .hamburger-bar {
           position: absolute;
-          width: 48px;
+          width: 36px;
           height: 2px;
           background-color: #ffffff;
           right: 0;

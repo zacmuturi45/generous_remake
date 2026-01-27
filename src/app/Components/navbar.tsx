@@ -71,6 +71,7 @@ export default function Navbar() {
         // Step 2: Menu slides in
         tl.set(menuTextRef.current, { x: 80 })
           .set([motionNavs], { x: 200, opacity: 0 }) // Set BOTH x and opacity
+          .set(menuTextRef.current, { x: 100, opacity: 0.5 })
           .fromTo(
             preRef.current,
             {
@@ -85,12 +86,8 @@ export default function Navbar() {
             }
           )
           // Add Menu text animation with inertia effect
-          .fromTo(
+          .to(
             menuTextRef.current,
-            {
-              x: 100, // Start from the right
-              opacity: 0.5,
-            },
             {
               x: 0,
               opacity: 1,
@@ -383,8 +380,16 @@ export default function Navbar() {
             ref={hamburgerRef}
             onClick={() => (isPanelActive ? handlePanelClose() : setIsPanelActive(true))}
           >
-            <div className="hamburger-bar hamburger-bar-top" ref={topBarRef}></div>
-            <div className="hamburger-bar hamburger-bar-bottom" ref={bottomBarRef}></div>
+            <div
+              className="hamburger-bar hamburger-bar-top"
+              style={isUp ? { backgroundColor: "black" } : {}}
+              ref={topBarRef}
+            ></div>
+            <div
+              className="hamburger-bar hamburger-bar-bottom"
+              style={isUp ? { backgroundColor: "black" } : {}}
+              ref={bottomBarRef}
+            ></div>
           </div>
         </div>
       </div>
