@@ -64,6 +64,16 @@ body::-webkit-scrollbar {
 .custom-cursor .c1 {
   transform: translateX(-125%);
 }
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor {
+    display: none;
+  }
+}
+@media (max-width: 580px) {
+  .custom-cursor {
+    display: none;
+  }
+}
 
 .custom-cursor .visible {
   opacity: 1;
@@ -351,7 +361,7 @@ body::-webkit-scrollbar {
   }
 }
 .main_container .marquee {
-  margin-top: 240px;
+  margin-top: clamp(80px, 20vw, 240px);
   width: 100%;
   overflow: hidden;
 }
@@ -359,7 +369,7 @@ body::-webkit-scrollbar {
   display: flex;
 }
 .main_container .marquee .marquee__text p {
-  font-size: 448px;
+  font-size: clamp(144px, 24vw, 448px);
   margin: 0;
   line-height: 1;
   font-family: var(--main-font);
@@ -369,9 +379,9 @@ body::-webkit-scrollbar {
   align-items: center;
 }
 .main_container .marquee .marquee__text p span {
-  margin: 0 6.5rem;
-  width: 100px;
-  height: 100px;
+  margin: 0 clamp(1rem, 5vw, 6.5rem);
+  width: clamp(20px, 8vw, 100px);
+  height: clamp(20px, 8vw, 100px);
   border-radius: 50%;
   background-color: black;
   display: inline-block;
@@ -379,9 +389,7 @@ body::-webkit-scrollbar {
 }
 .main_container .mitwit {
   width: 100%;
-  margin-top: 160px;
-  display: flex;
-  flex-direction: column;
+  margin-top: clamp(60px, 10vw, 160px);
   padding: 0 48px;
   cursor: none;
   box-sizing: border-box;
@@ -396,11 +404,26 @@ body::-webkit-scrollbar {
   justify-content: center;
 }
 .main_container .mitwit .box3_box1 .text_box h4 {
-  font-size: 3rem;
-  font-weight: 500;
-  font-family: var(--main-font);
-  color: rgb(0, 0, 0);
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-family: var(--encode-font);
+  color: rgb(49, 49, 49);
   margin-bottom: 1rem;
+}
+@media (max-width: 1380px) {
+  .main_container .mitwit .box3_box1 .text_box h4 {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 980px) {
+  .main_container .mitwit .box3_box1 .text_box h4 {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 580px) {
+  .main_container .mitwit .box3_box1 .text_box h4 {
+    margin: 0.5rem 0 1rem 0;
+  }
 }
 .main_container .mitwit .box3_box1 .text_box p {
   color: rgb(134, 134, 134);
@@ -410,17 +433,64 @@ body::-webkit-scrollbar {
   line-height: 160%;
   max-width: 480px;
 }
+@media (max-width: 1380px) {
+  .main_container .mitwit .box3_box1 .text_box p {
+    font-size: 1rem;
+    max-width: 350px;
+  }
+}
+@media (max-width: 1200px) {
+  .main_container .mitwit .box3_box1 .text_box p {
+    font-size: 0.9rem;
+    max-width: 300px;
+  }
+}
+@media (max-width: 980px) {
+  .main_container .mitwit .box3_box1 .text_box p {
+    font-size: 0.8rem;
+    max-width: 220px;
+  }
+}
+@media (max-width: 580px) {
+  .main_container .mitwit .box3_box1 .text_box p {
+    margin: 0;
+    max-width: 100%;
+  }
+}
 .main_container .mitwit .box3_box1 .img_box {
   overflow: hidden;
   width: 65%;
-  height: 95vh;
+  aspect-ratio: 11/9;
   position: relative;
 }
 .main_container .mitwit .box3_box1 .img_box .editorial {
+  top: -20%;
   width: 100%;
-  height: 100%;
+  height: 110%;
   object-fit: cover;
   position: absolute;
+}
+@media (max-width: 768px) {
+  .main_container .mitwit .box3_box1 {
+    flex-direction: column;
+  }
+  .main_container .mitwit .box3_box1 .text_box {
+    order: 2;
+  }
+  .main_container .mitwit .box3_box1 .img_box {
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .main_container .mitwit {
+    padding: 0 24px;
+  }
+}
+@media (max-width: 580px) {
+  .main_container .mitwit {
+    padding: 0 16px;
+    cursor: auto;
+  }
 }
 .main_container .zao__section {
   margin-top: 60px;
@@ -454,7 +524,8 @@ body::-webkit-scrollbar {
 .main_container .zao__section .zaoMain .img_box .zaoImage,
 .main_container .zao__section .zaoMain .img_box .newtonImage {
   width: 100%;
-  height: 100%;
+  height: 115%;
+  top: -20%;
   object-fit: cover;
   position: absolute;
 }
@@ -497,9 +568,10 @@ body::-webkit-scrollbar {
   cursor: none;
 }
 .main_container .three_images .three_images_container .three .threeImgBox .threeImg {
+  top: -10%;
   width: 100%;
   position: absolute;
-  height: 110%;
+  height: 120%;
   margin-top: -50px;
   object-fit: cover;
 }
@@ -526,6 +598,7 @@ body::-webkit-scrollbar {
   padding: 48px;
   margin-bottom: 164px;
   box-sizing: border-box;
+  border: 2px solid blue;
 }
 .main_container .lastLast .lastSection {
   width: fit-content;
@@ -535,12 +608,17 @@ body::-webkit-scrollbar {
   height: 640px;
   position: relative;
   overflow: hidden;
+  cursor: none;
 }
 .main_container .lastLast .lastSection .lastImgBox .lastImage {
+  top: -10%;
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 110%;
   object-fit: cover;
+}
+.main_container .lastLast .lastSection .lastTextBox {
+  cursor: none;
 }
 .main_container .lastLast .lastSection .lastTextBox h4 {
   margin-top: 1rem;

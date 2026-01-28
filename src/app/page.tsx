@@ -74,85 +74,124 @@ export default function Home() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [cursorVisible, setCursorVisible] = useState<boolean>(false);
   const router = useRouter();
+    const cursorTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const [lenis, setLenis] = useState<any>(null);
 
-  // useEffect(() => {
-  //   const cursor = cursorRef.current;
-  //   if (!cursor) return;
+  
 
-  //   const size = 96;
-  //   const handleMouseMove = (e: MouseEvent) => {
-  //     cursor.style.left = `${e.clientX - size / 2}px`;
-  //     cursor.style.top = `${e.clientY - size / 2}px`;
-  //   };
+useEffect(() => {
+  const tl = gsap.timeline({paused: true, repeat: -1 });
+  const c1 = document.querySelector(".c1");
+  const c2 = document.querySelector(".c2");
 
-  //   window.addEventListener("mousemove", handleMouseMove);
+  if(!c1 || !c2) return;
 
-  //   return () => {
-  //     window.removeEventListener("mousemove", handleMouseMove);
-  //   };
-  // }, []);
+  tl.to(".c2", {
+    xPercent: 120,
+    duration: 0.5,
+    ease: "power2.in",
+    delay: 1
+  }).to(".c1", {
+    x: 0,
+    duration: 1,
+    ease: "power2.out"
+  }, "-=0.1");
+
+  cursorTimelineRef.current = tl;
+
+  return () => {
+    tl.kill();
+  };
+}, [])
+
+useEffect(() => {
+  if(!cursorTimelineRef.current) return;
+
+  if(cursorVisible) {
+    cursorTimelineRef.current.play();
+  } else {
+    cursorTimelineRef.current.pause();
+    gsap.set([".c1", ".c2"], {clearProps: "all"})
+  }
+}, [cursorVisible])
+
+  useEffect(() => {
+    const cursor = cursorRef.current;
+    if (!cursor) return;
+
+    const size = 96;
+    const handleMouseMove = (e: MouseEvent) => {
+      cursor.style.left = `${e.clientX - size / 2}px`;
+      cursor.style.top = `${e.clientY - size / 2}px`;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
 
   // // Text Animation
   let xPercent = 0;
   let direction = -1;
 
-  // useGSAP(() => {
-  //   gsap.set([firstText.current, secondText.current, thirdText.current], {
-  //     yPercent: 100,
-  //   });
+  useGSAP(() => {
+    gsap.set([firstText.current, secondText.current, thirdText.current], {
+      yPercent: 100,
+    });
 
-  //   gsap.to([firstText.current, secondText.current, thirdText.current], {
-  //     yPercent: 0,
-  //     ease: "power3.inOut",
-  //     duration: 1.3,
-  //     stagger: 0.1,
-  //     scrollTrigger: {
-  //       trigger: ".marquee",
-  //       start: "top 90%",
-  //       once: true,
-  //     },
-  //   });
-  // });
+    gsap.to([firstText.current, secondText.current, thirdText.current], {
+      yPercent: 0,
+      ease: "power3.inOut",
+      duration: 1.3,
+      stagger: 0.1,
+      scrollTrigger: {
+        trigger: ".marquee",
+        start: "top 90%",
+        once: true,
+      },
+    });
+  });
 
-  // useGSAP(() => {
-  //   // Create a ScrollTrigger that controls the marquee direction
-  //   ScrollTrigger.create({
-  //     trigger: document.documentElement,
-  //     start: 0,
-  //     end: "max",
-  //     onUpdate: (self) => {
-  //       // Set direction based on scroll direction
-  //       direction = self.direction;
-  //     },
-  //   });
-  // }, []);
+  useGSAP(() => {
+    // Create a ScrollTrigger that controls the marquee direction
+    ScrollTrigger.create({
+      trigger: document.documentElement,
+      start: 0,
+      end: "max",
+      onUpdate: (self) => {
+        // Set direction based on scroll direction
+        direction = self.direction;
+      },
+    });
+  }, []);
 
-  // useEffect(() => {
-  //   let animationFrameId: number;
+  useEffect(() => {
+    let animationFrameId: number;
 
-  //   const animate = () => {
-  //     if (xPercent <= -100) {
-  //       xPercent = 0;
-  //     } else if (xPercent > 0) {
-  //       xPercent = -100;
-  //     }
-  //     gsap.set(firstText.current, { xPercent: xPercent });
-  //     gsap.set(secondText.current, { xPercent: xPercent });
-  //     gsap.set(thirdText.current, { xPercent: xPercent });
-  //     xPercent += 0.15 * direction;
-  //     animationFrameId = requestAnimationFrame(animate);
-  //   };
+    const animate = () => {
+      if (xPercent <= -100) {
+        xPercent = 0;
+      } else if (xPercent > 0) {
+        xPercent = -100;
+      }
+      gsap.set(firstText.current, { xPercent: xPercent });
+      gsap.set(secondText.current, { xPercent: xPercent });
+      gsap.set(thirdText.current, { xPercent: xPercent });
+      xPercent += 0.15 * direction;
+      animationFrameId = requestAnimationFrame(animate);
+    };
 
-  //   animationFrameId = requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
 
-  //   // Add cleanup
-  //   return () => {
-  //     if (animationFrameId) {
-  //       cancelAnimationFrame(animationFrameId);
-  //     }
-  //   };
-  // }, []);
+    // Add cleanup
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, []);
 
   // // Arrow SVG Animation
   useGSAP(() => {
@@ -356,7 +395,7 @@ export default function Home() {
     px.forEach((img) => {
       const image = img as HTMLImageElement;
       gsap.to(image, {
-        y: 50,
+        top: 0,
         ease: "none",
         scrollTrigger: {
           trigger: image,
@@ -375,6 +414,7 @@ export default function Home() {
         className={`custom-cursor`}
         style={{
           scale: cursorVisible ? 1 : 0,
+          transition: 'scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
         }}
       >
         <Image src={whitearrow} width={36} height={36} alt="svg_arrow" className="c1" />
@@ -541,7 +581,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* <div className="marquee">
+      <div className="marquee">
         <div ref={textRef} className="marquee__text">
           <p ref={firstText}>
             WORK <span></span>
@@ -554,6 +594,10 @@ export default function Home() {
           </p>
         </div>
       </div>
+
+
+
+      
       <HoverAnimation
         imageCount={imgArray.length}
         imageSelector=".editorial"
@@ -568,7 +612,7 @@ export default function Home() {
                 <p className="tardy">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
                   ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
-                  distinctio nisi expedita veritatis? Veritatis quia quam iste ipsa non!
+  
                 </p>
               </div>
               <div className="img_box">
@@ -586,12 +630,12 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div></div>
+
           </>
         )}
       </HoverAnimation>
 
-      <section className="zao__section">
+      {/* <section className="zao__section">
         <HoverAnimation
           imageCount={imgArray2.length}
           imageSelector=".newtonImage"

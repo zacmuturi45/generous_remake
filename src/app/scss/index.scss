@@ -71,6 +71,14 @@ body::-webkit-scrollbar {
   .c1 {
     transform: translateX(-125%);
   }
+
+  @media (hover: none) and (pointer: coarse) {
+    display: none;
+  }
+
+  @media (max-width: 580px) {
+    display: none;
+  }
 }
 .custom-cursor .visible {
   opacity: 1;
@@ -353,13 +361,13 @@ body::-webkit-scrollbar {
     }
   }
   .marquee {
-    margin-top: 240px;
+    margin-top: clamp(80px, 20vw, 240px);
     width: 100%;
     overflow: hidden;
     .marquee__text {
       display: flex;
       p {
-        font-size: 448px;
+        font-size: clamp(144px, 24vw, 448px);
         margin: 0;
         line-height: 1;
         font-family: var(--main-font);
@@ -368,9 +376,9 @@ body::-webkit-scrollbar {
         display: flex;
         align-items: center;
         span {
-          margin: 0 6.5rem;
-          width: 100px;
-          height: 100px;
+          margin: 0 clamp(1rem, 5vw, 6.5rem);
+          width: clamp(20px, 8vw, 100px);
+          height: clamp(20px, 8vw, 100px);
           border-radius: 50%;
           background-color: black;
           display: inline-block;
@@ -381,9 +389,7 @@ body::-webkit-scrollbar {
   }
   .mitwit {
     width: 100%;
-    margin-top: 160px;
-    display: flex;
-    flex-direction: column;
+    margin-top: clamp(60px, 10vw, 160px);
     padding: 0 48px;
     cursor: none;
     box-sizing: border-box;
@@ -396,11 +402,22 @@ body::-webkit-scrollbar {
         flex-direction: column;
         justify-content: center;
         h4 {
-          font-size: 3rem;
-          font-weight: 500;
-          font-family: var(--main-font);
-          color: rgb(0, 0, 0);
+          font-size: 2.5rem;
+          font-weight: 400;
+          font-family: var(--encode-font);
+          color: rgb(49, 49, 49);
           margin-bottom: 1rem;
+          @media (max-width: 1380px) {
+            font-size: 2rem;
+          }
+
+          @media (max-width: 980px) {
+            font-size: 1.5rem;
+          }
+
+          @media (max-width: 580px) {
+            margin: 0.5rem 0 1rem 0;
+          }
         }
         p {
           color: rgb(134, 134, 134);
@@ -409,21 +426,56 @@ body::-webkit-scrollbar {
           font-size: 1.3rem;
           line-height: 160%;
           max-width: 480px;
+          @media (max-width: 1380px) {
+            font-size: 1rem;
+            max-width: 350px;
+          }
+
+          @media (max-width: 1200px) {
+            font-size: 0.9rem;
+            max-width: 300px;
+          }
+
+          @media (max-width: 980px) {
+            font-size: 0.8rem;
+            max-width: 220px;
+          }
+          @media (max-width: 580px) {
+            margin: 0;
+            max-width: 100%;
+          }
         }
       }
       .img_box {
-        //
         overflow: hidden;
         width: 65%;
-        height: 95vh;
+        aspect-ratio: 11/9;
         position: relative;
         .editorial {
+          top: -20%;
           width: 100%;
-          height: 100%;
+          height: 110%;
           object-fit: cover;
           position: absolute;
         }
       }
+      @media (max-width: 768px) {
+        flex-direction: column;
+
+        .text_box {
+          order: 2;
+        }
+        .img_box {
+          width: 100%;
+        }
+      }
+    }
+    @media (max-width: 768px) {
+      padding: 0 24px;
+    }
+    @media (max-width: 580px) {
+      padding: 0 16px;
+      cursor: auto;
     }
   }
   // ZAO SECTION
@@ -457,11 +509,11 @@ body::-webkit-scrollbar {
         overflow: hidden;
         width: 100%;
         position: relative;
-        // border: 1px solid red;
         .zaoImage,
         .newtonImage {
           width: 100%;
-          height: 100%;
+          height: 115%;
+          top: -20%;
           object-fit: cover;
           position: absolute;
         }
@@ -507,9 +559,10 @@ body::-webkit-scrollbar {
           height: 440px;
           cursor: none;
           .threeImg {
+            top: -10%;
             width: 100%;
             position: absolute;
-            height: 110%;
+            height: 120%;
             margin-top: -50px;
             object-fit: cover;
           }
@@ -542,6 +595,7 @@ body::-webkit-scrollbar {
     padding: 48px;
     margin-bottom: 164px;
     box-sizing: border-box;
+    border: 2px solid blue;
     .lastSection {
       width: fit-content;
       .lastImgBox {
@@ -549,14 +603,17 @@ body::-webkit-scrollbar {
         height: 640px;
         position: relative;
         overflow: hidden;
+        cursor: none;
         .lastImage {
+          top: -10%;
           position: absolute;
           width: 100%;
-          height: 100%;
+          height: 110%;
           object-fit: cover;
         }
       }
       .lastTextBox {
+        cursor: none;
         h4 {
           margin-top: 1rem;
           font-size: 2rem;

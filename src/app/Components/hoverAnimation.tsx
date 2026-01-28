@@ -35,11 +35,11 @@ export function HoverAnimation({
 
     // Create timeline
     const tl = gsap.timeline({ paused: true });
-    const gs = gsap.timeline({ paused: true, repeat: -1 });
+    // const gs = gsap.timeline({ paused: true, repeat: -1 });
     const textElement = container.querySelector(textSelector);
 
     timelineRef.current = tl;
-    gsRef.current = gs;
+    // gsRef.current = gs;
 
     tl.from(textElement, textAnimationConfig)
       .to(imageSelector, imageAnimationConfig, "<")
@@ -49,23 +49,23 @@ export function HoverAnimation({
         }, imageCycleInterval);
       });
 
-    gs.to(".c2", { xPercent: 120, duration: 0.5, ease: "power2.in", delay: 1 }).to(
-      ".c1",
-      { x: 0, duration: 1, ease: "power2.out" },
-      "-=0.1"
-    );
+    // gs.to(".c2", { xPercent: 120, duration: 0.5, ease: "power2.in", delay: 1 }).to(
+    //   ".c1",
+    //   { x: 0, duration: 1, ease: "power2.out" },
+    //   "-=0.1"
+    // );
 
     // Event handlers
     const handleMouseEnter = () => {
-      onVisibilityChange?.(true);
-      gs.play();
+      onVisibilityChange?.(true, container);
+      // gs.play();
       tl.play();
     };
 
     const handleMouseLeave = () => {
       onVisibilityChange?.(false);
       tl.reverse();
-      gs.pause();
+      // gs.pause();
 
       if (changeZInterval.current) {
         clearInterval(changeZInterval.current);
@@ -86,7 +86,7 @@ export function HoverAnimation({
       }
 
       tl.kill();
-      gs.kill();
+      // gs.kill();
     };
   }, [
     imageCount,

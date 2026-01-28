@@ -47,7 +47,7 @@ interface HoverAnimationProps {
   textSelector?: string;
   imageSelector?: string;
   imageCycleInterval?: number;
-  onVisibilityChange?: (visible: boolean) => void;
+  onVisibilityChange?: (visible: boolean, container?: Element) => void;
   textAnimationConfig?: gsap.TweenVars;
   imageAnimationConfig?: gsap.TweenVars;
   className?: string;
