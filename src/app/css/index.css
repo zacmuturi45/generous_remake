@@ -126,6 +126,12 @@ body::-webkit-scrollbar {
     right: -2rem;
   }
 }
+@media (max-width: 580px) {
+  .main_container .hero_section .hero_carousel_container .circular__text_container {
+    bottom: 1.5rem;
+    right: -2rem;
+  }
+}
 .main_container .about {
   display: flex;
   flex-direction: column;
@@ -1207,7 +1213,7 @@ body::-webkit-scrollbar {
 @media (max-width: 580px) {
   .carousel__progress_container {
     left: 16px;
-    bottom: 64px;
+    bottom: 84px;
   }
 }
 .carousel__text {

@@ -121,10 +121,13 @@ body::-webkit-scrollbar {
         position: absolute;
         bottom: 100px;
         right: 24px;
-        // border: 2px solid red;
         z-index: 2;
         @media (max-width: 768px) {
           bottom: 0;
+          right: -2rem;
+        }
+        @media (max-width: 580px) {
+          bottom: 1.5rem;
           right: -2rem;
         }
       }
@@ -1207,7 +1210,7 @@ body::-webkit-scrollbar {
     }
     @media (max-width: 580px) {
       left: 16px;
-      bottom: 64px;
+      bottom: 84px;
     }
   }
 
