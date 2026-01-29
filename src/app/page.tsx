@@ -702,7 +702,7 @@ export default function Home() {
         </HoverAnimation>
       </div>
 
-      {/* <div className="three_images">
+      <div className="three_images">
         <div className="three_images_container">
           {threeImages.map((imgObj, i) => (
             <HoverAnimation
@@ -750,7 +750,6 @@ export default function Home() {
                       {" "}
                       Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
                       ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
-                      distinctio nisi expedita veritatis? Veritatis quia quam iste ipsa non!
                     </p>
                   </div>
                 </>
@@ -758,9 +757,9 @@ export default function Home() {
             </HoverAnimation>
           ))}
         </div>
-      </div> */}
+      </div>
 
-      {/* <section className="zao__section">
+      <div className="zao__section">
         <HoverAnimation
           imageCount={imgArray4.length}
           imageSelector=".zaoImage"
@@ -830,9 +829,9 @@ export default function Home() {
             </>
           )}
         </HoverAnimation>
-      </section> */}
+      </div>
 
-      {/* <section className="lastLast">
+      <div className="lastLast">
         <HoverAnimation
           imageCount={3}
           imageSelector=".lastImage"
@@ -865,7 +864,7 @@ export default function Home() {
             </>
           )}
         </HoverAnimation>
-      </section> */}
+      </div>
     </div>
   );
 }

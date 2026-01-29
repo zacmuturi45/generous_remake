@@ -36,3 +36,8 @@ export { default as vine3 } from "./vine3.jpg";
 export { default as marble1 } from "./marble.jpeg";
 export { default as marble2 } from "./marble2.jpg";
 export { default as marble3 } from "./marble3.webp";
+
+export { default as office1 } from "./office1.jpg";
+export { default as office2 } from "./office2.jpg";
+export { default as office3 } from "./office3.webp";
+export { default as office4 } from "./office4.jpg";
