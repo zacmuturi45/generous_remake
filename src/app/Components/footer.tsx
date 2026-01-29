@@ -257,9 +257,9 @@ export default function Footer() {
               </div>
             </div>
             <div className="sectOneAddress">
-              <span>Address</span>
+              <span className="nth1">Address:</span>
               <AnimatedLink text="Europa Towers - Westlands, Nairobi" className="fortyFive" />
-              <span>Telephone</span>
+              <span className="nth2">Telephone:</span>
               <p>+254 707 486 258</p>
             </div>
             <div className="sectOneCredits">
@@ -292,7 +292,14 @@ export default function Footer() {
           </div>
 
           <div className="sectTwo">
-            <CircularText />
+            <CircularText
+              rotatingText="* SCROLL UP * SCROLL UP * SCROLL UP"
+              direction={-1}
+              backgroundColor="#ea5b0c"
+              d1="M 75 95 L 75 55 C 75.15 65.5 84 76 88 72"
+              d2="M 75 95 L 75 55 C 74.85 65.5 66 76 62 72"
+              scrollTarget={"top"}
+            />
           </div>
         </div>
       </div>

@@ -45,6 +45,7 @@ import Button from "./Components/button";
 import { HoverAnimation } from "./Components/hoverAnimation";
 import { useRouter } from "next/navigation";
 import CircularText from "./Components/spinning_text";
+import { useLenis } from "./Components/lenis/LenisContext";
 
 gsap.registerPlugin(ScrollTrigger, GSDevTools);
 
@@ -75,7 +76,8 @@ export default function Home() {
   const [cursorVisible, setCursorVisible] = useState<boolean>(false);
   const router = useRouter();
   const cursorTimelineRef = useRef<gsap.core.Timeline | null>(null);
-  const [lenis, setLenis] = useState<any>(null);
+  // const [lenis, setLenis] = useState<any>(null);
+  const { lenis } = useLenis();
 
   useEffect(() => {
     const tl = gsap.timeline({ paused: true, repeat: -1 });
@@ -259,40 +261,40 @@ export default function Home() {
   });
 
   // LENIS
-  useEffect(() => {
-    const initLenis = async () => {
-      const Lenis = (await import("lenis")).default;
+  // useEffect(() => {
+  //   const initLenis = async () => {
+  //     const Lenis = (await import("lenis")).default;
 
-      const lenisInstance = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: "vertical",
-        gestureOrientation: "vertical",
-        smoothWheel: true,
-        wheelMultiplier: 1,
-        touchMultiplier: 2,
-        infinite: false,
-      });
+  //     const lenisInstance = new Lenis({
+  //       duration: 1.2,
+  //       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  //       orientation: "vertical",
+  //       gestureOrientation: "vertical",
+  //       smoothWheel: true,
+  //       wheelMultiplier: 1,
+  //       touchMultiplier: 2,
+  //       infinite: false,
+  //     });
 
-      setLenis(lenisInstance); // Store in state instead of ref
+  //     setLenis(lenisInstance); // Store in state instead of ref
 
-      lenisInstance.on("scroll", ScrollTrigger.update);
+  //     lenisInstance.on("scroll", ScrollTrigger.update);
 
-      gsap.ticker.add((time) => {
-        lenisInstance.raf(time * 1000);
-      });
+  //     gsap.ticker.add((time) => {
+  //       lenisInstance.raf(time * 1000);
+  //     });
 
-      gsap.ticker.lagSmoothing(0);
-    };
+  //     gsap.ticker.lagSmoothing(0);
+  //   };
 
-    initLenis();
+  //   initLenis();
 
-    return () => {
-      if (lenis) {
-        lenis.destroy();
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (lenis) {
+  //       lenis.destroy();
+  //     }
+  //   };
+  // }, []);
 
   // CAROUSEL ARRAY ITEMS
   const carouselItems: CarouselItem[] = [
@@ -427,7 +429,15 @@ export default function Home() {
         <div className="hero_carousel_container">
           <Carousel lenis={lenis} items={carouselItems} />
           <div className="circular__text_container">
-            <CircularText lenis={lenis} />
+            <CircularText
+              lenis={lenis}
+              rotatingText="* SCROLL * SCROLL * SCROLL * SCROLL"
+              backgroundColor="rgb(255, 255, 255)"
+              direction={1}
+              d1="M 75 55 L 75 95 C 75.15 84.5 84 74 88 78"
+              d2="M 75 55 L 75 95 C 74.85 84.5 66 74 62 78"
+              scrollTarget={"next-section"}
+            />
           </div>
         </div>
       </section>

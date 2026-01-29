@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { GSDevTools } from "../GSAP/gsap_plugins";
 import { useScrollLock } from "./scrollLock";
+import { linkArray } from "../../../public/assets";
 
 export default function Navbar() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,13 +27,6 @@ export default function Navbar() {
   const bottomBarRef = useRef<HTMLDivElement>(null);
 
   useScrollLock(isPanelActive);
-
-  const linkArray = [
-    { link: "Work", id: "ln12", href: "/" },
-    { link: "Vision", id: "ln22", href: "/" },
-    { link: "L'agence", id: "ln32", href: "/" },
-    { link: "Contact", id: "ln42", href: "/" },
-  ];
 
   const handlePanelClose = () => {
     setIsPanelActive(false);

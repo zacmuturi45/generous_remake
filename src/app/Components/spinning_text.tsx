@@ -4,20 +4,52 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import "../css/index.css";
 
-const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
+const CircularText: React.FC<{
+  lenis?: any;
+  rotatingText: string;
+  backgroundColor: string;
+  d1: string;
+  d2: string;
+  direction: number;
+  scrollTarget: "next-section" | "top" | number;
+}> = ({
+  lenis,
+  rotatingText = "* SCROLL * SCROLL * SCROLL * SCROLL",
+  backgroundColor = "rgb(255, 255, 255)",
+  d1,
+  d2,
+  direction,
+  scrollTarget = "next-section",
+}) => {
   const textRef = useRef<SVGTextElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const animationRef = useRef<gsap.core.Tween | null>(null);
   const arrowTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const [isHovering, setIsHovering] = useState(false);
-  const mm = gsap.matchMedia(); // Create matchMedia instance
 
+  // Text rotation animation
   useEffect(() => {
-    // Set up matchMedia breakpoints
-    mm.add("(max-width: 768px)", () => {
-      // Mobile: No animations, just setup for click
-      console.log("Mobile mode: animations disabled");
+    const mm = gsap.matchMedia();
 
-      // Kill any existing animations
+    mm.add("(min-width: 769px)", () => {
+      if (textRef.current) {
+        animationRef.current = gsap.to(textRef.current, {
+          rotation: 360,
+          duration: 30,
+          ease: "none",
+          repeat: -1,
+          transformOrigin: "50% 50%",
+        });
+      }
+
+      return () => {
+        if (animationRef.current) {
+          animationRef.current.kill();
+        }
+      };
+    });
+
+    mm.add("(max-width: 768px)", () => {
       if (animationRef.current) {
         animationRef.current.kill();
       }
@@ -25,147 +57,88 @@ const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
         arrowTimelineRef.current.kill();
       }
 
-      // Ensure arrow is visible and centered
       gsap.set(".arrow", {
         y: 0,
         opacity: 1,
       });
-
-      return () => {
-        // Cleanup when this breakpoint no longer matches
-        console.log("Exiting mobile mode");
-      };
-    });
-
-    mm.add("(min-width: 581px)", () => {
-      // Desktop: Setup animations
-      console.log("Desktop mode: animations enabled");
-
-      if (textRef.current) {
-        // Create the rotation animation with GSAP
-        animationRef.current = gsap.to(textRef.current, {
-          rotation: 360,
-          duration: 30,
-          ease: "none",
-          repeat: -1,
-          transformOrigin: "50% 50%",
-          paused: false, // Ensure it's playing
-        });
-      }
-
-      // Setup hover effects for desktop
-      const handleMouseEnter = () => {
-        setIsHovering(true);
-        if (animationRef.current) {
-          gsap.to(animationRef.current, {
-            timeScale: 5,
-            duration: 0.5,
-            ease: "circ.out",
-          });
-        }
-      };
-
-      const handleMouseLeave = () => {
-        setIsHovering(false);
-        if (animationRef.current) {
-          gsap.to(animationRef.current, {
-            timeScale: 1,
-            duration: 0.5,
-            ease: "circ.out",
-          });
-        }
-      };
-
-      // Add event listeners for desktop
-      const svg = document.querySelector("svg");
-      if (svg) {
-        svg.addEventListener("mouseenter", handleMouseEnter);
-        svg.addEventListener("mouseleave", handleMouseLeave);
-      }
-
-      return () => {
-        // Cleanup event listeners
-        if (svg) {
-          svg.removeEventListener("mouseenter", handleMouseEnter);
-          svg.removeEventListener("mouseleave", handleMouseLeave);
-        }
-      };
     });
 
     return () => {
-      // Cleanup all matchMedia listeners
       mm.revert();
     };
-  }, []); // Empty dependency array - runs once on mount
+  }, []);
 
-  // Separate effect for arrow animation (desktop only)
+  // Handle hover speed change
   useEffect(() => {
-    // Only run arrow animations on desktop
-    if (window.innerWidth > 768) {
-      if (isHovering) {
-        // Create arrow animation timeline
-        const timeline = gsap.timeline({
-          repeat: -1,
-          onRepeat: () => {
-            if (!isHovering) {
-              timeline.pause();
-            }
-          },
-        });
+    if (window.innerWidth > 768 && animationRef.current) {
+      gsap.to(animationRef.current, {
+        timeScale: isHovering ? 5 : 1,
+        duration: 0.5,
+        ease: "circ.out",
+      });
+    }
+  }, [isHovering]);
 
-        timeline.set(".arrow", {
+  // Arrow animation effect
+  useEffect(() => {
+    if (window.innerWidth <= 768) return;
+
+    if (isHovering) {
+      const timeline = gsap.timeline({
+        repeat: -1,
+      });
+
+      timeline.set(".arrow", {
+        y: 0,
+        opacity: 1,
+      });
+
+      timeline.to({}, { duration: 0.3 }, 0);
+
+      timeline.to(
+        ".arrow",
+        {
+          y: 100 * direction,
+          opacity: 0,
+          duration: 0.7,
+          ease: "circ.in",
+        },
+        0.3
+      );
+
+      timeline.to({}, { duration: 0.2 }, 1);
+
+      timeline.set(
+        ".arrow",
+        {
+          y: -100 * direction,
+          opacity: 0,
+        },
+        1.2
+      );
+
+      timeline.to(
+        ".arrow",
+        {
           y: 0,
           opacity: 1,
-        });
+          duration: 0.4,
+          ease: "circ.out",
+        },
+        1.2
+      );
 
-        timeline.to({}, { duration: 0.3 }, 0);
-
-        timeline.to(
-          ".arrow",
-          {
-            y: 100,
-            opacity: 0,
-            duration: 0.7,
-            ease: "circ.in",
-          },
-          0.3
-        );
-
-        timeline.to({}, { duration: 0.2 }, 1);
-
-        timeline.set(
-          ".arrow",
-          {
-            y: -100,
-            opacity: 0,
-          },
-          1.2
-        );
-
-        timeline.to(
-          ".arrow",
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.4,
-            ease: "circ.out",
-          },
-          1.2
-        );
-
-        arrowTimelineRef.current = timeline;
-      } else {
-        // Stop the arrow animation and center it
-        if (arrowTimelineRef.current) {
-          arrowTimelineRef.current.pause();
-          gsap.to(".arrow", {
-            y: 0,
-            opacity: 1,
-            duration: 0.5,
-            ease: "circ.out",
-          });
-        }
+      arrowTimelineRef.current = timeline;
+    } else {
+      if (arrowTimelineRef.current) {
+        arrowTimelineRef.current.kill();
       }
+      gsap.to(".arrow", {
+        y: 0,
+        opacity: 1,
+        duration: 0.5,
+        ease: "circ.out",
+      });
     }
 
     return () => {
@@ -173,28 +146,35 @@ const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
         arrowTimelineRef.current.kill();
       }
     };
-  }, [isHovering]);
+  }, [isHovering, direction]);
 
   const handleClick = () => {
-    // Check if lenis exists and is ready
+    let targetPosition: number;
+
+    // Determine scroll target
+    if (scrollTarget === "next-section") {
+      targetPosition = window.innerHeight;
+    } else if (scrollTarget === "top") {
+      targetPosition = 0;
+    } else {
+      targetPosition = scrollTarget;
+    }
+
     if (lenis && typeof lenis.scrollTo === "function") {
-      lenis.scrollTo(window.innerHeight, {
+      lenis.scrollTo(targetPosition, {
         duration: 1.2,
-        // GSAP's circ.inOut easing
         easing: (t: number) => {
           return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
         },
       });
     } else {
-      // Fallback to native smooth scroll
       window.scrollTo({
-        top: window.innerHeight,
+        top: targetPosition,
         behavior: "smooth",
       });
     }
   };
 
-  // Simplified mouse handlers for desktop only
   const handleMouseEnter = () => {
     if (window.innerWidth > 768) {
       setIsHovering(true);
@@ -210,6 +190,7 @@ const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
   return (
     <div>
       <svg
+        ref={svgRef}
         width={150}
         height={150}
         onMouseEnter={handleMouseEnter}
@@ -231,21 +212,21 @@ const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
             <path
               style={{
                 fill: "none",
-                stroke: "rgb(255, 255, 255)",
+                stroke: backgroundColor,
                 strokeWidth: "3px",
                 strokeLinejoin: "round",
               }}
-              d="M 75 55 L 75 95 C 75.15 84.5 84 74 88 78"
+              d={d1}
             />
             {/* Left arm */}
             <path
               style={{
                 fill: "none",
-                stroke: "rgb(255, 255, 255)",
+                stroke: backgroundColor,
                 strokeWidth: "3px",
                 strokeLinejoin: "round",
               }}
-              d="M 75 55 L 75 95 C 74.85 84.5 66 74 62 78"
+              d={d2}
             />
           </g>
         </g>
@@ -261,7 +242,7 @@ const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
           }}
         >
           <textPath href="#curve" textLength={340} lengthAdjust={"spacing"}>
-            * SCROLL * SCROLL * SCROLL * SCROLL
+            {rotatingText}
           </textPath>
         </text>
       </svg>
@@ -270,3 +251,10 @@ const CircularText: React.FC<{ lenis?: any }> = ({ lenis }) => {
 };
 
 export default CircularText;
+
+// Moved matchMedia() inside useEffect - Creating it on every render was causing issues
+// Removed duplicate event listeners - The matchMedia was adding listeners AND you had inline React handlers
+// Separated concerns - One effect for rotation, one for hover speed, one for arrow animation
+// Fixed cleanup - Each effect properly cleans up its own animations
+
+// This was causing an issue with the arrow direction. Previously with matchMedia() inside useEffect, the arrow wasn't changing direction from the prop it was using.

@@ -41,9 +41,9 @@ body {
   padding: 0;
 }
 
-body::-webkit-scrollbar {
-  display: none;
-}
+// body::-webkit-scrollbar {
+//   display: none;
+// }
 .custom-cursor {
   position: fixed;
   width: 96px;
@@ -641,6 +641,7 @@ body::-webkit-scrollbar {
       .three {
         display: flex;
         flex-direction: column;
+        flex: 1;
         .threeImgBox {
           overflow: hidden;
           position: relative;
@@ -1526,6 +1527,10 @@ svg {
   flex-shrink: 0;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   fill: rgb(125, 125, 125);
+  @media (max-width: 1380px) {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .animated-link__text {
@@ -1533,16 +1538,21 @@ svg {
   font-size: 24px;
   font-weight: 400;
   transition: color 0.3s ease;
+  font-size: clamp(0.9rem, 1.3vw + 0.2rem, 1.5rem);
 }
 
 // FOOTER
 .footer_main {
-  min-height: 100vh;
+  min-height: fit-content;
   width: 100vw;
   box-sizing: border-box;
   background-color: black;
   overflow: hidden;
   padding-bottom: 32px;
+  @media (max-width: 980px) {
+    min-height: fit-content;
+    padding: 0;
+  }
   > * {
     color: white;
     font-family: var(--secondary-font);
@@ -1569,54 +1579,150 @@ svg {
           margin: 0;
           color: white;
           font-family: var(--secondary-font);
-          font-size: 144px;
+          font-size: clamp(2.5rem, 7.5vw + 0.5rem, 9rem);
           font-weight: 300;
+        }
+      }
+    }
+    @media (max-width: 1380px) {
+      padding-top: 32px;
+      .mq {
+        .mqItem {
+          .plus {
+            width: 48px;
+            height: 48px;
+          }
+        }
+      }
+    }
+    @media (max-width: 980px) {
+      .mq {
+        .mqItem {
+          gap: 1rem;
+          .plus {
+            width: 32px;
+            height: 32px;
+          }
+        }
+      }
+    }
+    @media (max-width: 768px) {
+      background-color: rgb(33, 33, 33);
+      padding: 24px 0;
+      .mq {
+        .mqItem {
+          .plus {
+            width: 24px;
+            height: 24px;
+          }
         }
       }
     }
   }
   .footerSectionTwo {
+    width: 100vw;
+    box-sizing: border-box;
+    display: flex;
     .footerSectionTwoContainer {
       margin-top: 140px;
       padding-left: 200px;
       display: flex;
+      box-sizing: border-box;
+      width: 100%;
+      @media (max-width: 1500px) {
+        padding-left: 84px;
+      }
+      @media (max-width: 1380px) {
+        margin-top: 64px;
+        padding: 0 48px;
+      }
+      @media (max-width: 980px) {
+        padding: 0;
+      }
       .sectOne {
         display: flex;
         flex-direction: column;
+        box-sizing: border-box;
+        // border: 2px solid blue;
+        @media (max-width: 1380px) {
+          width: 100%;
+        }
+        @media (max-width: 980px) {
+          padding: 0 16px 32px 16px;
+        }
+        @media (max-width: 768px) {
+          .sectOneMenu {
+            order: 2;
+          }
+          .sectOneBonjour {
+            order: 1;
+          }
+          .sectOneAddress {
+            order: 3;
+          }
+          .sectOneCredits {
+            order: 4;
+          }
+        }
         .sectOneMenu {
           display: flex;
-          // border: 2px solid red;
-          gap: 240px;
+          gap: 200px;
           .menu__one {
+            border: 2px solid red;
             display: flex;
-            // border: 2px solid blue;
             gap: 100px;
             span {
-              font-size: 24px;
+              font-size: clamp(0.9rem, 1.3vw + 0.2rem, 1.5rem);
               color: gray;
               font-weight: 500;
             }
             .menu_items {
-              // border: 2px solid green;
               display: grid;
               grid-template-columns: repeat(2, 1fr);
               gap: 1.5rem;
             }
+            @media (max-width: 1380px) {
+              gap: 1.5rem;
+              .menu_items {
+                gap: 0.5rem;
+                div {
+                  margin-right: 1rem;
+                }
+              }
+            }
+            @media (max-width: 768px) {
+              display: none;
+            }
           }
           .menu__two {
-            // border: 2px solid blue;
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             span {
-              font-size: 24px;
+              font-size: clamp(0.9rem, 1.3vw + 0.2rem, 1.5rem);
               color: gray;
               font-weight: 500;
               margin-right: 48px;
+              width: max-content;
+              @media (max-width: 768px) {
+                display: none;
+              }
             }
+            @media (max-width: 1380px) {
+              gap: 0;
+            }
+            @media (max-width: 768px) {
+              div {
+                margin-right: 0.5rem;
+              }
+            }
+          }
+          @media (max-width: 980px) {
+            gap: 0;
+            justify-content: space-between;
+            margin: 1rem 0;
           }
         }
         .sectOneBonjour {
-          // border: 2px solid blue;
           padding-top: 100px;
           cursor: pointer;
           div {
@@ -1624,7 +1730,7 @@ svg {
             overflow: hidden;
           }
           p {
-            font-size: 140px;
+            font-size: clamp(2rem, 8vw + 0.5rem, 8.75rem);
             margin: 0;
             line-height: 1;
             letter-spacing: 3px;
@@ -1642,6 +1748,12 @@ svg {
             width: 0%;
             margin-top: 0.3rem;
           }
+          @media (max-width: 1380px) {
+            padding-top: 48px;
+          }
+          @media (max-width: 768px) {
+            padding-top: 0;
+          }
         }
         .sectOneAddress {
           display: flex;
@@ -1649,17 +1761,38 @@ svg {
           margin-top: 32px;
           justify-content: space-between;
           span {
-            font-size: 24px;
+            font-size: clamp(0.9rem, 1.3vw + 0.2rem, 1.5rem);
             color: gray;
             font-weight: 500;
           }
           p {
-            font-size: 24px;
+            font-size: clamp(0.9rem, 1.3vw + 0.2rem, 1.5rem);
             color: rgb(255, 255, 255);
             font-weight: 500;
             margin-right: 48px;
             margin: 0;
             line-height: 1;
+          }
+          @media (max-width: 1380px) {
+            margin-top: 1rem;
+            justify-content: flex-start;
+            .nth2 {
+              margin-left: 2.5rem;
+            }
+            span {
+              margin-right: 1rem;
+            }
+          }
+          @media (max-width: 768px) {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-top: 0;
+            gap: 1rem;
+            .nth1,
+            .nth2 {
+              margin: 0 0 -0.5rem 0;
+            }
           }
         }
         .sectOneCredits {
@@ -1669,7 +1802,7 @@ svg {
           padding: 100px 0 12px 0;
           p {
             margin: 0;
-            font-size: 24px;
+            font-size: clamp(0.9rem, 1.3vw + 0.2rem, 1.5rem);
             color: rgb(255, 255, 255);
             font-weight: 500;
           }
@@ -1681,7 +1814,7 @@ svg {
               left: 0.5rem;
               span {
                 width: max-content;
-                font-size: 22px;
+                font-size: clamp(0.9rem, 1.3vw, 1.5rem);
                 color: gray;
                 font-weight: 500;
                 margin-right: 1rem;
@@ -1706,6 +1839,16 @@ svg {
               }
             }
           }
+          @media (max-width: 1380px) {
+            padding: 64px 0 12px 0;
+          }
+          @media (max-width: 768px) {
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            padding: 48px 0 0 0;
+          }
         }
       }
       .sectTwo {
@@ -1713,19 +1856,15 @@ svg {
         display: flex;
         justify-content: center;
         align-items: center;
+        @media (max-width: 1680px) {
+          > * {
+            transform: scale(0.8);
+          }
+        }
+        @media (max-width: 1380px) {
+          display: none;
+        }
       }
     }
-  }
-}
-
-// sandbox
-.sandbox {
-  position: relative;
-  height: 100vh;
-  width: 100%;
-  border: 2px solid red;
-  img {
-    position: absolute;
-    inset: 0;
   }
 }

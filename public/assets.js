@@ -41,3 +41,10 @@ export { default as office1 } from "./office1.jpg";
 export { default as office2 } from "./office2.jpg";
 export { default as office3 } from "./office3.webp";
 export { default as office4 } from "./office4.jpg";
+
+export const linkArray = [
+  { link: "Work", id: "ln12", href: "/" },
+  { link: "Vision", id: "ln22", href: "/" },
+  { link: "L'agence", id: "ln32", href: "/" },
+  { link: "Contact", id: "ln42", href: "/" },
+];

@@ -3,6 +3,7 @@
 import { createContext, useContext, useRef } from "react";
 import Navbar from "./Components/navbar";
 import Footer from "./Components/footer";
+import { Lenisprovider } from "./Components/lenis/LenisContext";
 
 const AnimationContext = createContext<AnimationContextType>({
   isReady: false,
@@ -23,9 +24,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main ref={contentRef} className="main_content">
-          <Navbar />
-          {children}
-          <Footer />
+          <Lenisprovider>
+            <Navbar />
+            {children}
+            <Footer />
+          </Lenisprovider>
         </main>
       </body>
     </html>
