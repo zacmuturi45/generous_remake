@@ -7,7 +7,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { GSDevTools } from "../GSAP/gsap_plugins";
 import { useScrollLock } from "./scrollLock";
-import { linkArray } from "../../../public/assets";
+import { linkArray, linkBlack, linkWhite } from "../../../public/assets";
 
 export default function Navbar() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -180,13 +180,13 @@ export default function Navbar() {
           setIsPanelVisible(false);
           gsap.set([topBarRef.current, bottomBarRef.current], {
             rotation: 0,
-            backgroundColor: "#fff",
+            backgroundColor: isUp ? "rgb(0, 0, 0)" : "#fff",
             transformOrigin: "left center",
           });
           // Reset hamburger bars to original state
           gsap.to([topBarRef.current, bottomBarRef.current], {
             scaleX: 1,
-            backgroundColor: "#fff",
+            backgroundColor: isUp ? "rgb(0, 0, 0)" : "#fff",
             stagger: 0.2,
           });
           gsap.set(topBarRef.current, { top: "20px" });
@@ -349,7 +349,12 @@ export default function Navbar() {
       )}
       <div className="navContainer">
         <div className="logo">
-          <h4 style={isPanelActive ? { color: "black" } : {}}>Carousel</h4>
+          {isUp ? (
+            <Image src={linkBlack} width={124} height={124} alt="linkBlack" />
+          ) : (
+            <Image src={linkWhite} width={124} height={124} alt="linkWhite" />
+          )}
+          {/* <h4 style={isPanelActive ? { color: "black" } : {}}>Carousel</h4> */}
         </div>
 
         <div className="nav_links_container">

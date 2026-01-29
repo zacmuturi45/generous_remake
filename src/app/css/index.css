@@ -124,8 +124,8 @@ body {
 }
 @media (max-width: 580px) {
   .main_container .hero_section .hero_carousel_container .circular__text_container {
-    bottom: 1.5rem;
-    right: -2rem;
+    bottom: 2.5rem;
+    right: -3rem;
   }
 }
 .main_container .about {
@@ -1171,6 +1171,7 @@ body {
 @media (max-width: 580px) {
   .navbar {
     height: 88px;
+    padding: 0 16px;
   }
   .navbar .whitediv {
     height: 56px;
@@ -1323,7 +1324,7 @@ body {
   left: 24px;
   display: flex;
   flex-direction: column;
-  z-index: 2;
+  z-index: 3;
   gap: 1.5rem;
 }
 @media (max-width: 768px) {
@@ -1334,7 +1335,7 @@ body {
 @media (max-width: 580px) {
   .carousel__progress_container {
     left: 16px;
-    bottom: 84px;
+    bottom: 100px;
   }
 }
 .carousel__text {
@@ -1697,7 +1698,6 @@ svg .spin_text {
   gap: 200px;
 }
 .footer_main .footerSectionTwo .footerSectionTwoContainer .sectOne .sectOneMenu .menu__one {
-  border: 2px solid red;
   display: flex;
   gap: 100px;
 }

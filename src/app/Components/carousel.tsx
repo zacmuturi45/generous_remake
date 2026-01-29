@@ -36,7 +36,7 @@ export const Carousel: React.FC<CarouselProps> = ({ items, autoplayDuration = 50
     tl.to(
       darkOverlay,
       {
-        backgroundColor: "rgba(0, 0, 0, 0)",
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
         duration: 1,
         ease: "power1.in",
       },
@@ -155,7 +155,7 @@ export const Carousel: React.FC<CarouselProps> = ({ items, autoplayDuration = 50
                   style={{ objectFit: "cover" }}
                   priority
                   sizes="100vw"
-                  quality={85}
+                  quality={100}
                 />
               </div>
             );

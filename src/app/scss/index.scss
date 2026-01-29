@@ -127,8 +127,8 @@ body {
           right: -2rem;
         }
         @media (max-width: 580px) {
-          bottom: 1.5rem;
-          right: -2rem;
+          bottom: 2.5rem;
+          right: -3rem;
         }
       }
     }
@@ -1113,6 +1113,7 @@ body {
   }
   @media (max-width: 580px) {
     height: 88px;
+    padding: 0 16px;
     .whitediv {
       height: 56px;
     }
@@ -1297,7 +1298,7 @@ body {
     left: 24px;
     display: flex;
     flex-direction: column;
-    z-index: 2;
+    z-index: 3;
     gap: 1.5rem;
 
     @media (max-width: 768px) {
@@ -1305,7 +1306,7 @@ body {
     }
     @media (max-width: 580px) {
       left: 16px;
-      bottom: 84px;
+      bottom: 100px;
     }
   }
 
@@ -1668,7 +1669,6 @@ svg {
           display: flex;
           gap: 200px;
           .menu__one {
-            border: 2px solid red;
             display: flex;
             gap: 100px;
             span {
