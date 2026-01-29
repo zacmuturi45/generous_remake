@@ -74,46 +74,48 @@ export default function Home() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [cursorVisible, setCursorVisible] = useState<boolean>(false);
   const router = useRouter();
-    const cursorTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const cursorTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const [lenis, setLenis] = useState<any>(null);
 
-  
+  useEffect(() => {
+    const tl = gsap.timeline({ paused: true, repeat: -1 });
+    const c1 = document.querySelector(".c1");
+    const c2 = document.querySelector(".c2");
 
-useEffect(() => {
-  const tl = gsap.timeline({paused: true, repeat: -1 });
-  const c1 = document.querySelector(".c1");
-  const c2 = document.querySelector(".c2");
+    if (!c1 || !c2) return;
 
-  if(!c1 || !c2) return;
+    tl.to(".c2", {
+      xPercent: 120,
+      duration: 0.5,
+      ease: "power2.in",
+      delay: 1,
+    }).to(
+      ".c1",
+      {
+        x: 0,
+        duration: 1,
+        ease: "power2.out",
+      },
+      "-=0.1"
+    );
 
-  tl.to(".c2", {
-    xPercent: 120,
-    duration: 0.5,
-    ease: "power2.in",
-    delay: 1
-  }).to(".c1", {
-    x: 0,
-    duration: 1,
-    ease: "power2.out"
-  }, "-=0.1");
+    cursorTimelineRef.current = tl;
 
-  cursorTimelineRef.current = tl;
+    return () => {
+      tl.kill();
+    };
+  }, []);
 
-  return () => {
-    tl.kill();
-  };
-}, [])
+  useEffect(() => {
+    if (!cursorTimelineRef.current) return;
 
-useEffect(() => {
-  if(!cursorTimelineRef.current) return;
-
-  if(cursorVisible) {
-    cursorTimelineRef.current.play();
-  } else {
-    cursorTimelineRef.current.pause();
-    gsap.set([".c1", ".c2"], {clearProps: "all"})
-  }
-}, [cursorVisible])
+    if (cursorVisible) {
+      cursorTimelineRef.current.play();
+    } else {
+      cursorTimelineRef.current.pause();
+      gsap.set([".c1", ".c2"], { clearProps: "all" });
+    }
+  }, [cursorVisible]);
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -414,7 +416,7 @@ useEffect(() => {
         className={`custom-cursor`}
         style={{
           scale: cursorVisible ? 1 : 0,
-          transition: 'scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          transition: "scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
         }}
       >
         <Image src={whitearrow} width={36} height={36} alt="svg_arrow" className="c1" />
@@ -595,9 +597,6 @@ useEffect(() => {
         </div>
       </div>
 
-
-
-      
       <HoverAnimation
         imageCount={imgArray.length}
         imageSelector=".editorial"
@@ -612,7 +611,6 @@ useEffect(() => {
                 <p className="tardy">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
                   ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
-  
                 </p>
               </div>
               <div className="img_box">
@@ -630,12 +628,11 @@ useEffect(() => {
                 ))}
               </div>
             </div>
-
           </>
         )}
       </HoverAnimation>
 
-      {/* <section className="zao__section">
+      <div className="zao__section">
         <HoverAnimation
           imageCount={imgArray2.length}
           imageSelector=".newtonImage"
@@ -663,7 +660,6 @@ useEffect(() => {
                 <p className="zao_p">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
                   ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
-                  distinctio nisi expedita veritatis? Veritatis quia quam iste ipsa non!
                 </p>
               </div>
             </>
@@ -697,16 +693,16 @@ useEffect(() => {
                   <h4>Newton Offices</h4>
                   <p className="zao_pTwo">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, odit deleniti,
-                    ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum, facere
-                    distinctio nisi expedita veritatis? Veritatis quia quam iste ipsa non!
+                    ullam deserunt aspernatur ipsam reiciendis laudantium architecto earum
                   </p>
                 </div>
               </div>
             </>
           )}
         </HoverAnimation>
-      </section>
-      <div className="three_images">
+      </div>
+
+      {/* <div className="three_images">
         <div className="three_images_container">
           {threeImages.map((imgObj, i) => (
             <HoverAnimation
@@ -762,8 +758,9 @@ useEffect(() => {
             </HoverAnimation>
           ))}
         </div>
-      </div>
-      <section className="zao__section">
+      </div> */}
+
+      {/* <section className="zao__section">
         <HoverAnimation
           imageCount={imgArray4.length}
           imageSelector=".zaoImage"
@@ -833,9 +830,9 @@ useEffect(() => {
             </>
           )}
         </HoverAnimation>
-      </section>
+      </section> */}
 
-      <section className="lastLast">
+      {/* <section className="lastLast">
         <HoverAnimation
           imageCount={3}
           imageSelector=".lastImage"

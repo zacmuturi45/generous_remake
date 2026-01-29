@@ -393,6 +393,7 @@ body::-webkit-scrollbar {
     padding: 0 48px;
     cursor: none;
     box-sizing: border-box;
+    // border: 2px solid red;
     .box3_box1 {
       display: flex;
       //
@@ -451,12 +452,16 @@ body::-webkit-scrollbar {
         width: 65%;
         aspect-ratio: 11/9;
         position: relative;
+        // border: 2px solid blue;
         .editorial {
-          top: -20%;
+          top: -15%;
           width: 100%;
           height: 110%;
           object-fit: cover;
           position: absolute;
+          @media (max-width: 1380px) {
+            top: -10%;
+          }
         }
       }
       @media (max-width: 768px) {
@@ -480,25 +485,55 @@ body::-webkit-scrollbar {
   }
   // ZAO SECTION
   .zao__section {
-    // border: 2px solid red;
-    margin-top: 60px;
+    width: 100%;
+    margin-top: 96px;
     padding: 0 48px;
     display: flex;
     box-sizing: border-box;
     justify-content: space-between;
     cursor: none;
+    height: fit-content;
+    // pointer-events: none;
+    gap: 180px;
+    @media (max-width: 1300px) {
+      gap: 120px;
+    }
+    @media (max-width: 980px) {
+      flex-direction: column;
+      gap: 48px;
+    }
+    @media (max-width: 580px) {
+      padding: 0 16px;
+      cursor: auto;
+    }
     .zaoTwo {
       width: 750px;
+      @media (max-width: 980px) {
+        width: 400px;
+        align-self: center;
+      }
+      @media (max-width: 580px) {
+        width: 100%;
+      }
       .zao {
         .img_box {
-          height: 60vh;
+          aspect-ratio: 11/8.2;
         }
       }
     }
     .zaoOne {
       width: 900px;
+      @media (max-width: 980px) {
+        width: 540px;
+      }
+      @media (max-width: 768px) {
+        align-self: center;
+      }
+      @media (max-width: 580px) {
+        width: 100%;
+      }
       .img_box {
-        height: 70vh;
+        aspect-ratio: 11/8;
       }
     }
     .zaoMain {
@@ -519,6 +554,7 @@ body::-webkit-scrollbar {
         }
       }
       .zao_textboxOne {
+        width: 100%;
         h4 {
           font-size: 2rem;
           font-weight: 400;
@@ -526,6 +562,21 @@ body::-webkit-scrollbar {
           color: rgb(0, 0, 0);
           margin-bottom: 1rem;
           letter-spacing: 1px;
+          @media (max-width: 1380px) {
+            font-size: 1.5rem;
+          }
+
+          @media (max-width: 1200px) {
+            margin: 0;
+          }
+
+          @media (max-width: 980px) {
+            font-size: 1.3rem;
+          }
+
+          @media (max-width: 580px) {
+            margin: 0.5rem 0 1rem 0;
+          }
         }
         p {
           color: rgb(112, 112, 112);
@@ -534,6 +585,27 @@ body::-webkit-scrollbar {
           font-size: 1.2rem;
           line-height: 160%;
           max-width: 480px;
+          @media (max-width: 1380px) {
+            font-size: 0.9rem;
+            max-width: 100%;
+          }
+
+          @media (max-width: 1200px) {
+            font-size: 0.8rem;
+            max-width: 80%;
+            line-height: 1.4;
+          }
+
+          @media (max-width: 980px) {
+            max-width: 80%;
+          }
+          @media (max-width: 580px) {
+            margin: 0;
+            max-width: 90%;
+          }
+          @media (max-width: 480px) {
+            max-width: 100%;
+          }
         }
       }
     }
