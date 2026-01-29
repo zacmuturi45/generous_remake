@@ -31,6 +31,7 @@ export default function GTextWrapper({
   const lines = useRef<HTMLDivElement[]>([]);
   const blocks = useRef<HTMLDivElement[]>([]);
   const svgAnimationRef = useRef<gsap.core.Tween | null>(null);
+  const lastWidthRef = useRef<number>(0);
 
   useGSAP(
     () => {
@@ -224,20 +225,30 @@ export default function GTextWrapper({
 
       // Initial setup
       initializeAnimation();
+      // Store initial width
+      lastWidthRef.current = window.innerWidth;
 
-      // Debounced resize handler
+      // Debounced resize handler with width-only check
       let resizeTimer: NodeJS.Timeout;
       const handleResize = () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-          // Kill all ScrollTriggers associated with this container
-          ScrollTrigger.getAll().forEach((trigger) => {
-            if (trigger.trigger === containerRef.current) {
-              trigger.kill();
-            }
-          });
-          // Re-initialize
-          initializeAnimation();
+          const currentWidth = window.innerWidth;
+
+          // Only reinitialize if the WIDTH has changed
+          // This prevents mobile address bar show/hide from triggering resets
+          if (currentWidth !== lastWidthRef.current) {
+            lastWidthRef.current = currentWidth;
+
+            // Kill all ScrollTriggers associated with this container
+            ScrollTrigger.getAll().forEach((trigger) => {
+              if (trigger.trigger === containerRef.current) {
+                trigger.kill();
+              }
+            });
+            // Re-initialize
+            initializeAnimation();
+          }
         }, 250);
       };
 

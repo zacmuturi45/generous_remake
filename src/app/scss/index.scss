@@ -1139,7 +1139,7 @@ body::-webkit-scrollbar {
   }
 
   &__slide {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -1207,6 +1207,7 @@ body::-webkit-scrollbar {
     }
     @media (max-width: 580px) {
       left: 16px;
+      bottom: 64px;
     }
   }
 

@@ -76,12 +76,12 @@ export default function Navbar() {
             preRef.current,
             {
               x: "100%",
-              clipPath: "polygon(0 0, 100% 0%, 100% 100%, 33% 100%)", // Fully clipped
+              clipPath: "polygon(0 0, 100% 0%, 100% 100%, 63% 100%)", // Fully clipped
             },
             {
               x: "0%",
               clipPath: "polygon(0 0, 100% 0%, 100% 100%, 0% 100%)", // Partially revealed
-              duration: 1.5,
+              duration: 1.4,
               ease: "power4.inOut",
             }
           )
@@ -100,7 +100,7 @@ export default function Navbar() {
             afterRef.current,
             {
               x: "100%",
-              clipPath: "polygon(0 0, 100% 0%, 100% 100%, 21% 100%)", // Same as preRef's end state
+              clipPath: "polygon(0 0, 100% 0%, 100% 100%, 31% 100%)", // Same as preRef's end state
             },
             {
               x: "0%",
@@ -219,7 +219,7 @@ export default function Navbar() {
         .to(preRef.current, {
           clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", // Expand from left to cover entire screen
           duration: 1,
-          ease: "power4.inOut",
+          ease: "circ.inOut",
         })
 
         // Step 3: Fade out content as it gets covered (starts during clipPath animation)
