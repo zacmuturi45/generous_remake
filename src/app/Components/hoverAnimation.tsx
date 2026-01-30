@@ -34,26 +34,42 @@ export function HoverAnimation({
     if (!container) return;
 
     // Create timeline
-    const tl = gsap.timeline({ paused: true });
+    let tl: gsap.core.Timeline;
     // const gs = gsap.timeline({ paused: true, repeat: -1 });
     const textElement = container.querySelector(textSelector);
 
-    timelineRef.current = tl;
-    // gsRef.current = gs;
+    const createTimeline = () => {
+      // Kill existing timeline if it exists
+      if (tl) tl.kill();
 
-    tl.from(textElement, textAnimationConfig)
-      .to(imageSelector, imageAnimationConfig, "<")
-      .call(() => {
+      // Check screen size
+      const isSmallScreen = window.matchMedia("(max-width: 579px)").matches;
+
+      // Create new timeline
+      tl = gsap.timeline({ paused: true });
+      timelineRef.current = tl;
+
+      // Only add the text animation if not a small screen
+      if (!isSmallScreen && textElement) {
+        tl.from(textElement, textAnimationConfig);
+      }
+
+      tl.to(imageSelector, imageAnimationConfig, "<").call(() => {
         changeZInterval.current = setInterval(() => {
           setCurrentZ((prev) => (prev + 1) % imageCount);
         }, imageCycleInterval);
       });
+    };
 
-    // gs.to(".c2", { xPercent: 120, duration: 0.5, ease: "power2.in", delay: 1 }).to(
-    //   ".c1",
-    //   { x: 0, duration: 1, ease: "power2.out" },
-    //   "-=0.1"
-    // );
+    createTimeline();
+
+    // Listen for screen size changes
+    const mediaQuery = window.matchMedia("(max-width: 579px)");
+    const handleResize = () => {
+      createTimeline();
+    };
+
+    mediaQuery.addEventListener("change", handleResize);
 
     // Event handlers
     const handleMouseEnter = () => {

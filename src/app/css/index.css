@@ -114,7 +114,7 @@ body {
   position: absolute;
   bottom: 100px;
   right: 24px;
-  z-index: 2;
+  z-index: 3;
 }
 @media (max-width: 768px) {
   .main_container .hero_section .hero_carousel_container .circular__text_container {
