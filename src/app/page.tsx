@@ -462,7 +462,11 @@ export default function Home() {
 
             <p className="fades fd">stratégie, de l&apos;identité,</p>
 
-            <GTextWrapper svgRef={dotRef} containsSvg={true}>
+            <GTextWrapper
+              svgRef={dotRef}
+              containsSvg={true}
+              transitionComplete={transitionComplete}
+            >
               <p className="fades">
                 du design
                 <span style={{ display: "inline-block", verticalAlign: "middle" }}>
@@ -490,7 +494,11 @@ export default function Home() {
               <p className="fades">marqueurs qui fait</p>
             </GTextWrapper>
 
-            <GTextWrapper svgRef={heartRef} containsSvg={true}>
+            <GTextWrapper
+              svgRef={heartRef}
+              containsSvg={true}
+              transitionComplete={transitionComplete}
+            >
               <p className="fades">
                 battre le coeur{" "}
                 <span style={{ display: "inline-block", verticalAlign: "middle" }}>
@@ -515,7 +523,7 @@ export default function Home() {
           </div>
 
           <div className="textbox_two text_box">
-            <GTextWrapper containsArrow={true}>
+            <GTextWrapper containsArrow={true} transitionComplete={transitionComplete}>
               <p id="arrow__p">
                 <span style={{ display: "inline-block", verticalAlign: "middle" }}>
                   <svg
@@ -590,6 +598,7 @@ export default function Home() {
         imageSelector=".editorial"
         onVisibilityChange={setCursorVisible}
         className="mitwit"
+        transitionComplete={transitionComplete}
       >
         {(currentZ) => (
           <>
@@ -626,6 +635,7 @@ export default function Home() {
           imageSelector=".newtonImage"
           onVisibilityChange={setCursorVisible}
           className="zaoMain zaoOne"
+          transitionComplete={transitionComplete}
         >
           {(currentZ) => (
             <>
@@ -659,6 +669,7 @@ export default function Home() {
           imageSelector=".zaoImage"
           onVisibilityChange={setCursorVisible}
           className="zaoMain zaoTwo"
+          transitionComplete={transitionComplete}
         >
           {(currentZ) => (
             <>
@@ -699,6 +710,7 @@ export default function Home() {
               key={i}
               onVisibilityChange={setCursorVisible}
               className="three"
+              transitionComplete={transitionComplete}
             >
               {(currentZ) => (
                 <>
@@ -753,6 +765,7 @@ export default function Home() {
           imageSelector=".zaoImage"
           onVisibilityChange={setCursorVisible}
           className="zaoMain zaoTwo"
+          transitionComplete={transitionComplete}
         >
           {(currentZ) => (
             <>
@@ -789,6 +802,7 @@ export default function Home() {
           imageSelector=".newtonImage"
           onVisibilityChange={setCursorVisible}
           className="zaoMain zaoOne"
+          transitionComplete={transitionComplete}
         >
           {(currentZ) => (
             <>
@@ -825,6 +839,7 @@ export default function Home() {
           imageSelector=".lastImage"
           onVisibilityChange={setCursorVisible}
           className="lastSection"
+          transitionComplete={transitionComplete}
         >
           {(currentZ) => (
             <>

@@ -51,6 +51,7 @@ interface HoverAnimationProps {
   textAnimationConfig?: gsap.TweenVars;
   imageAnimationConfig?: gsap.TweenVars;
   className?: string;
+  transitionComplete?: boolean;
 }
 
 interface TrialCarouselItem {

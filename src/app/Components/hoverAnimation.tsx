@@ -22,6 +22,7 @@ export function HoverAnimation({
     ease: "power3.inOut",
   },
   className = "",
+  transitionComplete = true,
 }: HoverAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentZ, setCurrentZ] = useState<number>(0);
@@ -29,6 +30,8 @@ export function HoverAnimation({
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
+    if (!transitionComplete) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -111,6 +114,7 @@ export function HoverAnimation({
     textAnimationConfig,
     imageAnimationConfig,
     onVisibilityChange,
+    transitionComplete,
   ]);
 
   return (

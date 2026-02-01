@@ -7,7 +7,7 @@ import { ChildrenProps } from "../Components/Types/gsap";
 export default function WipeTransition({ children }: ChildrenProps) {
   const wipeOverlayRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
-  const { clickedLink } = useLinkContext();
+  const { clickedLink, setIsPanelActive } = useLinkContext();
 
   return (
     <TransitionRouter
@@ -20,59 +20,50 @@ export default function WipeTransition({ children }: ChildrenProps) {
 
         // Set initial state
         gsap.set(wipeOverlayRef.current, { opacity: 1 });
-        gsap.set(textRef.current, {
-          y: 230,
-        });
+        gsap.set(textRef.current, { y: 230 });
 
         // Create timeline
         const tl = gsap.timeline();
 
         // Animate overlay in
         tl.to(".wipeTransition", {
-          background: "rgba(0, 0, 0, 0.9)",
+          background: "rgba(0, 0, 0, 0.95)",
           ease: "power2.out",
           duration: 0.65,
         })
           .fromTo(
             wipeOverlayRef.current,
-            {
-              y: "100%",
-            },
+            { y: "100%" },
             {
               y: "0%",
               duration: 1,
               ease: "circ.inOut",
+              onComplete: () => {
+                // Instantly hide mobile nav (it's covered by wipe overlay)
+                const mobileNav = document.querySelector(".mobileNavMenu") as HTMLElement;
+                if (mobileNav) {
+                  gsap.set(mobileNav, { display: "none" });
+                }
+                // Trigger panel close (navbar will detect instant hide and skip animation)
+                setIsPanelActive(false);
+              },
             },
             0
           )
           // Text comes in
+          .to(textRef.current, { y: 50, duration: 1.4, ease: "power2.out" }, 0.35)
+          // Text goes out
+          .to(textRef.current, { y: -230, duration: 1, ease: "circ.inOut" }, 1.3)
           .to(
-            textRef.current,
+            ".wipeTransition",
             {
-              y: 50,
-              duration: 1.4,
+              background: "rgba(0, 0, 0, 0)",
+              duration: 0.3,
               ease: "power2.out",
             },
-            0.35
+            1.6
           )
-          // Text goes out
-          .to(
-            textRef.current,
-            {
-              y: -230,
-              duration: 1,
-              ease: "circ.inOut",
-              onUpdate: function () {
-                // Start enter animation when text is 70% done sliding out
-                if (this.progress() > 0.5 && !this.vars.triggered) {
-                  this.vars.triggered = true;
-                  next();
-                }
-              },
-            },
-            1.3
-          )
-          .to(".wipeTransition", { background: "rgba(0, 0, 0, 0)" }, "<");
+          .call(next, [], 1.8);
 
         return () => {
           tl.kill();
@@ -84,7 +75,7 @@ export default function WipeTransition({ children }: ChildrenProps) {
           return;
         }
 
-        // Slide the overlay up and out
+        // Fade out the overlay
         const exitAnimation = gsap.to(wipeOverlayRef.current, {
           opacity: 0,
           duration: 0.5,

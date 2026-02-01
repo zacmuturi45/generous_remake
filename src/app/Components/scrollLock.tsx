@@ -8,7 +8,7 @@ export function useScrollLock(isLocked: boolean) {
 
   useEffect(() => {
     if (isLocked) {
-      // 1. SAVE the current scroll position FIRST
+      // 1. Save the current scroll position
       scrollPositionRef.current = window.scrollY;
 
       // 2. Save original overflow
@@ -17,36 +17,20 @@ export function useScrollLock(isLocked: boolean) {
       // 3. Lock scroll
       document.body.style.overflow = "hidden";
 
-      // 4. Check if iOS (needs special handling)
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-
-      if (isIOS) {
-        // iOS: use fixed positioning
-        document.body.style.position = "fixed";
-        document.body.style.top = `-${scrollPositionRef.current}px`;
-        document.body.style.width = "100%";
-      } else {
-        // Non-iOS: simpler approach
-        // Add padding to prevent layout shift
-        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-        document.body.style.paddingRight = `${scrollbarWidth}px`;
-      }
+      // For ALL devices, just prevent scroll without changing body position
+      // This is simpler and usually works better
+      document.body.style.position = "relative";
+      document.body.style.height = "100vh";
+      document.body.style.overflowY = "hidden";
 
       return () => {
-        // Restore overflow
+        // Restore all styles
         document.body.style.overflow = originalOverflowRef.current;
+        document.body.style.position = "";
+        document.body.style.height = "";
+        document.body.style.overflowY = "";
 
-        if (isIOS) {
-          // Remove iOS styles
-          document.body.style.position = "";
-          document.body.style.top = "";
-          document.body.style.width = "";
-        } else {
-          // Remove padding
-          document.body.style.paddingRight = "";
-        }
-
-        // RESTORE to the saved position
+        // Restore scroll position
         window.scrollTo(0, scrollPositionRef.current);
       };
     }

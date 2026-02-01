@@ -16,6 +16,7 @@ export default function GTextWrapper({
   svgRef,
   containsSvg = false,
   containsArrow = false,
+  transitionComplete = true,
 }: {
   children: React.ReactNode;
   delay?: number;
@@ -25,6 +26,7 @@ export default function GTextWrapper({
   svgRef?: RefObject<SVGSVGElement | null>;
   containsSvg?: boolean;
   containsArrow?: boolean;
+  transitionComplete?: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const splitRefs = useRef<any>(null);
@@ -35,7 +37,7 @@ export default function GTextWrapper({
 
   useGSAP(
     () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || !transitionComplete) return;
 
       const initializeAnimation = () => {
         // Clear previous splits and wrappers
@@ -281,7 +283,10 @@ export default function GTextWrapper({
         });
       };
     },
-    { scope: containerRef, dependencies: [delay, blockColor, stagger, duration, containsSvg] }
+    {
+      scope: containerRef,
+      dependencies: [delay, blockColor, stagger, duration, containsSvg, transitionComplete],
+    }
   );
 
   return (
