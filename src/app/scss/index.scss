@@ -41,6 +41,21 @@ body {
   padding: 0;
 }
 
+/* Add this to your global or mobile-specific CSS */
+a,
+button,
+.mobilenav,
+.afterLinks,
+.nav_links {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 body::-webkit-scrollbar {
   display: none;
 }
