@@ -8,6 +8,8 @@ import gsap from "gsap";
 import { GSDevTools } from "../GSAP/gsap_plugins";
 import { useScrollLock } from "./scrollLock";
 import { linkArray, linkBlack, linkWhite } from "../../../public/assets";
+import { useLinkContext } from "../Contexts/LinkContext";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -19,7 +21,12 @@ export default function Navbar() {
   const afterRef = useRef<HTMLDivElement>(null);
   const menuTextRef = useRef<HTMLHeadingElement>(null); // Add ref for Menu text
   const afterCont = useRef<HTMLDivElement>(null);
-  const [playNavAnimation, setPlayNavAnimation] = useState<boolean>(false);
+  const { setClickedLink } = useLinkContext();
+  const pathname = usePathname();
+
+  const handleLinkClick = (linkName: string) => {
+    setClickedLink(linkName);
+  };
 
   // Hamburger refs
   const hamburgerRef = useRef<HTMLDivElement>(null);
@@ -254,25 +261,32 @@ export default function Navbar() {
   }, [isPanelActive, isPanelVisible]);
 
   useEffect(() => {
+    if (pathname !== "/") {
+      setIsUp(true);
+    }
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const heroHeight = window.innerHeight;
 
       // Check if page has scrolled past idealHeight
       const heroInView = currentScrollY < heroHeight;
-      setPlayNavAnimation(heroInView);
 
-      // Only run the up/down animation when hero is in view
-      if (heroInView) {
-        if (currentScrollY > lastScrollY.current) {
-          // Scrolling down
-          setIsUp(true);
+      // Check if on homepage
+      if (pathname === "/") {
+        // Only run the up/down animation when hero is in view
+        if (heroInView) {
+          if (currentScrollY > lastScrollY.current) {
+            // Scrolling down
+            setIsUp(true);
+          } else {
+            // Scrolling up in hero section
+            setIsUp(false);
+          }
         } else {
-          // Scrolling up in hero section
-          setIsUp(false);
+          // When past hero section, ensure navbar is visible (not moved up)
+          setIsUp(true);
         }
       } else {
-        // When past hero section, ensure navbar is visible (not moved up)
         setIsUp(true);
       }
 
@@ -284,7 +298,7 @@ export default function Navbar() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [pathname]);
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>, selector = ".linkline") => {
     const line = e.currentTarget.querySelector(selector);
@@ -333,6 +347,7 @@ export default function Navbar() {
                         className="afterLinks"
                         onMouseEnter={(e) => handleMouseEnter(e, ".linklater")}
                         onMouseLeave={(e) => handleMouseLeave(e, ".linklater")}
+                        onClick={() => handleLinkClick(link.link)}
                       >
                         {link.link}
                         <span className={`linklater ${isUp ? "linkblack" : ""}`}></span>
@@ -348,14 +363,14 @@ export default function Navbar() {
         </div>
       )}
       <div className="navContainer">
-        <div className="logo">
+        <Link href={"/"} className="logo" onClick={() => setClickedLink("Home")}>
           {isUp ? (
             <Image src={linkBlack} width={124} height={124} alt="linkBlack" />
           ) : (
             <Image src={linkWhite} width={124} height={124} alt="linkWhite" />
           )}
           {/* <h4 style={isPanelActive ? { color: "black" } : {}}>Carousel</h4> */}
-        </div>
+        </Link>
 
         <div className="nav_links_container">
           <div className="main_nav_links">
@@ -366,6 +381,7 @@ export default function Navbar() {
                   className="nav_links"
                   onMouseEnter={(e) => handleMouseEnter(e, ".linkline")}
                   onMouseLeave={(e) => handleMouseLeave(e, ".linkline")}
+                  onClick={() => handleLinkClick(link.link)}
                 >
                   {link.link}
                   <span className={`linkline ${isUp ? "linkblack" : ""}`}></span>

@@ -4,6 +4,8 @@ import { createContext, useContext, useRef } from "react";
 import Navbar from "./Components/navbar";
 import Footer from "./Components/footer";
 import { Lenisprovider } from "./Components/lenis/LenisContext";
+import WipeTransition from "./Providers/TransitionProvider";
+import { LinkProvider } from "./Contexts/LinkContext";
 
 const AnimationContext = createContext<AnimationContextType>({
   isReady: false,
@@ -24,11 +26,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main ref={contentRef} className="main_content">
-          <Lenisprovider>
-            <Navbar />
-            {children}
-            <Footer />
-          </Lenisprovider>
+          <LinkProvider>
+            <Lenisprovider>
+              <Navbar />
+              <WipeTransition>{children}</WipeTransition>
+              <Footer />
+            </Lenisprovider>
+          </LinkProvider>
         </main>
       </body>
     </html>

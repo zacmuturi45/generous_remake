@@ -27,7 +27,6 @@ export function HoverAnimation({
   const [currentZ, setCurrentZ] = useState<number>(0);
   const changeZInterval = useRef<any>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
-  const gsRef = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;

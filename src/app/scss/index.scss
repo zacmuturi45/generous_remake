@@ -44,6 +44,44 @@ body {
 // body::-webkit-scrollbar {
 //   display: none;
 // }
+
+.wipeTransition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+
+  .wipe-overlay {
+    position: fixed;
+    transform: translateY(100%);
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    z-index: 101;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .wipeHeader {
+      // border: 2px solid red;
+      height: 220px;
+      overflow: hidden;
+      h1 {
+        line-height: 1;
+        margin: 0;
+        color: black;
+        font-size: 164px;
+        font-family: var(--amoera-font);
+      }
+    }
+  }
+}
+
 .custom-cursor {
   position: fixed;
   width: 96px;
@@ -1867,4 +1905,12 @@ svg {
       }
     }
   }
+}
+
+// WORK MAIN
+.work_main {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  box-sizing: border-box;
 }

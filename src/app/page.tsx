@@ -80,8 +80,14 @@ export default function Home() {
   const [cursorVisible, setCursorVisible] = useState<boolean>(false);
   const router = useRouter();
   const cursorTimelineRef = useRef<gsap.core.Timeline | null>(null);
-  // const [lenis, setLenis] = useState<any>(null);
+  const [transitionComplete, setTransitionComplete] = useState(false);
   const { lenis } = useLenis();
+
+  // Set this to true after your transition completes
+  useEffect(() => {
+    const timer = setTimeout(() => setTransitionComplete(true), 1500); // Match your transition duration
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const tl = gsap.timeline({ paused: true, repeat: -1 });
@@ -145,6 +151,8 @@ export default function Home() {
   let direction = -1;
 
   useGSAP(() => {
+    if (!transitionComplete) return;
+
     gsap.set([firstText.current, secondText.current, thirdText.current], {
       yPercent: 100,
     });
@@ -160,7 +168,7 @@ export default function Home() {
         once: true,
       },
     });
-  });
+  }, [transitionComplete]);
 
   useGSAP(() => {
     // Create a ScrollTrigger that controls the marquee direction
@@ -203,6 +211,8 @@ export default function Home() {
 
   // // Arrow SVG Animation
   useGSAP(() => {
+    if (!transitionComplete) return;
+
     const tl = gsap.timeline({ paused: true });
     const mainLength = mainShaft.current?.getTotalLength();
     const topLength = topShaft.current?.getTotalLength();
@@ -262,43 +272,7 @@ export default function Home() {
     });
 
     // GSDevTools.create({ animation: tl });
-  });
-
-  // LENIS
-  // useEffect(() => {
-  //   const initLenis = async () => {
-  //     const Lenis = (await import("lenis")).default;
-
-  //     const lenisInstance = new Lenis({
-  //       duration: 1.2,
-  //       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  //       orientation: "vertical",
-  //       gestureOrientation: "vertical",
-  //       smoothWheel: true,
-  //       wheelMultiplier: 1,
-  //       touchMultiplier: 2,
-  //       infinite: false,
-  //     });
-
-  //     setLenis(lenisInstance); // Store in state instead of ref
-
-  //     lenisInstance.on("scroll", ScrollTrigger.update);
-
-  //     gsap.ticker.add((time) => {
-  //       lenisInstance.raf(time * 1000);
-  //     });
-
-  //     gsap.ticker.lagSmoothing(0);
-  //   };
-
-  //   initLenis();
-
-  //   return () => {
-  //     if (lenis) {
-  //       lenis.destroy();
-  //     }
-  //   };
-  // }, []);
+  }, [transitionComplete]);
 
   // CAROUSEL ARRAY ITEMS
   const carouselItems: CarouselItem[] = [
@@ -422,7 +396,7 @@ export default function Home() {
         className={`custom-cursor`}
         style={{
           scale: cursorVisible ? 1 : 0,
-          transition: "scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          transition: "scale 0.5s cubic-bezier(0.78, 0, 0.22, 1)",
         }}
       >
         <Image src={whitearrow} width={36} height={36} alt="svg_arrow" className="c1" />

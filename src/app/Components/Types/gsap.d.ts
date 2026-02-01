@@ -65,3 +65,7 @@ interface TrialCarouselProps {
   autoplayDuration?: number;
   transitionDuration?: number;
 }
+
+interface ChildrenProps {
+  children: React.ReactNode;
+}
