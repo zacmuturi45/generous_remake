@@ -4,6 +4,8 @@
 @import url("https://fonts.cdnfonts.com/css/br-segma");
 @import url("https://fonts.cdnfonts.com/css/manifesto");
 @import url("https://fonts.cdnfonts.com/css/roboto-condensed-3");
+@import url("https://fonts.cdnfonts.com/css/belanosima");
+@import url("https://fonts.cdnfonts.com/css/reem-kufi-fun");
 @font-face {
   font-family: "nhg";
   src: url("../../../public/Fonts/neue_haas_grotesk/NeueHaasDisplayLight.ttf");
@@ -22,6 +24,8 @@
   --amoera-font: "amoera", sans-serif;
   --encode-font: "BR Segma", sans-serif;
   --rogan-font: "MANIFESTO", sans-serif;
+  --belanosima: "Belanosima", sans-serif;
+  --Reem: "Reem Kufi Fun", sans-serif;
   --auxilliary-font: "Roboto Condensed", sans-serif;
 }
 
@@ -85,7 +89,9 @@ body::-webkit-scrollbar {
   margin: 0;
   color: black;
   font-size: clamp(48px, 12vw + 20px, 164px);
-  font-family: var(--amoera-font);
+  font-family: var(--Reem);
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
 .custom-cursor {
@@ -1966,5 +1972,278 @@ svg .spin_text {
   height: 100vh;
   background-color: white;
   box-sizing: border-box;
+}
+
+.mysvgdiv {
+  display: flex;
+  padding: 0;
+}
+.mysvgdiv p {
+  font-family: var(--Reem);
+  text-transform: uppercase;
+  font-size: clamp(96px, 8vw + 2rem, 184px);
+  letter-spacing: clamp(-4px, -0.5vw, -8px);
+  font-weight: 800;
+  line-height: 0.85;
+  width: max-content;
+  margin: 0;
+}
+.mysvgdiv .svg_container {
+  display: flex;
+  flex-direction: column;
+}
+.mysvgdiv .svg_container svg {
+  width: clamp(24px, 2vw, 32px);
+  height: clamp(24px, 2vw, 32px);
+  margin-right: clamp(1rem, 1.5vw, 1.5rem);
+}
+
+.vision_main {
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: clamp(120px, 12vw, 184px);
+  overflow: hidden;
+}
+.vision_main .vision_container {
+  box-sizing: border-box;
+}
+.vision_main .vision_container .vision-marquee {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+.vision_main .vision_container .vision-marquee .vmcontainer {
+  overflow: hidden;
+}
+.vision_main .vision_container .vision-marquee .vmcontainer .vision_marquee_main {
+  display: flex;
+  overflow: hidden;
+}
+.vision_main .vision_container .vision-marquee .vmcontainer2 {
+  overflow: hidden;
+}
+.vision_main .vision_container .vision-marquee .vmcontainer2 .vision_marquee_second {
+  display: flex;
+}
+.vision_main .vision_container .vision-marquee .vmcontainer2 .vision_marquee_second p {
+  font-family: var(--secondary-font);
+  text-transform: uppercase;
+  font-size: clamp(16px, 1.2vw + 0.5rem, 24px);
+  width: max-content;
+  letter-spacing: clamp(5px, 0.8vw, 10px);
+  margin: 0;
+  flex-shrink: 0;
+  color: rgb(47, 47, 47);
+}
+.vision_main .vision_container .vision-marquee .vmcontainer2 .vision_marquee_second p .dot {
+  width: clamp(3px, 0.3vw, 4px);
+  height: clamp(3px, 0.3vw, 4px);
+  background-color: rgb(88, 88, 88);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+  margin: 0 clamp(1rem, 1.5vw, 1.5rem);
+}
+.vision_main .vision_container .marq_video {
+  padding: 2rem 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 980px) {
+  .vision_main .vision_container .marq_video {
+    padding: 2rem 0;
+  }
+}
+.vision_main .vision_container .marq_video .marq_video_container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21/10;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+.vision_main .vision_container .marq_video .marq_video_container .marq_video_player {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  aspect-ratio: 21/10;
+}
+.vision_main .vision_container .marq_video .marq_video_container__loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1;
+}
+.vision_main .vision_container .marq_video .marq_video_container__loader .loader-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.vision_main .vision_text_container {
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+.vision_main .vision_text_container .text_container {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+}
+.vision_main .vision_text_container .text_container .lmqContainer {
+  width: fit-content;
+  height: fit-content;
+}
+.vision_main .vision_text_container .text_container .lmqContainer .la__marque {
+  display: flex;
+  flex-direction: column;
+}
+.vision_main .vision_text_container .text_container .lmqContainer .la__marque .line {
+  overflow: hidden;
+}
+.vision_main .vision_text_container .text_container .lmqContainer .la__marque .line .up_lmq {
+  transform: translateY(100%);
+}
+.vision_main .vision_text_container .text_container .lmqContainer .la__marque .line .split_up {
+  display: flex;
+}
+.vision_main .vision_text_container .text_container .lmqContainer .la__marque .line span {
+  font-family: var(--Reem);
+  font-weight: 300;
+  /* Fluid font-size with clamp(min, preferred, max) */
+  font-size: clamp(32px, 10vw + 1.5rem, 120px);
+  letter-spacing: -0.8rem;
+  line-height: 1;
+  display: inline-block;
+  width: max-content;
+}
+@media (max-width: 980px) {
+  .vision_main .vision_text_container .text_container .lmqContainer .la__marque .line span {
+    letter-spacing: -0.8rem;
+  }
+}
+@media (max-width: 580px) {
+  .vision_main .vision_text_container .text_container .lmqContainer .la__marque .line span {
+    letter-spacing: -0.5rem;
+  }
+}
+.vision_main .vision_text_container .text_container .lmqContainer .la__marque .au__coeur {
+  display: flex;
+}
+.vision_main .vision_text_container .text_container .lmqContainer .la__marque .au__coeur .la__marque_svg {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.5rem;
+  width: 48px;
+  height: 48px;
+}
+@media (max-width: 580px) {
+  .vision_main .vision_text_container .text_container .lmqContainer .la__marque .au__coeur .la__marque_svg svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+.vision_main .vision_text_container .text_container .textboxes {
+  width: 100%;
+  padding: 144px 0 0 75px;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  gap: 100px;
+}
+.vision_main .vision_text_container .text_container .textboxes .pin-spacer {
+  width: auto !important;
+  max-width: 100% !important;
+}
+.vision_main .vision_text_container .text_container .textboxes .tb1 {
+  width: fit-content;
+  box-sizing: border-box;
+}
+.vision_main .vision_text_container .text_container .textboxes .tb1 h4 {
+  font-size: clamp(32px, 5vw, 56px); /* Responsive from 32px to 56px */
+  font-family: var(--encode-font);
+  font-weight: 500;
+  letter-spacing: -0.05em; /* Relative to font-size instead of fixed pixels */
+  margin: 0;
+  width: fit-content;
+}
+.vision_main .vision_text_container .text_container .textboxes .tb1 h4 span {
+  margin-right: clamp(1rem, 3vw, 2rem); /* Responsive margin */
+}
+.vision_main .vision_text_container .text_container .textboxes .tb1 h4 span svg {
+  width: clamp(48px, 10vw, 84px); /* Responsive SVG width */
+  height: clamp(36px, 8vw, 64px); /* Responsive SVG height */
+  /* Alternative: maintain aspect ratio */
+  /* width: auto; */
+  /* height: clamp(36px, 8vw, 64px); */
+}
+.vision_main .vision_text_container .text_container .textboxes .tb1 .tbp {
+  margin: clamp(24px, 4vw, 32px) 0 0 clamp(60px, 12vw, 120px); /* Responsive margins */
+  width: fit-content;
+}
+.vision_main .vision_text_container .text_container .textboxes .tb1 .tbp p {
+  font-family: var(--encode-font);
+  margin: 0.25rem 0;
+  line-height: 1.1; /* Slightly more than 1 for better readability */
+  font-size: clamp(24px, 4vw, 56px); /* Responsive from 24px to 56px */
+  width: max-content; /* Or max-content if you want, but auto is more responsive */
+  max-width: 100%; /* Prevent overflow */
+  letter-spacing: -0.04em; /* Relative to font-size */
+  /* Optional: Add responsive line-height for larger screens */
+}
+@media (min-width: 1200px) {
+  .vision_main .vision_text_container .text_container .textboxes .tb1 .tbp p {
+    line-height: 1.05;
+  }
+}
+.vision_main .vision_quote {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 144px 24px 64px 24px;
+}
+.vision_main .vision_quote .vision_quote_container h1 {
+  font-family: var(--encode-font);
+  font-size: 96px;
+  letter-spacing: -2px;
+  font-weight: 400;
+  color: rgb(47, 47, 47);
+  line-height: 1;
+  margin: 0;
+}
+.vision_main .vision_quote .vision_quote_container h1:nth-child(2) {
+  margin: 1rem 0 2rem 2rem;
+}
+.vision_main .vision_quote .vision_quote_container h1 span {
+  position: relative;
+  width: 15px;
+  height: 64px;
+  flex-shrink: 0;
+  display: inline-block;
+}
+.vision_main .vision_quote .vision_quote_container h1 span img {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+}
+.vision_main .vision_quote .vision_quote_container p {
+  font-family: var(--encode-font);
+  font-size: 32px;
+  margin: 0 0 0 2rem;
+  letter-spacing: -1px;
+  color: rgb(47, 47, 47);
 }
 /*# sourceMappingURL=index.css.map */

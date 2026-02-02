@@ -45,6 +45,9 @@ export { default as office4 } from "./mulia.webp";
 export { default as linkWhite } from "./linkWhite.svg";
 export { default as linkBlack } from "./linkBlack.svg";
 
+export { default as quoteTop } from "./quoteTop.svg";
+export { default as quoteBottom } from "./quoteBottom.svg";
+
 export const linkArray = [
   { link: "Work", id: "ln12", href: "/work" },
   { link: "Vision", id: "ln22", href: "/vision" },

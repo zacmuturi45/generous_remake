@@ -271,6 +271,8 @@ export default function Navbar() {
   useEffect(() => {
     if (pathname !== "/") {
       setIsUp(true);
+    } else if (pathname === "/") {
+      setIsUp(false);
     }
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
