@@ -154,7 +154,7 @@ body::-webkit-scrollbar {
   overflow: hidden;
 }
 .main_container .hero_section .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -1113,7 +1113,7 @@ body::-webkit-scrollbar {
   background-color: black;
 }
 .navbar .whitediv {
-  position: absolute;
+  position: fixed;
   top: -100%;
   left: 0;
   background-color: white;

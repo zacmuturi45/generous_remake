@@ -161,7 +161,7 @@ body::-webkit-scrollbar {
     position: relative;
     overflow: hidden;
     .overlay {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -1052,7 +1052,7 @@ body::-webkit-scrollbar {
     }
   }
   .whitediv {
-    position: absolute;
+    position: fixed;
     top: -100%;
     left: 0;
     background-color: white;
