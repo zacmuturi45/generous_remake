@@ -2099,21 +2099,43 @@ svg .spin_text {
   padding: 0 24px;
   box-sizing: border-box;
 }
+@media (max-width: 768px) {
+  .vision_main .vision_text_container {
+    padding: 0 16px;
+  }
+}
 .vision_main .vision_text_container .text_container {
   display: flex;
   width: 100%;
   box-sizing: border-box;
 }
+@media (max-width: 1080px) {
+  .vision_main .vision_text_container .text_container {
+    flex-direction: column;
+  }
+}
 .vision_main .vision_text_container .text_container .lmqContainer {
-  width: fit-content;
+  width: 35%;
   height: fit-content;
+  box-sizing: border-box;
+}
+@media (max-width: 1080px) {
+  .vision_main .vision_text_container .text_container .lmqContainer {
+    width: 100%;
+  }
+}
+.vision_main .vision_text_container .text_container .lmqContainer.pin-spacer, .pin-spacer .vision_main .vision_text_container .text_container .lmqContainer {
+  width: fit-content !important;
+  max-width: 100% !important;
 }
 .vision_main .vision_text_container .text_container .lmqContainer .la__marque {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .vision_main .vision_text_container .text_container .lmqContainer .la__marque .line {
   overflow: hidden;
+  width: 100%;
 }
 .vision_main .vision_text_container .text_container .lmqContainer .la__marque .line .up_lmq {
   transform: translateY(100%);
@@ -2125,20 +2147,36 @@ svg .spin_text {
   font-family: var(--Reem);
   font-weight: 300;
   /* Fluid font-size with clamp(min, preferred, max) */
-  font-size: clamp(32px, 10vw + 1.5rem, 120px);
+  font-size: 120px;
   letter-spacing: -0.8rem;
   line-height: 1;
   display: inline-block;
   width: max-content;
+  max-width: 100% !important;
 }
-@media (max-width: 980px) {
+@media (max-width: 1780px) {
   .vision_main .vision_text_container .text_container .lmqContainer .la__marque .line span {
-    letter-spacing: -0.8rem;
+    font-size: 96px;
+  }
+}
+@media (max-width: 1480px) {
+  .vision_main .vision_text_container .text_container .lmqContainer .la__marque .line span {
+    font-size: 84px;
+  }
+}
+@media (max-width: 1300px) {
+  .vision_main .vision_text_container .text_container .lmqContainer .la__marque .line span {
+    font-size: 72px;
+  }
+}
+@media (max-width: 1080px) {
+  .vision_main .vision_text_container .text_container .lmqContainer .la__marque .line span {
+    font-size: 96px;
   }
 }
 @media (max-width: 580px) {
   .vision_main .vision_text_container .text_container .lmqContainer .la__marque .line span {
-    letter-spacing: -0.5rem;
+    font-size: 72px;
   }
 }
 .vision_main .vision_text_container .text_container .lmqContainer .la__marque .au__coeur {
@@ -2158,49 +2196,86 @@ svg .spin_text {
   }
 }
 .vision_main .vision_text_container .text_container .textboxes {
-  width: 100%;
-  padding: 144px 0 0 75px;
+  width: 65%;
+  padding: 144px 0 0 48px;
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
   gap: 100px;
 }
-.vision_main .vision_text_container .text_container .textboxes .pin-spacer {
-  width: auto !important;
-  max-width: 100% !important;
+@media (max-width: 1380px) {
+  .vision_main .vision_text_container .text_container .textboxes {
+    gap: 64px;
+  }
+}
+@media (max-width: 1080px) {
+  .vision_main .vision_text_container .text_container .textboxes {
+    padding: 48px 0 0 0;
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .vision_main .vision_text_container .text_container .textboxes {
+    padding: 36px 0 0 0;
+    gap: 36px;
+  }
 }
 .vision_main .vision_text_container .text_container .textboxes .tb1 {
-  width: fit-content;
+  width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
 }
 .vision_main .vision_text_container .text_container .textboxes .tb1 h4 {
-  font-size: clamp(32px, 5vw, 56px); /* Responsive from 32px to 56px */
+  font-size: clamp(36px, 3.5vw, 56px); /* More conservative scaling: 24-56px instead of 32-56px */
   font-family: var(--encode-font);
   font-weight: 500;
-  letter-spacing: -0.05em; /* Relative to font-size instead of fixed pixels */
+  letter-spacing: -0.045em; /* Slightly less letter spacing */
   margin: 0;
   width: fit-content;
 }
 .vision_main .vision_text_container .text_container .textboxes .tb1 h4 span {
-  margin-right: clamp(1rem, 3vw, 2rem); /* Responsive margin */
+  margin-right: clamp(0.75rem, 2.5vw, 1.75rem); /* Reduced spacing */
 }
 .vision_main .vision_text_container .text_container .textboxes .tb1 h4 span svg {
-  width: clamp(48px, 10vw, 84px); /* Responsive SVG width */
-  height: clamp(36px, 8vw, 64px); /* Responsive SVG height */
-  /* Alternative: maintain aspect ratio */
-  /* width: auto; */
-  /* height: clamp(36px, 8vw, 64px); */
+  width: 72px; /* Smaller SVG: 40-72px instead of 48-84px */
+  height: 56px; /* Smaller SVG: 30-56px instead of 36-64px */
+  /* Maintains similar aspect ratio */
+}
+@media (max-width: 1300px) {
+  .vision_main .vision_text_container .text_container .textboxes .tb1 h4 span svg {
+    width: 60px;
+    height: 48px;
+  }
+}
+@media (max-width: 1080px) {
+  .vision_main .vision_text_container .text_container .textboxes .tb1 h4 span svg {
+    width: 48px;
+    height: 36px;
+  }
+}
+@media (max-width: 768px) {
+  .vision_main .vision_text_container .text_container .textboxes .tb1 h4 span {
+    margin-left: -24px;
+  }
 }
 .vision_main .vision_text_container .text_container .textboxes .tb1 .tbp {
-  margin: clamp(24px, 4vw, 32px) 0 0 clamp(60px, 12vw, 120px); /* Responsive margins */
-  width: fit-content;
+  margin: clamp(24px, 4vw, 32px) 0 0 clamp(60px, 12vw, 110px);
+  box-sizing: border-box;
+  max-width: 100%;
+  flex: 1;
+}
+@media (max-width: 768px) {
+  .vision_main .vision_text_container .text_container .textboxes .tb1 .tbp {
+    margin-left: 36px !important;
+  }
 }
 .vision_main .vision_text_container .text_container .textboxes .tb1 .tbp p {
   font-family: var(--encode-font);
+  word-wrap: break-word;
   margin: 0.25rem 0;
   line-height: 1.1; /* Slightly more than 1 for better readability */
-  font-size: clamp(24px, 4vw, 56px); /* Responsive from 24px to 56px */
-  width: max-content; /* Or max-content if you want, but auto is more responsive */
+  font-size: clamp(32px, 2.5vw + 0.5rem, 56px);
+  width: 100%; /* Or max-content if you want, but auto is more responsive */
   max-width: 100%; /* Prevent overflow */
   letter-spacing: -0.04em; /* Relative to font-size */
   /* Optional: Add responsive line-height for larger screens */
@@ -2217,7 +2292,7 @@ svg .spin_text {
 }
 .vision_main .vision_quote .vision_quote_container h1 {
   font-family: var(--encode-font);
-  font-size: 96px;
+  font-size: clamp(48px, 8vw, 96px);
   letter-spacing: -2px;
   font-weight: 400;
   color: rgb(47, 47, 47);
@@ -2226,6 +2301,12 @@ svg .spin_text {
 }
 .vision_main .vision_quote .vision_quote_container h1:nth-child(2) {
   margin: 1rem 0 2rem 2rem;
+}
+.vision_main .vision_quote .vision_quote_container h1 .sp1 {
+  margin-right: 1rem;
+}
+.vision_main .vision_quote .vision_quote_container h1 .sp2 {
+  margin-left: 1rem;
 }
 .vision_main .vision_quote .vision_quote_container h1 span {
   position: relative;
@@ -2241,9 +2322,46 @@ svg .spin_text {
 }
 .vision_main .vision_quote .vision_quote_container p {
   font-family: var(--encode-font);
-  font-size: 32px;
+  font-size: clamp(20px, 2.5vw, 32px);
   margin: 0 0 0 2rem;
   letter-spacing: -1px;
   color: rgb(47, 47, 47);
+}
+@media (max-width: 1200px) {
+  .vision_main .vision_quote {
+    padding: 96px 24px 64px 24px;
+  }
+  .vision_main .vision_quote .vision_quote_container h1:nth-child(2) {
+    margin: 0.5rem 0 1rem 2rem;
+  }
+  .vision_main .vision_quote .vision_quote_container h1 span {
+    width: 12px;
+    height: 54px;
+  }
+  .vision_main .vision_quote .vision_quote_container h1 span img {
+    width: 16px;
+    height: 16px;
+  }
+}
+@media (max-width: 580px) {
+  .vision_main .vision_quote {
+    padding: 84px 0 48px 48px;
+  }
+  .vision_main .vision_quote .vision_quote_container h1 .sp1 {
+    margin-right: 0.5rem;
+  }
+  .vision_main .vision_quote .vision_quote_container h1 .sp2 {
+    margin-left: 0.5rem;
+  }
+  .vision_main .vision_quote .vision_quote_container h1 span {
+    height: 36px;
+    margin-left: -1rem;
+  }
+  .vision_main .vision_quote .vision_quote_container h1:nth-child(2) {
+    margin-left: 0;
+  }
+  .vision_main .vision_quote .vision_quote_container p {
+    margin: 0;
+  }
 }
 /*# sourceMappingURL=index.css.map */

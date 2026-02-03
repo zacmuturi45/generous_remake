@@ -215,8 +215,8 @@ export default function Vision() {
           duration: 2,
           scrollTrigger: {
             trigger: textbox,
-            start: "top 25%",
-            end: "top 15%",
+            start: "top 20%",
+            end: "top 10%",
             scrub: true,
           },
         });
@@ -299,26 +299,63 @@ export default function Vision() {
       const lmq = lmqContainer.current;
       const lmqElement = la_marque_element.current;
 
-      // Calculate the distance textboxes needs to scroll
-      const textboxesHeight = textboxes.offsetHeight;
-      const lmqHeight = lmqElement?.offsetHeight;
+      let pinTrigger: ScrollTrigger | null = null;
 
-      // Calculate the scroll distance needed for textboxes bottom to reach lmqBottomHeight
-      // When textboxes scrolls, its bottom position moves up relative to viewport
-      // We want pin to end when: textboxes.bottom = lmqBottomHeight
-      const pinEndDistance = textboxesHeight - lmqHeight!;
+      const calculatePinEnd = () => {
+        // Calculate the distance textboxes needs to scroll
+        const textboxesHeight = textboxes.offsetHeight;
+        const lmqHeight = lmqElement?.offsetHeight;
+        return textboxesHeight - lmqHeight!;
+      };
 
-      // Pin the lmqContainer while textboxes scrolls through
-      ScrollTrigger.create({
-        trigger: container,
-        start: "top 64px",
-        end: () => `+=${pinEndDistance}`, // Pin or the height of textboxes
-        pin: lmq,
-        pinSpacing: false, // No extra spaces
-        pinType: "transform",
-        invalidateOnRefresh: true,
-        // markers: true,
-      });
+      const createPinTrigger = () => {
+        if (window.innerWidth <= 1080) {
+          if (pinTrigger) {
+            pinTrigger.kill();
+            pinTrigger = null;
+          }
+          return;
+        }
+
+        if (!pinTrigger) {
+          pinTrigger = ScrollTrigger.create({
+            trigger: container,
+            start: "top 64px",
+            end: () => `+=${calculatePinEnd()}`,
+            pin: lmq,
+            pinSpacing: false,
+            invalidateOnRefresh: true,
+            onRefresh: function (self) {
+              // Dynamically update end position on refresh
+              self.vars.end = `+=${calculatePinEnd()}`;
+            },
+            anticipatePin: 1,
+            // markers: true
+          });
+        }
+      };
+
+      // Additionla manual refresh for safety
+      let resizeTimer: NodeJS.Timeout;
+      const handleResize = () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          createPinTrigger();
+          ScrollTrigger.refresh(true); // true = force recalculation
+        }, 100);
+      };
+
+      // Initial creation
+      createPinTrigger();
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        if (pinTrigger) {
+          pinTrigger.kill();
+        }
+        clearTimeout(resizeTimer);
+      };
     },
     { scope: vision_text_containerRef }
   );
@@ -578,14 +615,14 @@ export default function Vision() {
       <div className="vision_quote">
         <div className="vision_quote_container">
           <h1>
-            <span style={{ marginRight: "1rem" }}>
+            <span className="sp1">
               <Image src={quoteTop} width={48} height={48} alt="quoteTop" />
             </span>
             Le cœur fait tout,
           </h1>
           <h1>
             le reste est inutile
-            <span style={{ marginLeft: "1rem" }}>
+            <span className="sp2">
               <Image src={quoteBottom} width={48} height={48} alt="quoteTop" />
             </span>
           </h1>
