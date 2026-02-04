@@ -24,6 +24,14 @@ export default function Navbar() {
   const [logoBlack, setLogoBlack] = useState<boolean>(false);
   const pathname = usePathname();
 
+  useGSAP(() => {
+    gsap.from(".navbar", {
+      opacity: 0,
+      duration: 1.5,
+      ease: "power1.in",
+    });
+  });
+
   const handleLinkClick = (linkName: string) => {
     setClickedLink(linkName);
   };

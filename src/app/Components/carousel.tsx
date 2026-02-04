@@ -37,7 +37,7 @@ export const Carousel: React.FC<CarouselProps> = ({ items, autoplayDuration = 50
       darkOverlay,
       {
         backgroundColor: "rgba(0, 0, 0, 0.4)",
-        duration: 1,
+        duration: 1.5,
         ease: "power1.in",
       },
       0
@@ -50,10 +50,11 @@ export const Carousel: React.FC<CarouselProps> = ({ items, autoplayDuration = 50
       {
         y: 0,
         opacity: 1,
-        duration: 1,
-        stagger: 0.15,
+        duration: 0.75,
+        stagger: 0.1,
         ease: "power3.inOut",
-      }
+      },
+      0.25
     );
   }, []);
 

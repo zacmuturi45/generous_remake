@@ -26,6 +26,46 @@ const CircularText: React.FC<{
   const animationRef = useRef<gsap.core.Tween | null>(null);
   const arrowTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const [isHovering, setIsHovering] = useState(false);
+  const hasInitialBoost = useRef<boolean>(false);
+
+  // Initial speed boost effect
+  useEffect(() => {
+    // Only run once on mount
+    if (hasInitialBoost.current) return;
+
+    const timer = setTimeout(() => {
+      if (animationRef.current && window.innerWidth > 768) {
+        // Create a timeline for the initial speed burst
+        const boostTimeline = gsap.timeline();
+
+        // Initial burst to very fast
+        boostTimeline.to(animationRef.current, {
+          timeScale: 15, // Even faster than hover
+          duration: 0.4,
+          ease: "power2.out",
+        });
+
+        // Slow down slightly but still faster than normal
+        boostTimeline.to(animationRef.current, {
+          timeScale: 8,
+          duration: 0.4,
+          ease: "power2.inOut",
+        });
+
+        // Return to normal speed
+        boostTimeline.to(animationRef.current, {
+          timeScale: 1,
+          duration: 0.5,
+          ease: "power2.in",
+        });
+
+        // Mark as boosted
+        hasInitialBoost.current = true;
+      }
+    }, 250); // Small delay after mount
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Text rotation animation
   useEffect(() => {

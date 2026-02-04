@@ -161,7 +161,7 @@ body::-webkit-scrollbar {
     position: relative;
     overflow: hidden;
     .overlay {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
@@ -1285,7 +1285,7 @@ body::-webkit-scrollbar {
     width: 100%;
     height: 100%;
     .darkOverlay {
-      z-index: 3;
+      z-index: 1000;
       position: fixed;
       top: 0;
       left: 0;
