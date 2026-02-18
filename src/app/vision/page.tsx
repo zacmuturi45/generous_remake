@@ -329,7 +329,6 @@ export default function Vision() {
               // Dynamically update end position on refresh
               self.vars.end = `+=${calculatePinEnd()}`;
             },
-            anticipatePin: 1,
             // markers: true
           });
         }
