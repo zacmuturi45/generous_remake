@@ -1183,91 +1183,354 @@ body::-webkit-scrollbar {
 }
 // CAROUSEL
 
-@keyframes scaleIn {
-  0% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
+// @keyframes scaleIn {
+//   0% {
+//     transform: scale(1.1);
+//   }
+//   100% {
+//     transform: scale(1);
+//   }
+// }
 
-@keyframes fadeOutThenSlide {
-  0% {
-    transform: translateX(0);
-  }
-  40% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
+// @keyframes fadeOutThenSlide {
+//   0% {
+//     transform: translateX(0);
+//   }
+//   40% {
+//     transform: translateX(0);
+//   }
+//   100% {
+//     transform: translateX(100%);
+//   }
+// }
 
-@keyframes textHeadingIn {
-  0% {
-    transform: translateY(calc(100% + 20px));
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
+// @keyframes textHeadingIn {
+//   0% {
+//     transform: translateY(calc(100% + 20px));
+//     opacity: 0;
+//   }
+//   100% {
+//     transform: translateY(0);
+//     opacity: 1;
+//   }
+// }
 
-@keyframes textHeadingOut {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(calc(100% + 20px));
-  }
-}
+// @keyframes textHeadingOut {
+//   0% {
+//     transform: translateY(0);
+//   }
+//   50% {
+//     opacity: 0;
+//   }
+//   100% {
+//     opacity: 0;
+//     transform: translateY(calc(100% + 20px));
+//   }
+// }
 
-// Text description animation (lines with fade-up)
-@keyframes textDescriptionIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+// // Text description animation (lines with fade-up)
+// @keyframes textDescriptionIn {
+//   0% {
+//     opacity: 0;
+//   }
+//   100% {
+//     opacity: 1;
+//   }
+// }
 
-@keyframes textDescriptionOut {
-  0% {
-    opacity: 1;
-  }
-  10% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-}
+// @keyframes textDescriptionOut {
+//   0% {
+//     opacity: 1;
+//   }
+//   10% {
+//     opacity: 0;
+//   }
+//   100% {
+//     opacity: 0;
+//   }
+// }
 
-@keyframes clipPathAnimation {
-  0% {
-    clip-path: polygon(
-      20% 0%,
-      /* left top */ 100% 0%,
-      /* right top */ 100% 100%,
-      /* right bottom */ 20% 100% /* left bottom */
-    );
-  }
-  100% {
-    clip-path: polygon(
-      0% 0%,
-      /* left top */ 100% 0%,
-      /* right top */ 100% 100%,
-      /* right bottom */ 0% 100% /* left bottom */
-    );
-  }
-}
+// @keyframes clipPathAnimation {
+//   0% {
+//     clip-path: polygon(
+//       20% 0%,
+//       /* left top */ 100% 0%,
+//       /* right top */ 100% 100%,
+//       /* right bottom */ 20% 100% /* left bottom */
+//     );
+//   }
+//   100% {
+//     clip-path: polygon(
+//       0% 0%,
+//       /* left top */ 100% 0%,
+//       /* right top */ 100% 100%,
+//       /* right bottom */ 0% 100% /* left bottom */
+//     );
+//   }
+// }
+
+// .carousel {
+//   position: relative;
+//   width: 100%;
+//   height: 100%;
+//   overflow: hidden;
+
+//   &__container {
+//     width: 100%;
+//     height: 100%;
+//   }
+
+//   &__slides {
+//     position: relative;
+//     width: 100%;
+//     height: 100%;
+//     .darkOverlay {
+//       z-index: 1000;
+//       position: fixed;
+//       top: 0;
+//       left: 0;
+//       width: 100%;
+//       height: 100%;
+//       background-color: rgba(0, 0, 0, 1);
+//       pointer-events: none;
+//     }
+//   }
+
+//   &__slide {
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     transform: translateX(105%);
+//     opacity: 1;
+//     transition:
+//       transform 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+//       opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+//       scale 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+//     img,
+//     video {
+//       position: absolute;
+//       inset: 0;
+//       display: block;
+//       transform: scale(1);
+//       object-fit: cover;
+//       min-width: 100%;
+//       min-height: 100%;
+//     }
+
+//     &--active {
+//       transform: translateX(0);
+//       opacity: 1;
+//       z-index: 2;
+//       // animation: clipPathAnimation 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+//       img,
+//       video {
+//         animation: scaleIn 7s linear forwards;
+//         transform-origin: center center;
+//       }
+//     }
+
+//     &--prev {
+//       transform: translateX(0);
+//       opacity: 1;
+//       z-index: 1;
+//       animation: fadeOutThenSlide 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+//       img,
+//       video {
+//         animation: scaleIn 7s linear forwards;
+//         transform-origin: center center;
+//       }
+//     }
+
+//     &--transitioning {
+//       transition:
+//         transform 0.8s cubic-bezier(0.785, 0.135, 0.15, 0.86),
+//         opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+//     }
+//   }
+
+//   &__progress_container {
+//     position: absolute;
+//     bottom: 100px;
+//     left: 24px;
+//     display: flex;
+//     flex-direction: column;
+//     z-index: 3;
+//     gap: 1.5rem;
+
+//     @media (max-width: 768px) {
+//       bottom: 2.5rem;
+//     }
+//     @media (max-width: 580px) {
+//       left: 16px;
+//       bottom: 100px;
+//     }
+//   }
+
+//   &__text {
+//     position: relative;
+//     width: 1200px;
+//     height: 300px;
+//   }
+
+//   &__text_container {
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     opacity: 0;
+//     &--active {
+//       opacity: 1;
+//       z-index: 2;
+//     }
+//   }
+
+//   &__header {
+//     // border: 2px solid purple;
+//     padding: 0;
+//     overflow: hidden;
+//     width: 100%;
+//     h1 {
+//       line-height: 1;
+//       font-family: var(--amoera-font);
+//       color: var(--tone-0);
+//       font-weight: 500;
+//       font-size: 120px;
+//       text-transform: capitalize;
+//       margin: 0;
+//       transform: translateY(calc(100% + 20px));
+//     }
+//     .header--active {
+//       animation: textHeadingIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+//       animation-delay: 0.75s;
+//     }
+//     .header--prev {
+//       animation: textHeadingOut 0.35s linear;
+//     }
+
+//     @media (max-width: 1300px) {
+//       width: 800px;
+//       h1 {
+//         font-size: 96px;
+//       }
+//     }
+
+//     @media (max-width: 980px) {
+//       width: 600px;
+//       h1 {
+//         font-size: 88px;
+//         transform: translateY(calc(100% + 20px));
+//       }
+//     }
+
+//     @media (max-width: 768px) {
+//       width: 450px;
+//     }
+
+//     @media (max-width: 580px) {
+//       h1 {
+//         font-size: 52px;
+//         line-height: 1.05;
+//         transform: translateY(calc(100% + 15px));
+//       }
+//     }
+
+//     @media (max-width: 420px) {
+//       width: 300px;
+//     }
+//   }
+
+//   &__description {
+//     max-width: 680px;
+//     // border: 2px solid yellow;
+//     p {
+//       font-family: var(--secondary-font);
+//       color: var(--tone-0);
+//       font-weight: 300;
+//       font-size: 1.5rem;
+//       line-height: 150%;
+//       letter-spacing: 1px;
+//       margin: 0;
+//       opacity: 0;
+//     }
+//     .description--active {
+//       animation: textDescriptionIn 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+//       animation-delay: 1.3s;
+//     }
+//     .description--prev {
+//       animation: textDescriptionOut 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+//     }
+
+//     @media (max-width: 980px) {
+//       width: 580px;
+//       p {
+//         font-size: 1.25rem;
+//         letter-spacing: 0.8px;
+//       }
+//     }
+
+//     @media (max-width: 768px) {
+//       width: 350px;
+//     }
+
+//     @media (max-width: 580px) {
+//       p {
+//         font-size: 1.05rem;
+//         line-height: 145%;
+//         letter-spacing: 0.6px;
+//       }
+//     }
+
+//     @media (max-width: 420px) {
+//       width: 250px;
+//     }
+//   }
+
+//   &__progress {
+//     display: flex;
+//     gap: 1.2rem;
+//     z-index: 10;
+//     @media (max-width: 580px) {
+//       gap: 0.9rem;
+//     }
+//   }
+
+//   &__progress-dot {
+//     position: relative;
+//     width: 10px;
+//     height: 10px;
+//     border-radius: 64px;
+//     background: rgba(255, 255, 255, 1);
+//     cursor: pointer;
+//     overflow: hidden;
+//     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+//     &:hover {
+//       background: rgba(255, 255, 255, 0.5);
+//       width: 1rem;
+//     }
+
+//     &--active {
+//       transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+//       border-radius: 64px;
+//       width: 64px;
+//       pointer-events: none;
+//       background: rgba(216, 216, 216, 0.5);
+//     }
+//   }
+//   &__progress-fill {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     border-radius: 64px;
+//     height: 100%;
+//     background: rgba(255, 255, 255, 0.6);
+//     width: 0%; // Default width
+//   }
+// }
+
+// ── Carousel layout ───────────────────────────────────────────────────────────
 
 .carousel {
   position: relative;
@@ -1284,72 +1547,35 @@ body::-webkit-scrollbar {
     position: relative;
     width: 100%;
     height: 100%;
+
+    // Dark overlay — starts fully black, GSAP fades it to rgba(0,0,0,0.4)
     .darkOverlay {
-      z-index: 1000;
+      z-index: 999;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       background-color: rgba(0, 0, 0, 1);
       pointer-events: none;
     }
-  }
 
-  &__slide {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform: translateX(105%);
-    opacity: 1;
-    transition:
-      transform 1.2s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-      scale 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    img,
-    video {
+    // Slide image containers — created imperatively by GSAP system
+    .img {
       position: absolute;
       inset: 0;
-      display: block;
-      transform: scale(1);
-      object-fit: cover;
-      min-width: 100%;
-      min-height: 100%;
-    }
+      will-change: clip-path;
 
-    &--active {
-      transform: translateX(0);
-      opacity: 1;
-      z-index: 2;
-      // animation: clipPathAnimation 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-      img,
-      video {
-        animation: scaleIn 7s linear forwards;
-        transform-origin: center center;
+      img {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        will-change: transform;
       }
-    }
-
-    &--prev {
-      transform: translateX(0);
-      opacity: 1;
-      z-index: 1;
-      animation: fadeOutThenSlide 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-
-      img,
-      video {
-        animation: scaleIn 7s linear forwards;
-        transform-origin: center center;
-      }
-    }
-
-    &--transitioning {
-      transition:
-        transform 0.8s cubic-bezier(0.785, 0.135, 0.15, 0.86),
-        opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
+
+  // ── Progress + text container ─────────────────────────────────────────────
 
   &__progress_container {
     position: absolute;
@@ -1357,7 +1583,7 @@ body::-webkit-scrollbar {
     left: 24px;
     display: flex;
     flex-direction: column;
-    z-index: 3;
+    z-index: 20;
     gap: 1.5rem;
 
     @media (max-width: 768px) {
@@ -1369,6 +1595,8 @@ body::-webkit-scrollbar {
     }
   }
 
+  // ── Text ──────────────────────────────────────────────────────────────────
+
   &__text {
     position: relative;
     width: 1200px;
@@ -1379,18 +1607,14 @@ body::-webkit-scrollbar {
     position: absolute;
     bottom: 0;
     left: 0;
-    opacity: 0;
-    &--active {
-      opacity: 1;
-      z-index: 2;
-    }
+    // Visibility is fully managed by GSAP — no CSS opacity toggles here
   }
 
   &__header {
-    // border: 2px solid purple;
-    padding: 0;
-    overflow: hidden;
+    overflow: hidden; // clips words during slideUpAnimator
     width: 100%;
+    padding: 0;
+
     h1 {
       line-height: 1;
       font-family: var(--amoera-font);
@@ -1399,14 +1623,16 @@ body::-webkit-scrollbar {
       font-size: 120px;
       text-transform: capitalize;
       margin: 0;
-      transform: translateY(calc(100% + 20px));
+      // Filter pairs with the SVG blur-matrix for the glow edge on blurAnimator
+      filter: url(#blur-matrix) blur(0.25px);
+      -webkit-filter: url(#blur-matrix) blur(0.25px);
     }
-    .header--active {
-      animation: textHeadingIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-      animation-delay: 0.75s;
-    }
-    .header--prev {
-      animation: textHeadingOut 0.35s linear;
+
+    // Individual words — GSAP targets these via .word class (set by SplitText)
+    .word {
+      display: inline-block; // required for filter + transform to work per-word
+      will-change: filter, opacity, transform;
+      opacity: 0; // hidden by default; GSAP animates in
     }
 
     @media (max-width: 1300px) {
@@ -1415,27 +1641,21 @@ body::-webkit-scrollbar {
         font-size: 96px;
       }
     }
-
     @media (max-width: 980px) {
       width: 600px;
       h1 {
         font-size: 88px;
-        transform: translateY(calc(100% + 20px));
       }
     }
-
     @media (max-width: 768px) {
       width: 450px;
     }
-
     @media (max-width: 580px) {
       h1 {
         font-size: 52px;
         line-height: 1.05;
-        transform: translateY(calc(100% + 15px));
       }
     }
-
     @media (max-width: 420px) {
       width: 300px;
     }
@@ -1443,7 +1663,7 @@ body::-webkit-scrollbar {
 
   &__description {
     max-width: 680px;
-    // border: 2px solid yellow;
+
     p {
       font-family: var(--secondary-font);
       color: var(--tone-0);
@@ -1452,14 +1672,7 @@ body::-webkit-scrollbar {
       line-height: 150%;
       letter-spacing: 1px;
       margin: 0;
-      opacity: 0;
-    }
-    .description--active {
-      animation: textDescriptionIn 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-      animation-delay: 1.3s;
-    }
-    .description--prev {
-      animation: textDescriptionOut 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+      opacity: 0; // GSAP animates this in via textAnimator
     }
 
     @media (max-width: 980px) {
@@ -1469,11 +1682,9 @@ body::-webkit-scrollbar {
         letter-spacing: 0.8px;
       }
     }
-
     @media (max-width: 768px) {
       width: 350px;
     }
-
     @media (max-width: 580px) {
       p {
         font-size: 1.05rem;
@@ -1481,16 +1692,18 @@ body::-webkit-scrollbar {
         letter-spacing: 0.6px;
       }
     }
-
     @media (max-width: 420px) {
       width: 250px;
     }
   }
 
+  // ── Progress dots ─────────────────────────────────────────────────────────
+
   &__progress {
     display: flex;
-    gap: 1.2rem;
+    gap: 1rem;
     z-index: 10;
+
     @media (max-width: 580px) {
       gap: 0.9rem;
     }
@@ -1512,21 +1725,21 @@ body::-webkit-scrollbar {
     }
 
     &--active {
-      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 56px;
       border-radius: 64px;
-      width: 64px;
       pointer-events: none;
       background: rgba(216, 216, 216, 0.5);
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
+
   &__progress-fill {
     position: absolute;
-    top: 0;
+    inset-block: 0;
     left: 0;
+    width: 0%;
     border-radius: 64px;
-    height: 100%;
     background: rgba(255, 255, 255, 0.6);
-    width: 0%; // Default width
   }
 }
 

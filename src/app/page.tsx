@@ -26,6 +26,11 @@ import {
   office2,
   office3,
   office4,
+  t1,
+  t2,
+  t3,
+  t4,
+  t5,
   vine1,
   vine2,
   vine3,
@@ -50,6 +55,7 @@ import { HoverAnimation } from "./Components/hoverAnimation";
 import { useRouter } from "next/navigation";
 import CircularText from "./Components/spinning_text";
 import { useLenis } from "./Components/lenis/LenisContext";
+import { CarouselTwo } from "./Components/carouselTwo";
 
 gsap.registerPlugin(ScrollTrigger, GSDevTools);
 
@@ -278,49 +284,49 @@ export default function Home() {
   const carouselItems: CarouselItem[] = [
     {
       type: "image",
-      src: office1,
+      src: t1,
       alt: "Mountain landscape",
       text: "Beware the fountain where dreams gather slowly and whispers guide travelers toward hidden truths",
     },
     {
       type: "image",
-      src: office2,
+      src: t2,
       alt: "Forest path",
       text: "Mundo Deportivo explores passion discipline teamwork legacy moments that define legendary sporting excellence worldwide",
     },
     {
       type: "image",
-      src: office3,
+      src: t3,
       alt: "Ocean sunset",
       text: "Caliente Ferrari represents speed precision Italian heritage engineering mastery and timeless automotive desire",
     },
     {
       type: "image",
-      src: office4,
+      src: t4,
       alt: "Nusa Dua",
       text: "Sigrum Sipurum evokes mystery ancient symbols forgotten rituals and stories carried across generations",
     },
     {
       type: "image",
-      src: office1,
+      src: t5,
       alt: "Mountain landscape",
       text: "Let it be a quiet reminder that patience clarity and acceptance often unlock deeper peace",
     },
     {
       type: "image",
-      src: office2,
+      src: t1,
       alt: "Forest path",
       text: "Cleora Falciporum sounds like an arcane spell echoing through forgotten libraries of lost empires",
     },
     {
       type: "image",
-      src: office3,
+      src: t2,
       alt: "Ocean sunset",
       text: "This supporting text provides context balance clarity narrative flow and subtle emotional reinforcement",
     },
     {
       type: "image",
-      src: office4,
+      src: t3,
       alt: "vogue image",
       text: "Supporting text here adds meaning perspective visual harmony and guides viewer attention effectively",
     },
@@ -405,7 +411,8 @@ export default function Home() {
       <section className="hero_section">
         <div className="overlay" />
         <div className="hero_carousel_container">
-          <Carousel lenis={lenis} items={carouselItems} />
+          {/* <Carousel lenis={lenis} items={carouselItems} /> */}
+          <CarouselTwo lenis={lenis} items={carouselItems} />
           <div className="circular__text_container">
             <CircularText
               lenis={lenis}
