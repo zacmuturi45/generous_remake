@@ -96,7 +96,7 @@ export const slideUpAnimator: TextAnimator = ({ incomingEl, outgoingEl, tl }) =>
       {
         y: "110%",
         opacity: 0,
-        duration: 0.4,
+        duration: 0.5,
         ease: "power2.in",
         stagger: 0.04,
         overwrite: true,
@@ -108,16 +108,15 @@ export const slideUpAnimator: TextAnimator = ({ incomingEl, outgoingEl, tl }) =>
   if (inWords.length) {
     tl.fromTo(
       inWords,
-      { y: "110%", opacity: 0 },
+      { y: "110%", opacity: 1 },
       {
         y: "0%",
         opacity: 1,
-        duration: 0.9,
-        ease: "power3.out",
-        stagger: 0.06,
+        duration: 1.5,
+        ease: "circ.inOut",
         overwrite: true,
       },
-      0.15
+      0.6
     );
   }
 };

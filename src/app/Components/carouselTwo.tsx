@@ -13,6 +13,7 @@ import {
   splitAllTitles,
 } from "./TextAnimators";
 import { CarouselProps } from "./Types/gsap";
+import HeroVideo from "./heroVideo";
 
 // ── GSAP setup ────────────────────────────────────────────────────────────────
 
@@ -138,8 +139,8 @@ export const CarouselTwo: React.FC<ExtendedCarouselProps> = ({
         "position:absolute;inset:0;background:#000;opacity:0;z-index:2;pointer-events:none;";
       currentSlide!.appendChild(darkEl);
 
-      tl.to(darkEl, { opacity: 0.8, duration: 0.65, ease: "power2.in" }, 0);
-      tl.to(currentImg, { x: -slideOffset, duration: 1.2, ease: "power4.inOut" }, 0);
+      tl.to(darkEl, { opacity: 0.75, duration: 0.65, ease: "power2.in" }, 0);
+      tl.to(currentImg, { x: -slideOffset, duration: 1.1, ease: "power4.inOut" }, 0);
     }
 
     // Build incoming slide
@@ -229,6 +230,7 @@ export const CarouselTwo: React.FC<ExtendedCarouselProps> = ({
       descWrap.classList.add("carousel__description");
 
       const p = document.createElement("p");
+      p.textContent = "";
       p.textContent = (item as any).text ?? "";
 
       headerWrap.appendChild(h1);
@@ -249,11 +251,22 @@ export const CarouselTwo: React.FC<ExtendedCarouselProps> = ({
     document.fonts.ready.then(() => {
       const { revert } = splitAllTitles(textElsRef.current);
       splitCleanup.current = revert;
-      // Now safe to make visible — words are split and CSS opacity:0 on .word takes over
+
       textElsRef.current.forEach((el) => {
         const h1 = el.querySelector<HTMLElement>(".title");
         if (h1) gsap.set(h1, { opacity: 1 });
       });
+
+      // Now .word spans exist — fire text animation immediately
+      const firstTextEl = textElsRef.current[0];
+      if (firstTextEl) {
+        const fakeTl = gsap.timeline();
+        textAnimator({
+          incomingEl: firstTextEl,
+          outgoingEl: null,
+          tl: fakeTl,
+        });
+      }
     });
     // 3. Build first slide image
     const firstContainer = document.createElement("div");
@@ -283,8 +296,6 @@ export const CarouselTwo: React.FC<ExtendedCarouselProps> = ({
         // Text animates in after the overlay clears
         const firstTextEl = textElsRef.current[0];
         if (firstTextEl) {
-          const fakeTl = gsap.timeline();
-          textAnimator({ incomingEl: firstTextEl, outgoingEl: null, tl: fakeTl });
           syncDots(0);
           resetDot(0);
           fillProgress();
@@ -293,7 +304,7 @@ export const CarouselTwo: React.FC<ExtendedCarouselProps> = ({
     });
 
     entryTl
-      .to(overlayEl, { backgroundColor: "rgba(0,0,0,0)", duration: 1, ease: "power1.in" }, 0)
+      .to(overlayEl, { backgroundColor: "rgba(0,0,0,0.35)", duration: 1, ease: "power2.in" }, 0)
       .fromTo(
         dots,
         { y: 15, opacity: 0 },
@@ -313,6 +324,23 @@ export const CarouselTwo: React.FC<ExtendedCarouselProps> = ({
       slidesEl.querySelectorAll(".img").forEach((el) => el.remove());
     };
   }, []);
+
+  // // - PAUSE TIMELINE ON VISIBILITY CHANGE
+  // useEffect(() => {
+  //   function handleVisibilityChange() {
+  //     if (document.hidden) {
+  //       gsap.globalTimeline.pause();
+  //     } else {
+  //       gsap.globalTimeline.resume();
+  //     }
+  //   }
+
+  //   document.addEventListener("visibilitychange", handleVisibilityChange);
+
+  //   return () => {
+  //     document.removeEventListener("visibilitychange", handleVisibilityChange);
+  //   };
+  // }, []);
 
   // ── JSX ───────────────────────────────────────────────────────────────────
 
@@ -338,22 +366,15 @@ export const CarouselTwo: React.FC<ExtendedCarouselProps> = ({
         </div>
       </div>
 
-      {/* SVG filter for blur-matrix glow on text */}
-      <svg
-        viewBox="0 0 0 0"
-        aria-hidden="true"
-        style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}
-      >
-        <defs>
-          <filter id="blur-matrix">
-            <feColorMatrix
-              in="SourceGraphic"
-              type="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"
-            />
-          </filter>
-        </defs>
-      </svg>
+      {/* <div className="newText">
+        A Kenyan based Design & Architectural Company specializing in high-end contemporary homes.
+      </div> */}
+
+      <div className="gradient"></div>
+
+      {/* <div className="herovid">
+        <HeroVideo />
+      </div> */}
     </div>
   );
 };

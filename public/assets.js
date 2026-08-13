@@ -42,6 +42,12 @@ export { default as office2 } from "./forest.jpg";
 export { default as office3 } from "./sunset.jpg";
 export { default as office4 } from "./mulia.webp";
 
+export { default as hm1 } from "./taupe.jpg";
+export { default as hm2 } from "./herring.jpg";
+export { default as hm3 } from "./hm3.jpg";
+export { default as hm4 } from "./hm4.webp";
+export { default as hm5 } from "./hm5.jpg";
+
 export { default as linkWhite } from "./linkWhite.svg";
 export { default as linkBlack } from "./linkBlack.svg";
 

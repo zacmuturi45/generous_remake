@@ -13,6 +13,11 @@ import {
   graph1,
   graph2,
   graph3,
+  hm1,
+  hm2,
+  hm3,
+  hm4,
+  hm5,
   marble1,
   marble2,
   marble3,
@@ -284,49 +289,49 @@ export default function Home() {
   const carouselItems: CarouselItem[] = [
     {
       type: "image",
-      src: t1,
+      src: hm1,
       alt: "Mountain landscape",
       text: "Beware the fountain where dreams gather slowly and whispers guide travelers toward hidden truths",
     },
     {
       type: "image",
-      src: t2,
+      src: hm2,
       alt: "Forest path",
       text: "Mundo Deportivo explores passion discipline teamwork legacy moments that define legendary sporting excellence worldwide",
     },
     {
       type: "image",
-      src: t3,
+      src: hm3,
       alt: "Ocean sunset",
       text: "Caliente Ferrari represents speed precision Italian heritage engineering mastery and timeless automotive desire",
     },
     {
       type: "image",
-      src: t4,
+      src: hm4,
       alt: "Nusa Dua",
       text: "Sigrum Sipurum evokes mystery ancient symbols forgotten rituals and stories carried across generations",
     },
     {
       type: "image",
-      src: t5,
+      src: hm5,
       alt: "Mountain landscape",
       text: "Let it be a quiet reminder that patience clarity and acceptance often unlock deeper peace",
     },
     {
       type: "image",
-      src: t1,
+      src: hm1,
       alt: "Forest path",
       text: "Cleora Falciporum sounds like an arcane spell echoing through forgotten libraries of lost empires",
     },
     {
       type: "image",
-      src: t2,
+      src: hm2,
       alt: "Ocean sunset",
       text: "This supporting text provides context balance clarity narrative flow and subtle emotional reinforcement",
     },
     {
       type: "image",
-      src: t3,
+      src: hm3,
       alt: "vogue image",
       text: "Supporting text here adds meaning perspective visual harmony and guides viewer attention effectively",
     },
@@ -414,7 +419,7 @@ export default function Home() {
           {/* <Carousel lenis={lenis} items={carouselItems} /> */}
           <CarouselTwo lenis={lenis} items={carouselItems} />
           <div className="circular__text_container">
-            <CircularText
+            {/* <CircularText
               lenis={lenis}
               rotatingText="* SCROLL * SCROLL * SCROLL * SCROLL"
               backgroundColor="rgb(255, 255, 255)"
@@ -422,7 +427,7 @@ export default function Home() {
               d1="M 75 55 L 75 95 C 75.15 84.5 84 74 88 78"
               d2="M 75 55 L 75 95 C 74.85 84.5 66 74 62 78"
               scrollTarget={"next-section"}
-            />
+            /> */}
           </div>
         </div>
       </section>
